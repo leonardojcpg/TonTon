@@ -1,4 +1,4 @@
-import "./globals.css"
+import "./global.css"
 import {Register} from './Pages/Register'
 
 function App() {
