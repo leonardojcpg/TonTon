@@ -22,9 +22,6 @@ export const Register = () => {
       .email("Type a valid email")
       .required("Email is required"),
     password: Yup.string().required("Password is required"),
-    confirmPassword: Yup.string()
-      .oneOf([Yup.ref("password"), null], "Passwords must match")
-      .required("Confirm password is required"),
     relationship: Yup.string()
       .oneOf(
         ["parent", "grandparent", "sibling", "other"],
