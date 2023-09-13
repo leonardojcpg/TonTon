@@ -1,13 +1,12 @@
 import "./global.css"
-import {Register} from './Pages/Register'
+import { RouteApp } from "./Routes/index.jsx";
 
 function App() {
-
   return (
-    <>
-    <Register />
-    </>
-  );
+    <div>
+    <RouteApp />
+    </div>
+  )
 }
 
 export default App;

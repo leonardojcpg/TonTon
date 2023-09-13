@@ -12,22 +12,15 @@ import {
   Button,
   LeftColumn,
   RightColumn,
-  LinkToLogin,
-  RelationshipSelect
+  LinkToLogin
 } from "./styles";
 
-export const Register = () => {
+export const Login = () => {
   const schema = Yup.object().shape({
     email: Yup.string()
       .email("Type a valid email")
       .required("Email is required"),
     password: Yup.string().required("Password is required"),
-    relationship: Yup.string()
-      .oneOf(
-        ["parent", "grandparent", "sibling", "other"],
-        "Invalid relationship"
-      )
-      .required("Relationship is required"),
   });
 
   const {
@@ -56,7 +49,7 @@ export const Register = () => {
 
       <RightColumn>
         <Form onSubmit={handleSubmit(onSubmit)}>
-          <Title>Register</Title>
+          <Title>Login</Title>
           <div>
             <Label>Email: </Label>
             <Input
@@ -77,20 +70,9 @@ export const Register = () => {
               {...errors.password?.message}
             />
           </div>
-          <RelationshipSelect>
-            <label>Relationship with the baby: </label>
-            <select name="relationship" {...register("relationship")}>
-              <option value="parent">Parent</option>
-              <option value="grandparent">Grandparent</option>
-              <option value="sibling">Sibling</option>
-              <option value="other">Other</option>
-            </select>
-            {errors.relationship && <p>{errors.relationship.message}</p>}
-          </RelationshipSelect>
-
-          <Button type="submit">Sign Up</Button>
+          <Button type="submit">Sign In</Button>
           <LinkToLogin>
-            <a href="/login">Already registered? Log in here!</a>
+            <a href="/">Register here!</a>
           </LinkToLogin>
         </Form>
       </RightColumn>
