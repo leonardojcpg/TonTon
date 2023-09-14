@@ -7,7 +7,8 @@ export const RouteApp = () => {
   return (
     <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Register />} />
+          <Route exact path="/" element={<Login />} /> 
+          <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
