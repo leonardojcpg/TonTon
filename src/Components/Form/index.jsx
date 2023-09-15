@@ -1,24 +1,32 @@
 import {
   Grid,
+  InputLabel,
+  MenuItem,
   Paper,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
 
-import { FormButton } from "../../Components/Button";
+import { FormButton } from "../Button";
 import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export const Login = () => {
+export const FormComponent = () => {
   const schema = Yup.object().shape({
     email: Yup.string()
       .email("Type a valid email")
       .required("Email is required"),
     password: Yup.string().required("Password is required"),
-  })
-
+    relationship: Yup.string()
+      .oneOf(
+        ["parent", "grandparent", "sibling", "other"],
+        "Invalid relationship"
+      )
+      .required("Relationship is required"),
+  });
 
   const {
     register,
@@ -41,9 +49,9 @@ export const Login = () => {
               alt=""
               style={{
                 width: "250px",
-                height: "240px",
+                height: "250px",
                 margin: "0 auto",
-                marginTop: "35px",
+                marginTop: "55px",
                 marginLeft: "40px",
               }}
             />
@@ -51,7 +59,7 @@ export const Login = () => {
           <Grid item xs={12} sm={6}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Typography variant="h4" sx={{ textAlign: "center" }}>
-                Login
+                Register
               </Typography>
               <TextField
                 label="Email"
@@ -74,12 +82,32 @@ export const Login = () => {
                 error={!!errors.password}
                 helperText={errors.password?.message}
               />
-              <FormButton buttonName="Sign In" />
+              <InputLabel>Relationship with the baby</InputLabel>
+              <Select
+                label="Relationship with the baby"
+                variant="outlined"
+                fullWidth
+                margin="normal"
+                name="relationship"
+                {...register("relationship")}
+                error={!!errors.relationship}
+              >
+                <MenuItem value="parent">Parent</MenuItem>
+                <MenuItem value="grandparent">Grandparent</MenuItem>
+                <MenuItem value="sibling">Sibling</MenuItem>
+                <MenuItem value="other">Other</MenuItem>
+              </Select>
+              {errors.relationship && (
+                <Typography variant="caption" color="error">
+                  {errors.relationship.message}
+                </Typography>
+              )}
+              <FormButton buttonName="Sign Up" />
               <Typography
                 variant="body2"
                 sx={{ textAlign: "center", marginTop: 2 }}
               >
-              Don't have a registration? <a href="/register">Sign Up here!</a>
+                Already registered? <a href="/login">Log in here!</a>
               </Typography>
             </form>
           </Grid>

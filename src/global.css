@@ -1,6 +1,12 @@
-*{
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+html, body, #root {
   font-family: "Roboto", sans-serif;
+  box-sizing: border-box;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+ #root {
+  background-color: #75ca75;
+  min-height: 100vh;
 }
