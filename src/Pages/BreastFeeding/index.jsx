@@ -80,7 +80,7 @@ export const BreastFeeding = () => {
               -
             </Button>
             <TextField
-              style={{ width: "100px", margin: "0 10px" }}
+              style={{ width: "100px", margin: "0 0.625rem" }}
               variant="outlined"
               type="number"
               value={feedHours}

@@ -49,11 +49,11 @@ export const Login = () => {
               src={newBornBaby}
               alt=""
               style={{
-                width: "250px",
-                height: "260px",
+                width: "15.625rem",
+                height: "16.25rem",
                 margin: "0 auto",
-                marginTop: "35px",
-                marginLeft: "40px",
+                marginTop: "2.188rem",
+                marginLeft: "2.5rem",
               }}
             />
           </Grid>

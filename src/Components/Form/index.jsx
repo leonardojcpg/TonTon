@@ -48,11 +48,11 @@ export const FormComponent = () => {
               src={newBornBaby}
               alt=""
               style={{
-                width: "250px",
-                height: "250px",
+                width: "15.625rem",
+                height: "15.625rem",
                 margin: "0 auto",
-                marginTop: "55px",
-                marginLeft: "40px",
+                marginTop: "3.438rem",
+                marginLeft: "2.5rem",
               }}
             />
           </Grid>
