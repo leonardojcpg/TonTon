@@ -2,29 +2,30 @@ import React, { useState } from "react";
 import {
   Button,
   Container,
-  MenuItem,
   Paper,
-  Select,
   TextField,
   Typography,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import InfoList from "../../Components/InfoList";
 import { Header } from "../../Components/Header";
 
 export const BreastFeeding = () => {
-  const [feedHours, setFeedHours] = useState(0);
+  const [feedTime, setFeedTime] = useState("");
   const [breastSide, setBreastSide] = useState("");
   const [feed, setFeed] = useState([]);
   const [activeInfoType, setActiveInfoType] = useState(null);
+  const [feedHours, setFeedHours] = useState(0)
+
 
   const addFeed = () => {
-    if (feedHours >= 0 && breastSide) {
-      setFeed([
-        ...feed,
-        { time: `${feedHours} minutes`, side: ` Breast: ${breastSide}` },
-      ]);
-      setFeedHours(0);
+    if (feedTime && breastSide) {
+      const newFeedEntry = { time: feedTime, side: breastSide };
+      setFeed([...feed, newFeedEntry]);
+      setFeedTime("");
       setBreastSide("");
+
     }
   };
 
@@ -59,9 +60,8 @@ export const BreastFeeding = () => {
           <Typography variant="h4" style={{ textAlign: "center" }}>
             Breast-Feeding
           </Typography>
-          <Typography variant="h5" style={{ marginTop: "1rem" }}>
-            Feed-Timing (minutes)
-          </Typography>
+          
+          <Typography variant="h6">Feeding-Time</Typography>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Button
               variant="contained"
@@ -80,8 +80,9 @@ export const BreastFeeding = () => {
               -
             </Button>
             <TextField
-              style={{ width: "150px", margin: "0 10px" }}
+              style={{ width: "100px", margin: "0 10px" }}
               variant="outlined"
+              type="number"
               value={feedHours}
               InputProps={{
                 readOnly: true,
@@ -105,11 +106,9 @@ export const BreastFeeding = () => {
             </Button>
           </div>
 
-          <Typography variant="h5" style={{ marginTop: "1rem" }}>
-            Breast-Side
-          </Typography>
+          <Typography variant="h6">Breast-Side</Typography>
           <Select
-            style={{ width: "300px" }}
+            style={{ width: "250px" }}
             label="Breast Side"
             variant="outlined"
             value={breastSide}
@@ -118,7 +117,9 @@ export const BreastFeeding = () => {
             <MenuItem value="left">Left</MenuItem>
             <MenuItem value="right">Right</MenuItem>
           </Select>
+
           <Button
+          style={{ display: "flex", width: "250px" }}
             variant="contained"
             color="primary"
             onClick={() => {
@@ -126,9 +127,7 @@ export const BreastFeeding = () => {
               setActiveInfoType("feed");
             }}
             sx={{
-              display: "flex",
-              width: "300px",
-              marginTop: 4,
+              marginTop: 1,
               backgroundColor: "#508b50",
               "&:hover": {
                 backgroundColor: "#a4dfa4",
@@ -139,6 +138,7 @@ export const BreastFeeding = () => {
           >
             Add Feeding
           </Button>
+
           {activeInfoType === "feed" && <InfoList data={feed} />}
         </Paper>
       </Container>
