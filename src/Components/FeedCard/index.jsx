@@ -1,14 +1,28 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import React from "react";
+import { 
+  Box,
+    Card, 
+    CardContent, 
+    Typography
+} from "@mui/material";
+
 
 const FeedCard = ({ feedingData }) => {
+  const { time, side } = feedingData;
+
   return (
-    <Card style={{ marginBottom: "0.625rem" }}>
+    <Box>
+    <Card variant="outlined" style={{ marginBottom: "8px", color: "#141414" }}>
       <CardContent>
-        <Typography variant="h6">Feeding Time: {feedingData.time}</Typography>
-        <Typography variant="body1">Breast Side: {feedingData.side}</Typography>
+        <Typography variant="h6">
+          Feeding Time: {time}
+        </Typography>
+        <Typography variant="body2">Breast Side: {side}</Typography>
       </CardContent>
     </Card>
+    </Box>
   );
 };
+
 
 export default FeedCard;

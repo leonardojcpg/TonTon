@@ -8,34 +8,32 @@ import {
   Select,
   MenuItem,
 } from "@mui/material";
-import InfoList from "../../Components/InfoList";
 import { Header } from "../../Components/Header";
+import FeedCard from "../../Components/FeedCard/index.jsx";
 
 export const BreastFeeding = () => {
   const [feedTime, setFeedTime] = useState("");
   const [breastSide, setBreastSide] = useState("");
   const [feed, setFeed] = useState([]);
-  const [activeInfoType, setActiveInfoType] = useState(null);
-  const [feedHours, setFeedHours] = useState(0)
-
+  const [feedHours, setFeedHours] = useState(0);
 
   const addFeed = () => {
     if (feedTime && breastSide) {
-      const newFeedEntry = { time: feedTime, side: breastSide };
-      setFeed([...feed, newFeedEntry]);
-      setFeedTime("");
-      setBreastSide("");
-
+      const newFeedEntry = { time: feedTime, side: breastSide }
+      setFeed([...feed, newFeedEntry])
+      setFeedTime("")
+      setBreastSide("")
     }
   };
+  
 
   const incrementFeedHours = () => {
-    setFeedHours(feedHours + 5);
+    setFeedHours(feedHours + 5)
   };
 
   const decrementFeedHours = () => {
     if (feedHours > 0) {
-      setFeedHours(feedHours - 5);
+      setFeedHours(feedHours - 5)
     }
   };
 
@@ -60,7 +58,7 @@ export const BreastFeeding = () => {
           <Typography variant="h4" style={{ textAlign: "center" }}>
             Breast-Feeding
           </Typography>
-          
+
           <Typography variant="h6">Feeding-Time</Typography>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Button
@@ -80,7 +78,7 @@ export const BreastFeeding = () => {
               -
             </Button>
             <TextField
-              style={{ width: "100px", margin: "0 0.625rem" }}
+              style={{ width: "6.25rem", margin: "0 0.625rem" }}
               variant="outlined"
               type="number"
               value={feedHours}
@@ -119,13 +117,12 @@ export const BreastFeeding = () => {
           </Select>
 
           <Button
-          style={{ display: "flex", width: "250px" }}
+            style={{ display: "flex", width: "250px" }}
             variant="contained"
             color="primary"
             onClick={() => {
               addFeed();
-              setActiveInfoType("feed");
-            }}
+            }}            
             sx={{
               marginTop: 1,
               backgroundColor: "#508b50",
@@ -138,9 +135,12 @@ export const BreastFeeding = () => {
           >
             Add Feeding
           </Button>
-
-          {activeInfoType === "feed" && <InfoList data={feed} />}
-        </Paper>
+            <div>
+              {feed.map((feedingData, index) => (
+                <FeedCard key={index} feedingData={feedingData} />
+              ))}
+            </div>
+          </Paper>
       </Container>
     </>
   );
