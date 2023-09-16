@@ -10,11 +10,12 @@ export const FormButton = ({buttonName}) => {
         fullWidth
         sx={{
           marginTop: 2,
-          backgroundColor: "#508b50",
+          backgroundColor: "#5D915D",
           "&:hover": {
-            backgroundColor: "#75ca75",
-            borderColor: "#75ca75",
-            color: "#fff",
+            backgroundColor: "#D6FFD6",
+            borderColor: "#D6FFD6",
+            color: "#5D915D",
+            transition: "ease-in .1s",
           },
         }}
       >

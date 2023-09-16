@@ -82,9 +82,10 @@ export const Dashboard = () => {
   };
 
   return (
-    <Container>
-      <Header />
-      <Paper elevation={3} style={{ padding: "16px" }}>
+  <>
+    <Header />
+    <Container style={{display: "flex", flexDirection: "column" }}>
+      <Paper elevation={3} style={{ flex: 1, padding: "1rem", position: "relative", transform: "translate(0,17%)", height: "100vh"}}>
         <Typography variant="h4">Dashboard</Typography>
         <div>
           <Typography variant="h6">Breast-Feeding</Typography>
@@ -112,9 +113,9 @@ export const Dashboard = () => {
               marginLeft: 2,
               backgroundColor: "#508b50",
               "&:hover": {
-                backgroundColor: "#75ca75",
-                borderColor: "#75ca75",
-                color: "#fff",
+                backgroundColor: "#a4dfa4",
+                borderColor: "#a4dfa4",
+                color: "#508b50",
               },
             }}
           >
@@ -204,5 +205,6 @@ export const Dashboard = () => {
         </div>
       </Paper>
     </Container>
+  </>
   );
 };

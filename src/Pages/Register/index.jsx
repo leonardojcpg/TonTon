@@ -9,7 +9,7 @@ export const Register = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        backgroundColor: "#75ca75",
+        backgroundColor: "#a4dfa4",
         justifyContent: "center",
         height: "100vh",
       }}  
