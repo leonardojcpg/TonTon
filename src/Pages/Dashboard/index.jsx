@@ -11,13 +11,11 @@ import {
 } from "@mui/material";
 import { Header } from "../../Components/Header";
 import { format, differenceInHours } from "date-fns";
-import InfoList from "../../Components/InfoList";
+//import InfoList from "../../Components/InfoList";
 
 export const Dashboard = () => {
   // feeding
-  const [feedTime, setFeedTime] = useState("");
-  const [breastSide, setBreastSide] = useState("");
-  const [feed, setFeed] = useState([]);
+
   // diapers
   const [diapersTime, setDiapersTime] = useState("");
   const [diapersType, setDiapersType] = useState("");
@@ -27,15 +25,9 @@ export const Dashboard = () => {
   const [sleepTimeEnd, setSleepTimeEnd] = useState("");
   const [sleep, setSleep] = useState([]);
   // list information
-  const [activeInfoType, setActiveInfoType] = useState(null);
+  //const [activeInfoType, setActiveInfoType] = useState(null);
 
-  const addFeed = () => {
-    if (feedTime && breastSide) {
-      setFeed([...feed, { time: feedTime, side: breastSide }]);
-      setFeedTime("");
-      setBreastSide("");
-    }
-  };
+
 
   const addDiapers = () => {
     if (diapersTime && diapersType) {
@@ -88,40 +80,6 @@ export const Dashboard = () => {
       <Paper elevation={3} style={{ flex: 1, padding: "1rem", position: "relative", transform: "translate(0,17%)", height: "100vh"}}>
         <Typography variant="h4">Dashboard</Typography>
         <div>
-          <Typography variant="h6">Breast-Feeding</Typography>
-          <TextField
-            label="Time (hours)"
-            variant="outlined"
-            value={feedTime}
-            onChange={(e) => setFeedTime(e.target.value)}
-          />
-          <TextField
-            label="Breast Side"
-            variant="outlined"
-            value={breastSide}
-            onChange={(e) => setBreastSide(e.target.value)}
-          />
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              addFeed();
-              setActiveInfoType("feed");
-            }}
-            sx={{
-              marginTop: 1,
-              marginLeft: 2,
-              backgroundColor: "#508b50",
-              "&:hover": {
-                backgroundColor: "#a4dfa4",
-                borderColor: "#a4dfa4",
-                color: "#508b50",
-              },
-            }}
-          >
-            Add
-          </Button>
-          {activeInfoType === "feed" && <InfoList data={feed} />}
         </div>
         <div>
           <Typography variant="h6">Sleep Monitoring</Typography>

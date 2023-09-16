@@ -8,7 +8,7 @@ const InfoList = ({ data }) => {
     <List>
       {data.map((item, index) => (
         <ListItem key={index}>
-          <ListItemText primary={`${item.time || item.startTime} - ${item.side || item.endTime} horas`} />
+          <ListItemText primary={`${item.time || item.startTime} - ${item.side || item.endTime} `} />
         </ListItem>
       ))}
     </List>
