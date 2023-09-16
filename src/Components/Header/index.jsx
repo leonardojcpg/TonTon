@@ -41,16 +41,6 @@ export const Header = () => {
         </Button>
         <Button
           color="inherit"
-          href="/feeding"
-          sx={{
-            color: "#fff",
-            "&:hover": { color: "#5D915D", transition: "ease-in .2s" },
-          }}
-        >
-          Feeding
-        </Button>
-        <Button
-          color="inherit"
           href="/breastfeeding"
           sx={{
             color: "#fff",
