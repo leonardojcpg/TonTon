@@ -1,97 +1,198 @@
-import React, { useState } from 'react';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { Container, Paper, Typography, List, ListItem, ListItemText } from '@mui/material';
-import { Header } from '../../Components/Header';
-
+import React, { useState } from "react";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import {
+  Container,
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
+import { Header } from "../../Components/Header";
+import { format, differenceInHours } from "date-fns";
+import InfoList from "../../Components/InfoList";
 
 export const Dashboard = () => {
-  const [feedTime, setFeedTime] = useState('');
-  const [foodType, setFoodType] = useState('');
+  // feeding
+  const [feedTime, setFeedTime] = useState("");
+  const [breastSide, setBreastSide] = useState("");
   const [feed, setFeed] = useState([]);
-
-  const [diapersTime, setDiapersTime] = useState('');
-  const [diapersType, setDiapersType] = useState('');
+  // diapers
+  const [diapersTime, setDiapersTime] = useState("");
+  const [diapersType, setDiapersType] = useState("");
   const [diapers, setDiapers] = useState([]);
-
-  const [sleepTime, setSleepTime] = useState('');
-  const [sleepDuration, setSleepDuration] = useState('');
+  // sleep
+  const [sleepTimeStart, setSleepTimeStart] = useState("");
+  const [sleepTimeEnd, setSleepTimeEnd] = useState("");
   const [sleep, setSleep] = useState([]);
+  // list information
+  const [activeInfoType, setActiveInfoType] = useState(null);
 
   const addFeed = () => {
-    if (feedTime && foodType) {
-      setFeed([...feed, { horario: feedTime, tipo: foodType }]);
-      setFeedTime('');
-      setFoodType('');
+    if (feedTime && breastSide) {
+      setFeed([...feed, { time: feedTime, side: breastSide }]);
+      setFeedTime("");
+      setBreastSide("");
     }
   };
 
-  const adicionarFraldas = () => {
+  const addDiapers = () => {
     if (diapersTime && diapersType) {
-      setDiapers([...diapers, { horario: diapersTime, tipo: diapersType }]);
-      setDiapersTime('');
-      setDiapersType('');
+      setDiapers([...diapers, { time: diapersTime, type: diapersType }]);
+      setDiapersTime("");
+      setDiapersType("");
     }
   };
 
   const addSleep = () => {
-    if (sleepTime && sleepDuration) {
-      setSleep([...sleep, { horario: sleepTime, duracao: sleepDuration }]);
-      setSleepTime('');
-      setSleepDuration('');
+    if (sleepTimeStart && sleepTimeEnd) {
+      const startTimeParts = sleepTimeStart.split(":");
+      const endTimeParts = sleepTimeEnd.split(":");
+
+      if (startTimeParts.length === 2 && endTimeParts.length === 2) {
+        const startHour = parseInt(startTimeParts[0], 10);
+        const startMinute = parseInt(startTimeParts[1], 10);
+        const endHour = parseInt(endTimeParts[0], 10);
+        const endMinute = parseInt(endTimeParts[1], 10);
+
+        if (
+          !isNaN(startHour) &&
+          !isNaN(startMinute) &&
+          !isNaN(endHour) &&
+          !isNaN(endMinute)
+        ) {
+          const startTime = new Date(0, 0, 0, startHour, startMinute);
+          const endTime = new Date(0, 0, 0, endHour, endMinute);
+          const duration = differenceInHours(endTime, startTime);
+
+          setSleep([
+            ...sleep,
+            {
+              startTime: format(startTime, "HH:mm"),
+              endTime: format(endTime, "HH:mm"),
+              duration: `${duration}`,
+            },
+          ]);
+          setSleepTimeStart("");
+          setSleepTimeEnd("");
+        }
+      }
     }
   };
 
   return (
     <Container>
-        <Header />
-      <Paper elevation={3} style={{ padding: '16px' }}>
+      <Header />
+      <Paper elevation={3} style={{ padding: "16px" }}>
         <Typography variant="h4">Dashboard</Typography>
-
-        {/* Seção de Alimentação */}
         <div>
-          <Typography variant="h6">Feeding</Typography>
+          <Typography variant="h6">Breast-Feeding</Typography>
           <TextField
-            label="time"
+            label="Time (hours)"
             variant="outlined"
             value={feedTime}
             onChange={(e) => setFeedTime(e.target.value)}
           />
           <TextField
-            label="Tipo de Alimentação"
+            label="Breast Side"
             variant="outlined"
-            value={foodType}
-            onChange={(e) => setFoodType(e.target.value)}
+            value={breastSide}
+            onChange={(e) => setBreastSide(e.target.value)}
           />
-          <Button variant="contained" color="primary" onClick={addFeed} sx={{ marginLeft: "15px", marginTop: "10px" }}>
-            Registrar
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              addFeed();
+              setActiveInfoType("feed");
+            }}
+            sx={{
+              marginTop: 1,
+              marginLeft: 2,
+              backgroundColor: "#508b50",
+              "&:hover": {
+                backgroundColor: "#75ca75",
+                borderColor: "#75ca75",
+                color: "#fff",
+              },
+            }}
+          >
+            Add
+          </Button>
+          {activeInfoType === "feed" && <InfoList data={feed} />}
+        </div>
+        <div>
+          <Typography variant="h6">Sleep Monitoring</Typography>
+          <TextField
+            label="Start of Sleep"
+            variant="outlined"
+            value={sleepTimeStart}
+            onChange={(e) => setSleepTimeStart(e.target.value)}
+          />
+          <TextField
+            label="End of Sleep"
+            variant="outlined"
+            value={sleepTimeEnd}
+            onChange={(e) => setSleepTimeEnd(e.target.value)}
+          />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={addSleep}
+            sx={{
+              marginTop: 1,
+              marginLeft: 2,
+              backgroundColor: "#508b50",
+              "&:hover": {
+                backgroundColor: "#75ca75",
+                borderColor: "#75ca75",
+                color: "#fff",
+              },
+            }}
+          >
+            Add
           </Button>
           <List>
-            {feed.map((item, index) => (
+            {sleep.map((item, index) => (
               <ListItem key={index}>
-                <ListItemText primary={`${item.horario} - ${item.tipo}`} />
+                <ListItemText
+                  primary={`${item.time} - ${item.duration} horas`}
+                />
               </ListItem>
             ))}
           </List>
         </div>
-
-        {/* Seção de Controle de Fraldas */}
         <div>
-          <Typography variant="h6">Controle de Fraldas</Typography>
+          <Typography variant="h6">Diapers Control</Typography>
           <TextField
-            label="Horário"
+            label="Size"
             variant="outlined"
             value={diapersTime}
             onChange={(e) => setDiapersTime(e.target.value)}
           />
           <TextField
-            label="Tipo de Fraldas"
+            label="Quantity"
             variant="outlined"
             value={diapersType}
             onChange={(e) => setDiapersType(e.target.value)}
           />
-          <Button variant="contained" color="primary" onClick={adicionarFraldas} sx={{ marginLeft: "15px", marginTop: "10px" }}>
-            Registrar
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={addDiapers}
+            sx={{
+              marginTop: 1,
+              marginLeft: 2,
+              backgroundColor: "#508b50",
+              "&:hover": {
+                backgroundColor: "#75ca75",
+                borderColor: "#75ca75",
+                color: "#fff",
+              },
+            }}
+          >
+            Add
           </Button>
           <List>
             {diapers.map((item, index) => (
@@ -101,34 +202,7 @@ export const Dashboard = () => {
             ))}
           </List>
         </div>
-
-        {/* Seção de Acompanhamento do Sono */}
-        <div>
-          <Typography variant="h6">Acompanhamento do Sono</Typography>
-          <TextField
-            label="Horário de Início"
-            variant="outlined"
-            value={sleepTime}
-            onChange={(e) => setSleepTime(e.target.value)}
-          />
-          <TextField
-            label="Duração (em horas)"
-            variant="outlined"
-            value={sleepTime}
-            onChange={(e) => setSleepDuration(e.target.value)}
-          />
-           <Button variant="contained" color="primary" onClick={addSleep} sx={{ marginLeft: "15px", marginTop: "10px" }}>
-            Registrar
-          </Button>
-          <List>
-            {sleep.map((item, index) => (
-              <ListItem key={index}>
-                <ListItemText primary={`${item.horario} - ${item.duracao} horas`} />
-              </ListItem>
-            ))}
-          </List>
-        </div>
       </Paper>
     </Container>
   );
-}
+};

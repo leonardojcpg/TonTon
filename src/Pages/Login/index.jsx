@@ -1,4 +1,5 @@
 import {
+  Container,
   Grid,
   Paper,
   TextField,
@@ -32,7 +33,15 @@ export const Login = () => {
     console.log("Dados do formulário:", data);
   };
   return (
-    <>
+    <Container       
+      style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      backgroundColor: "#75ca75",
+      justifyContent: "center",
+      height: "100vh",
+    }}>
       <Paper elevation={3} sx={{ padding: 3 }}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
@@ -41,7 +50,7 @@ export const Login = () => {
               alt=""
               style={{
                 width: "250px",
-                height: "240px",
+                height: "260px",
                 margin: "0 auto",
                 marginTop: "35px",
                 marginLeft: "40px",
@@ -79,12 +88,12 @@ export const Login = () => {
                 variant="body2"
                 sx={{ textAlign: "center", marginTop: 2 }}
               >
-              Don't have a registration? <a href="/register">Sign Up here!</a>
+              Don't have a registration? <a href="/">Sign Up here!</a>
               </Typography>
             </form>
           </Grid>
         </Grid>
       </Paper>
-    </>
+    </Container>
   );
 };

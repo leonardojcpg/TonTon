@@ -12,7 +12,7 @@ export const Register = () => {
         backgroundColor: "#75ca75",
         justifyContent: "center",
         height: "100vh",
-      }}
+      }}  
     >
       <FormComponent />
     </Container>
