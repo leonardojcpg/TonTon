@@ -4,7 +4,7 @@ import { AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
 export const Header = () => {
   return (
     <AppBar
-      position="absolute"
+      position="relative"
       sx={{
         backgroundColor: "#141414",
         width: "100%",

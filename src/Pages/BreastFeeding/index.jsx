@@ -3,15 +3,18 @@ import {
   Button,
   Container,
   Paper,
-  TextField,
   Typography,
+  List,
+  ListItem,
+  ListItemText,
   Select,
   MenuItem,
+  TextField,
 } from "@mui/material";
 import { Header } from "../../Components/Header";
-import FeedCard from "../../Components/FeedCard/index.jsx";
 
 export const BreastFeeding = () => {
+  // feeding
   const [feedTime, setFeedTime] = useState("");
   const [breastSide, setBreastSide] = useState("");
   const [feed, setFeed] = useState([]);
@@ -23,17 +26,19 @@ export const BreastFeeding = () => {
       setFeed([...feed, newFeedEntry])
       setFeedTime("")
       setBreastSide("")
+    } else {
+      console.log("Dados de alimentação inválidos: feedTime =", feedTime, "breastSide =", breastSide)
     }
   };
   
 
   const incrementFeedHours = () => {
-    setFeedHours(feedHours + 5)
+    setFeedHours(feedHours + 5);
   };
 
   const decrementFeedHours = () => {
     if (feedHours > 0) {
-      setFeedHours(feedHours - 5)
+      setFeedHours(feedHours - 5);
     }
   };
 
@@ -44,7 +49,6 @@ export const BreastFeeding = () => {
         style={{
           display: "flex",
           flexDirection: "column",
-          transform: "translate(0%, 19%)",
         }}
       >
         <Paper
@@ -53,6 +57,7 @@ export const BreastFeeding = () => {
             flex: 1,
             padding: "1rem",
             height: "100vh",
+            width: "100%",
           }}
         >
           <Typography variant="h4" style={{ textAlign: "center" }}>
@@ -122,7 +127,7 @@ export const BreastFeeding = () => {
             color="primary"
             onClick={() => {
               addFeed();
-            }}            
+            }}
             sx={{
               marginTop: 1,
               backgroundColor: "#508b50",
@@ -135,12 +140,18 @@ export const BreastFeeding = () => {
           >
             Add Feeding
           </Button>
-            <div>
-              {feed.map((feedingData, index) => (
-                <FeedCard key={index} feedingData={feedingData} />
+          {feed.length > 0 && (
+            <List>
+              {feed.map((item, index) => (
+                <ListItem key={index}>
+                  <ListItemText
+                    primary={`Time: ${item.time}, Breast Side: ${item.side}`}
+                  />
+                </ListItem>
               ))}
-            </div>
-          </Paper>
+            </List>
+          )}
+        </Paper>
       </Container>
     </>
   );

@@ -1,28 +1,20 @@
 import React from "react";
-import { 
-  Box,
-    Card, 
-    CardContent, 
-    Typography
-} from "@mui/material";
-
+import { Paper, Typography, Divider, List, ListItem, ListItemText } from "@mui/material";
 
 const FeedCard = ({ feedingData }) => {
-  const { time, side } = feedingData;
-
   return (
-    <Box>
-    <Card variant="outlined" style={{ marginBottom: "8px", color: "#141414" }}>
-      <CardContent>
-        <Typography variant="h6">
-          Feeding Time: {time}
-        </Typography>
-        <Typography variant="body2">Breast Side: {side}</Typography>
-      </CardContent>
-    </Card>
-    </Box>
+    <Paper elevation={3} style={{ padding: "1rem", marginBottom: "1rem" }}>
+      <Typography variant="h6">Feeding Details:</Typography>
+      <List>
+        {feedingData.map((data, index) => (
+          <ListItem key={index}>
+            <ListItemText primary={`Time: ${data.time}`} secondary={`Breast Side: ${data.side}`} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+    </Paper>
   );
 };
-
 
 export default FeedCard;
