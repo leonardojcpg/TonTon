@@ -11,24 +11,16 @@ import {
 } from "@mui/material";
 import { Header } from "../../Components/Header";
 import { format, differenceInHours } from "date-fns";
-//import InfoList from "../../Components/InfoList";
 
 export const Dashboard = () => {
-  // feeding
-
-  // diapers
   const [diapersTime, setDiapersTime] = useState("");
   const [diapersType, setDiapersType] = useState("");
   const [diapers, setDiapers] = useState([]);
-  // sleep
+
   const [sleepTimeStart, setSleepTimeStart] = useState("");
   const [sleepTimeEnd, setSleepTimeEnd] = useState("");
   const [sleep, setSleep] = useState([]);
-  // list information
-  //const [activeInfoType, setActiveInfoType] = useState(null);
-
-
-
+  
   const addDiapers = () => {
     if (diapersTime && diapersType) {
       setDiapers([...diapers, { time: diapersTime, type: diapersType }]);

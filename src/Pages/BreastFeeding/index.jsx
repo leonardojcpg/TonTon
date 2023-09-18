@@ -12,6 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import { Header } from "../../Components/Header";
+import FeedCard from "../../Components/FeedCard";
 
 export const BreastFeeding = () => {
   // feeding
@@ -30,7 +31,7 @@ export const BreastFeeding = () => {
       console.log("Dados de alimentação inválidos: feedTime =", feedTime, "breastSide =", breastSide)
     }
   };
-  
+
 
   const incrementFeedHours = () => {
     setFeedHours(feedHours + 5);
@@ -126,7 +127,7 @@ export const BreastFeeding = () => {
             variant="contained"
             color="primary"
             onClick={() => {
-              addFeed();
+              addFeed()
             }}
             sx={{
               marginTop: 1,
@@ -151,6 +152,7 @@ export const BreastFeeding = () => {
               ))}
             </List>
           )}
+          <FeedCard feedingData={feed} />
         </Paper>
       </Container>
     </>
