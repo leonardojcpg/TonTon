@@ -1,5 +1,12 @@
 import React from "react";
-import { Paper, Typography, Divider, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Paper,
+  Typography,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+} from "@mui/material";
 
 const FeedCard = ({ feedingData }) => {
   return (
@@ -8,7 +15,9 @@ const FeedCard = ({ feedingData }) => {
       <List>
         {feedingData.map((data, index) => (
           <ListItem key={index}>
-            <ListItemText primary={`Time: ${data.time}`} secondary={`Breast Side: ${data.side}`} />
+            <ListItemText
+              primary={`Time: ${data.time} - Breast Side: ${data.side}`}
+            />
           </ListItem>
         ))}
       </List>

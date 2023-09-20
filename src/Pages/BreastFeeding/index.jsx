@@ -4,9 +4,6 @@ import {
   Container,
   Paper,
   Typography,
-  List,
-  ListItem,
-  ListItemText,
   Select,
   MenuItem,
   TextField,
@@ -15,31 +12,29 @@ import { Header } from "../../Components/Header";
 import FeedCard from "../../Components/FeedCard";
 
 export const BreastFeeding = () => {
-  // feeding
-  const [feedTime, setFeedTime] = useState("");
+  const [feedTime, setFeedTime] = useState(0);
   const [breastSide, setBreastSide] = useState("");
   const [feed, setFeed] = useState([]);
-  const [feedHours, setFeedHours] = useState(0);
 
   const addFeed = () => {
     if (feedTime && breastSide) {
-      const newFeedEntry = { time: feedTime, side: breastSide }
-      setFeed([...feed, newFeedEntry])
-      setFeedTime("")
-      setBreastSide("")
+      const newFeedEntry = { time: feedTime, side: breastSide };
+      setFeed([...feed, newFeedEntry]);
+      setFeedTime("");
+      setBreastSide("");
     } else {
-      console.log("Dados de alimentação inválidos: feedTime =", feedTime, "breastSide =", breastSide)
+      console.log(`Dados de alimentação inválidos: feedTime = ${feedTime} "breastSide = ${breastSide}`);
     }
   };
+  
 
-
-  const incrementFeedHours = () => {
-    setFeedHours(feedHours + 5);
+  const incrementFeedTime = () => {
+    setFeedTime((prevFeedTime) => prevFeedTime + 5);
   };
 
-  const decrementFeedHours = () => {
-    if (feedHours > 0) {
-      setFeedHours(feedHours - 5);
+  const decrementFeedTime = () => {
+    if (feedTime >= 5) {
+      setFeedTime((prevFeedTime) => prevFeedTime - 5);
     }
   };
 
@@ -64,13 +59,12 @@ export const BreastFeeding = () => {
           <Typography variant="h4" style={{ textAlign: "center" }}>
             Breast-Feeding
           </Typography>
-
           <Typography variant="h6">Feeding-Time</Typography>
           <div style={{ display: "flex", alignItems: "center" }}>
             <Button
               variant="contained"
               color="primary"
-              onClick={decrementFeedHours}
+              onClick={decrementFeedTime}
               sx={{
                 marginTop: 1,
                 backgroundColor: "#508b50",
@@ -87,15 +81,13 @@ export const BreastFeeding = () => {
               style={{ width: "6.25rem", margin: "0 0.625rem" }}
               variant="outlined"
               type="number"
-              value={feedHours}
-              InputProps={{
-                readOnly: true,
-              }}
+              value={feedTime}
+              onChange={(e) => setFeedTime(e.target.value)}
             />
             <Button
               variant="contained"
               color="primary"
-              onClick={incrementFeedHours}
+              onClick={incrementFeedTime}
               sx={{
                 marginTop: 1,
                 backgroundColor: "#508b50",
@@ -109,7 +101,6 @@ export const BreastFeeding = () => {
               +
             </Button>
           </div>
-
           <Typography variant="h6">Breast-Side</Typography>
           <Select
             style={{ width: "250px" }}
@@ -121,13 +112,13 @@ export const BreastFeeding = () => {
             <MenuItem value="left">Left</MenuItem>
             <MenuItem value="right">Right</MenuItem>
           </Select>
-
           <Button
             style={{ display: "flex", width: "250px" }}
             variant="contained"
             color="primary"
             onClick={() => {
               addFeed()
+              setFeedTime(0)
             }}
             sx={{
               marginTop: 1,
@@ -141,17 +132,6 @@ export const BreastFeeding = () => {
           >
             Add Feeding
           </Button>
-          {feed.length > 0 && (
-            <List>
-              {feed.map((item, index) => (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={`Time: ${item.time}, Breast Side: ${item.side}`}
-                  />
-                </ListItem>
-              ))}
-            </List>
-          )}
           <FeedCard feedingData={feed} />
         </Paper>
       </Container>
