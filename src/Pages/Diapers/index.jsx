@@ -1,22 +1,52 @@
-/* import React, { useState } from "react";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import {
+  Button,
   Container,
-  Paper,
-  Typography,
   List,
   ListItem,
   ListItemText,
+  MenuItem,
+  Paper,
+  Select,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { Header } from "../../Components/Header"; */
+import { useState } from "react";
+import { Header } from "../../Components/Header";
 
-export const Dashboard = () => {
+export const Diapers = () => {
+  const [diapersTime, setDiapersTime] = useState("");
+  const [diapersType, setDiapersType] = useState("");
+  const [diapersQuantity, setDiapersQuantity] = useState("");
+  const [diapers, setDiapers] = useState([]);
+  const [totalDiapers, setTotalDiapers] = useState({});
+
+  const addDiapers = () => {
+    if (diapersTime && diapersType && diapersQuantity) {
+      const newDiaperEntry = {
+        time: diapersTime,
+        type: diapersType,
+        quantity: diapersQuantity,
+      };
+      setDiapers([...diapers, newDiaperEntry]);
+      setTotalDiapers((prevTotal) => {
+        const newTotal = { ...prevTotal };
+
+        if (!newTotal[diapersType]) {
+          newTotal[diapersType] = 0;
+        }
+
+        newTotal[diapersType] += parseInt(diapersQuantity, 10);
+        return newTotal;
+      });
+      setDiapersTime("");
+      setDiapersType("");
+      setDiapersQuantity("");
+    }
+  };
+
   return (
     <>
-{/*       <Header />
+      <Header />
       <Container style={{ display: "flex", flexDirection: "column" }}>
         <Paper
           elevation={3}
@@ -91,6 +121,6 @@ export const Dashboard = () => {
           </div>
         </Paper>
       </Container>
- */}    </>
+    </>
   );
 };
