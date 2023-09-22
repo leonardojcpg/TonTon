@@ -54,7 +54,6 @@ export const BreastFeeding = () => {
         style={{
           width: "100%",
           height: "100vh",
-          justifyContent: "space-around"
         }}
       >
         <Container
