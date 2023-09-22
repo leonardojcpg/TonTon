@@ -13,6 +13,7 @@ import {
   Grid, // Importe o componente Grid
 } from "@mui/material";
 import { Header } from "../../Components/Header";
+import { PageTitle } from "../../Components/PageTitle";
 
 export const BreastFeeding = () => {
   const [feedTime, setFeedTime] = useState(0);
@@ -47,18 +48,7 @@ export const BreastFeeding = () => {
   return (
     <>
       <Header />
-      <div
-        style={{
-          backgroundColor: "#508b50",
-          textAlign: "center",
-          padding: "1rem",
-        }}
-      >
-        <Typography variant="h4" style={{ color: "#fff" }}>
-          Breast Feeding
-        </Typography> 
-      </div>
-
+      <PageTitle pageTitle="Breast-Feeding" />
       <Paper
         elevation={3}
         style={{
