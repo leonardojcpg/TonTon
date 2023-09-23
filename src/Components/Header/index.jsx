@@ -31,7 +31,7 @@ export const Header = () => {
         ></Typography>
         <Button
           color="inherit"
-          href="/"
+          href="/dashboard"
           sx={{
             color: "#fff",
             "&:hover": { color: "#5D915D", transition: "ease-in .2s" },
@@ -39,6 +39,7 @@ export const Header = () => {
         >
           Home
         </Button>
+
         <Button
           color="inherit"
           href="/breastfeeding"

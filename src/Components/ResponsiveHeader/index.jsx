@@ -23,6 +23,7 @@ export const ResponsiveHeader = () => {
 
   const menuItems = [
     { label: "Home", href: "/" },
+    { label: "Baby", href: "/baby"},  
     { label: "Breast-Feeding", href: "/breastfeeding" },
     { label: "Sleep", href: "/sleep" },
     { label: "Diapers", href: "/diapers" },
@@ -60,7 +61,6 @@ export const ResponsiveHeader = () => {
       >
         <Toolbar sx={{ justifyContent: "space-between" }}>
           {isMobileScreen ? (
-            // Renderizar o ícone do menu hambúrguer em telas móveis
             <>
               <IconButton
                 edge="start"
@@ -84,7 +84,6 @@ export const ResponsiveHeader = () => {
               </Typography>
             </>
           ) : (
-            // Renderizar o cabeçalho comum em telas maiores
             <>
               <Typography
                 variant="h6"
