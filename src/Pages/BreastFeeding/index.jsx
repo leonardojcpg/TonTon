@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 
 import { PageTitle } from "../../Components/PageTitle";
-import { ResponsiveHeader } from "../../Components/ResponsiveHeader"; // Importe o componente ResponsiveHeader
+import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 
 export const BreastFeeding = () => {
   const [feedTime, setFeedTime] = useState(0);
@@ -72,7 +72,7 @@ export const BreastFeeding = () => {
           >
             {/* Left Column */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Feeding-Time</Typography>
+              <Typography variant="h5">Feeding-Duration</Typography>
               <div style={{ display: "flex", alignItems: "center" }}>
                 <Button
                   variant="contained"
