@@ -7,13 +7,14 @@ import {
   Select,
   MenuItem,
   TextField,
-  List,
-  ListItem,
+  Grid,
   ListItemText,
-  Grid, // Importe o componente Grid
+  ListItem,
+  List,
 } from "@mui/material";
-import { Header } from "../../Components/Header";
+
 import { PageTitle } from "../../Components/PageTitle";
+import { ResponsiveHeader } from "../../Components/ResponsiveHeader"; // Importe o componente ResponsiveHeader
 
 export const BreastFeeding = () => {
   const [feedTime, setFeedTime] = useState(0);
@@ -47,7 +48,7 @@ export const BreastFeeding = () => {
 
   return (
     <>
-      <Header />
+      <ResponsiveHeader /> 
       <PageTitle pageTitle="Breast-Feeding" />
       <Paper
         elevation={3}
@@ -64,8 +65,12 @@ export const BreastFeeding = () => {
             padding: "1rem",
           }}
         >
-          <Grid container spacing={3} style={{ margin: "1rem", marginLeft: "3rem" }} >
-            {/* Coluna da esquerda para os inputs */}
+          <Grid
+            container
+            spacing={3}
+            style={{ margin: "1rem", marginLeft: "3rem" }}
+          >
+            {/* Left Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Feeding-Time</Typography>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -109,7 +114,9 @@ export const BreastFeeding = () => {
                   +
                 </Button>
               </div>
-              <Typography variant="h5" style={{ marginTop: "1rem"}}>Breast-Side</Typography>
+              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+                Breast-Side
+              </Typography>
               <Select
                 style={{ width: "250px" }}
                 label="Breast Side"
@@ -120,7 +127,9 @@ export const BreastFeeding = () => {
                 <MenuItem value="left">Left</MenuItem>
                 <MenuItem value="right">Right</MenuItem>
               </Select>
-              <Typography variant="h5" style={{ marginTop: "1rem"}}>Feeding Hour</Typography>
+              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+                Feeding Hour
+              </Typography>
               <TextField
                 style={{ width: "250px" }}
                 label="Hour"
@@ -149,7 +158,7 @@ export const BreastFeeding = () => {
               </Button>
             </Grid>
 
-            {/* Coluna da direita para a lista */}
+            {/* Right Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Feeding Details:</Typography>
               <div
