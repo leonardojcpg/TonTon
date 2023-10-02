@@ -1,18 +1,27 @@
-import {
-  Typography
-} from "@mui/material"
-
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader"
 import { ContainerContent } from "../../Components/ContainerContentPage"
 import { PageTitle } from "../../Components/PageTitle"
+import { useBabyContext } from "../../Context/BabyContext";
+import Card from "../../Components/CardInfo";
 
 export const Dashboard = () => {
+  const {babyData} = useBabyContext()
+
   return (
     <>
       <ResponsiveHeader />
       <PageTitle pageTitle="Dashboard" />
       <ContainerContent />
-      <Typography variant="h4">Dashboard</Typography>
+      <div>
+      {Object.keys(babyData).length > 0 ? (
+        <div>
+          <Card title="Nome" value={babyData.nome} />
+          <Card title="Sexo" value={babyData.sexo} />
+        </div>
+      ) : (
+        <p>Nenhum dado do bebê disponível.</p>
+      )}
+      </div>
      </>
   );
 };
