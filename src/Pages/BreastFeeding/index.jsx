@@ -15,8 +15,11 @@ import {
 
 import { PageTitle } from "../../Components/PageTitle";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
+import { useBabyContext } from "../../Context/BabyContext/";
 
 export const BreastFeeding = () => {
+  const { setBabyInfo } = useBabyContext();
+
   const [feedTime, setFeedTime] = useState(0);
   const [breastSide, setBreastSide] = useState("");
   const [feed, setFeed] = useState([]);
@@ -26,6 +29,7 @@ export const BreastFeeding = () => {
     if (feedTime && breastSide && feedHour) {
       const newFeedEntry = { time: feedTime, side: breastSide, hour: feedHour };
       setFeed([...feed, newFeedEntry]);
+      setBabyInfo({ time: feedTime, side: breastSide, hour: feedHour });
       setFeedTime("");
       setBreastSide("");
       setFeedHour("");
@@ -48,7 +52,7 @@ export const BreastFeeding = () => {
 
   return (
     <>
-      <ResponsiveHeader /> 
+      <ResponsiveHeader />
       <PageTitle pageTitle="Breast-Feeding" />
       <Paper
         elevation={3}
@@ -157,7 +161,6 @@ export const BreastFeeding = () => {
                 Add Feeding
               </Button>
             </Grid>
-
             {/* Right Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Feeding Details:</Typography>
@@ -180,7 +183,7 @@ export const BreastFeeding = () => {
                       }}
                     >
                       <ListItemText
-                        primary={`Time: ${entry.time} minutes`}
+                        primary={`Duration: ${entry.time} minutes`}
                         secondary={
                           <>
                             Breast-Side: {entry.side}
