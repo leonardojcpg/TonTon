@@ -14,7 +14,8 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
-export const FormComponent = () => {
+export const FormComponent = ({onSubmitCallback}) => {
+
   const schema = Yup.object().shape({
     email: Yup.string()
       .email("Type a valid email")
@@ -37,8 +38,10 @@ export const FormComponent = () => {
   });
 
   const onSubmit = (data) => {
-    console.log("Dados do formulário:", data);
-  };
+    console.log("Dados do formulario", data)
+  }
+
+
   return (
     <>
       <Paper elevation={3} sx={{ padding: 3 }}>
@@ -65,7 +68,7 @@ export const FormComponent = () => {
                 label="Email"
                 variant="outlined"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 name="email"
                 {...register("email")}
                 error={!!errors.email}
@@ -75,7 +78,7 @@ export const FormComponent = () => {
                 label="Password"
                 variant="outlined"
                 fullWidth
-                margin="normal"
+                margin="dense"
                 name="password"
                 type="password"
                 {...register("password")}
@@ -87,7 +90,8 @@ export const FormComponent = () => {
                 label="Relationship with the baby"
                 variant="outlined"
                 fullWidth
-                margin="normal"
+                defaultValue="parent"
+                margin="dense"
                 name="relationship"
                 {...register("relationship")}
                 error={!!errors.relationship}
