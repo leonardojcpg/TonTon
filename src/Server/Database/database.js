@@ -14,3 +14,6 @@ db.connect((err) => {
   }
   console.log("Conexão bem-sucedida com o banco de dados");
 });
+
+
+module.exports = db;
