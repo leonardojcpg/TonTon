@@ -2,6 +2,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const db = require("../Database/database.js");
 
+const secretKey = process.env.SECRET_KEY;
+
 const UserController = {
   async register(req, res) {
     const { email, password, relationship } = req.body;
@@ -46,7 +48,7 @@ const UserController = {
       }
 
       // users JWT
-      const token = jwt.sign({ userId: user[0].id }, "sua_chave_secreta", { expiresIn: "1h" });
+      const token = jwt.sign({ userId: user[0].id }, secretKey, { expiresIn: "1h" });
 
       return res.status(200).json({ token });
     } catch (error) {
