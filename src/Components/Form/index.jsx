@@ -7,14 +7,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-
 import { FormButton } from "../Button";
 import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+
 export const FormComponent = ({onSubmitCallback}) => {
+
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -38,9 +39,9 @@ export const FormComponent = ({onSubmitCallback}) => {
   });
 
   const onSubmit = (data) => {
-    console.log("Dados do formulario", data)
-  }
-
+    console.log("Dados do formulario", data);
+    onSubmitCallback(data)
+  };
 
   return (
     <>
@@ -106,7 +107,7 @@ export const FormComponent = ({onSubmitCallback}) => {
                   {errors.relationship.message}
                 </Typography>
               )}
-              <FormButton buttonName="Sign Up" />
+              <FormButton buttonName="Sign Up" onClickCallback={onSubmitCallback} />
               <Typography
                 variant="body2"
                 sx={{ textAlign: "center", marginTop: 2 }}

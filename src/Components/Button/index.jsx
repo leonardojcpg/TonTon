@@ -1,6 +1,13 @@
 import { Button } from "@mui/material";
 
-export const FormButton = ({buttonName}) => {
+export const FormButton = ({buttonName, onClickCallback}) => {
+
+  const handleButtonClick = () => {
+
+    if(onClickCallback){
+      onClickCallback()
+    }
+  }
 
   return (
     <>
@@ -8,6 +15,7 @@ export const FormButton = ({buttonName}) => {
         type="submit"
         variant="contained"
         color="primary"
+        onClick={handleButtonClick}
         fullWidth
         sx={{
           marginTop: 2,

@@ -9,7 +9,7 @@ router.post("/register", UserController.register)
 router.post("/login", UserController.login)
 
 // route to dashboard protected by authentication
-router.get("/dashboard", authenticateToken, (req, res) => {
+router.get("/", authenticateToken, (req, res) => {
     const user = req.user;
 
     res.json({ message: `Welcome to the dashboard, ${user.username}`})
