@@ -12,11 +12,13 @@ import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
-import { Api } from "../../Server/Api";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import api from "../../Server/Api"
+export const FormComponent = () => {
 
-export const FormComponent = ({onSubmitCallback}) => {
-
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const navigate = useNavigate();
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -39,9 +41,25 @@ export const FormComponent = ({onSubmitCallback}) => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Dados do formulario", data);
-    onSubmitCallback(data)
+  const onSubmit = async (data) => {
+    try {
+      const response = await api.fetch("/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setRegistrationSuccess(true);
+        navigate("/login");
+      } else {
+        console.error("Registration failed");
+      }
+    } catch (error) {
+      console.error("Error while registering:", error);
+    }
   };
 
   return (
@@ -62,6 +80,14 @@ export const FormComponent = ({onSubmitCallback}) => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
+          {registrationSuccess && (
+              <Typography
+                variant="body1"
+                sx={{ textAlign: "center", color: "green" }}
+              >
+                Registration successful! You can now log in.
+              </Typography>
+            )}
             <form onSubmit={handleSubmit(onSubmit)}>
               <Typography variant="h4" sx={{ textAlign: "center" }}>
                 Register
@@ -87,7 +113,7 @@ export const FormComponent = ({onSubmitCallback}) => {
                 error={!!errors.password}
                 helperText={errors.password?.message}
               />
-              <InputLabel>Relationship with the baby</InputLabel>
+              <InputLabel style={{ color: "#000" }}>Relationship with the baby</InputLabel>
               <Select
                 label="Relationship with the baby"
                 variant="outlined"
@@ -108,7 +134,7 @@ export const FormComponent = ({onSubmitCallback}) => {
                   {errors.relationship.message}
                 </Typography>
               )}
-              <FormButton buttonName="Sign Up" onClickCallback={onSubmitCallback} />
+              <FormButton buttonName="Sign Up" />
               <Typography
                 variant="body2"
                 sx={{ textAlign: "center", marginTop: 2 }}

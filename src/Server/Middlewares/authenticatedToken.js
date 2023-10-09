@@ -10,8 +10,8 @@ function authenticateToken(req, res, next) {
   }
 
     // Check token validity
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
+    jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
+      if (err) {
       return res.status(403).json({ message: "Invalid token" });
     }
     // If the token is valid, you can add the authenticated user to the request object

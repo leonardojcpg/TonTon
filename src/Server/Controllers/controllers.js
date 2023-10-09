@@ -6,10 +6,12 @@ const db = require("../Database/database.js");
 const secretKey = process.env.SECRET_KEY;
 
 const UserController = {
+
   async register(req, res) {
     const { email, password, relationship } = req.body;
 
     try {
+
         // Check if the user already exists in the database
       const userExists = await db.query("SELECT * FROM users WHERE email = ?", [email]);
 
@@ -22,9 +24,8 @@ const UserController = {
 
       // Insert the user into database
       await db.query("INSERT INTO users (email, password, relationship) VALUES (?, ?, ?)", [email, hashedPassword, relationship]);
-      
-      return res.status(201).json({ message: "User registered successfully" });
 
+      return res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
       console.error("Error registering user:", error);
       return res.status(500).json({ error: "Error registering user." });

@@ -1,25 +1,23 @@
-import {
-  Container,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Container, Grid, Paper, TextField, Typography } from "@mui/material";
 
 import { FormButton } from "../../Components/Button";
 import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
+  const [token, setToken] = useState("");
+  const navigate = useNavigate();
+
   const schema = Yup.object().shape({
     email: Yup.string()
       .email("Type a valid email")
       .required("Email is required"),
     password: Yup.string().required("Password is required"),
-  })
-
+  });
 
   const {
     register,
@@ -29,19 +27,44 @@ export const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = (data) => {
-    console.log("Dados do formulário:", data);
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        const receivedToken = result.token;
+
+        setToken(receivedToken)
+
+        navigate("/dashboard");
+        
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("Error while logging in:", error);
+    }
   };
+  
+  
   return (
-    <Container       
+    <Container
       style={{
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      backgroundColor: "#a4dfa4",
-      justifyContent: "center",
-      height: "100vh",
-    }}>
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        backgroundColor: "#a4dfa4",
+        justifyContent: "center",
+        height: "100vh",
+      }}
+    >
       <Paper elevation={3} sx={{ padding: 3 }}>
         <Grid container spacing={3}>
           <Grid item xs={12} sm={6}>
@@ -88,7 +111,7 @@ export const Login = () => {
                 variant="body2"
                 sx={{ textAlign: "center", marginTop: 2 }}
               >
-              Don't have a registration? <a href="/register">Sign Up here!</a>
+                Don't have a registration? <a href="/register">Sign Up here!</a>
               </Typography>
             </form>
           </Grid>
