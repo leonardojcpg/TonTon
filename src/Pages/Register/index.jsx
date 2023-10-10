@@ -15,7 +15,7 @@ export const Register = () => {
         height: "100vh",
       }}
     >
-      <FormComponent />
+      <FormComponent  />
     </Container>
   );
 };

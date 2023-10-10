@@ -33,11 +33,11 @@ export const FormComponent = () => {
   const registerUser = async (data) => {
     try {
       const response = await axios.post("http://localhost:3000/register", data);
+      console.log("Resposta do servidor:", response);
       return response.data;
       
     } catch (error) {
       console.error(error);
-      return null;
     }
   };
 
@@ -79,6 +79,7 @@ export const FormComponent = () => {
               {...register("email")}
               error={!!formState.errors.email}
               helperText={formState.errors.email?.message}
+              autoComplete="email"
             />
             <TextField
               label="Password"
@@ -90,6 +91,7 @@ export const FormComponent = () => {
               {...register("password")}
               error={!!formState.errors.password}
               helperText={formState.errors.password?.message}
+              autoComplete="current-password"
             />
             <InputLabel style={{ color: "#000" }}>
               Relationship with the baby
@@ -103,6 +105,7 @@ export const FormComponent = () => {
               name="relationship"
               {...register("relationship")}
               error={!!formState.errors.relationship}
+              autoComplete="relationship"
             >
               <MenuItem value="parent">Parent</MenuItem>
               <MenuItem value="grandparent">Grandparent</MenuItem>

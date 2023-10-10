@@ -36,7 +36,6 @@ app.post("/register", async (req, res) => {
 
     const user = database.query("SELECT * FROM users WHERE email = ?", [email]);
 
-
     const token = jwt.sign({ userId: user.insertId }, secretKey, {
       expiresIn: "1h",
     });
