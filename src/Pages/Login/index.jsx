@@ -5,12 +5,12 @@ import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-  const [token, setToken] = useState("");
-  const navigate = useNavigate();
+
+  const navigate = useNavigate()
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -27,32 +27,20 @@ export const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data) => {
+  const loginUser = async (data) => {
     try {
-      const response = await fetch("/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        const result = await response.json();
-        const receivedToken = result.token;
-
-        setToken(receivedToken)
-
+      const response = await axios.post("http://localhost:3000/login", data);
+      if (response.status === 200 && response.data.token) {
+        localStorage.setItem("token", response.data.token);
         navigate("/dashboard");
-        
-      } else {
-        console.error("Login failed");
       }
     } catch (error) {
-      console.error("Error while logging in:", error);
+      console.error(error);
     }
   };
-  
+
+
+
   
   return (
     <Container
@@ -81,7 +69,7 @@ export const Login = () => {
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(loginUser)}>
               <Typography variant="h4" sx={{ textAlign: "center" }}>
                 Login
               </Typography>

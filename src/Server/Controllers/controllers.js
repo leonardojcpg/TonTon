@@ -1,9 +1,11 @@
-const bcrypt = require("bcrypt");
+/* const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const db = require("../Database/database.js");
+const db = require("../server.js");
 
+require('dotenv').config();
 
 const secretKey = process.env.SECRET_KEY;
+
 
 const UserController = {
 
@@ -12,18 +14,18 @@ const UserController = {
 
     try {
 
-        // Check if the user already exists in the database
-      const userExists = await db.query("SELECT * FROM users WHERE email = ?", [email]);
+         // Check if the user already exists in the database
+      const userExists = db.query("SELECT * FROM users WHERE email = ?", [email]);
 
       if (userExists.length > 0) {
         return res.status(400).json({ error: "This email is already in use." });
       }
-
+ 
       // Hash the password before storing it in the database
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Insert the user into database
-      await db.query("INSERT INTO users (email, password, relationship) VALUES (?, ?, ?)", [email, hashedPassword, relationship]);
+      db.query("INSERT INTO users (email, password, relationship) VALUES (?, ?, ?)", [email, hashedPassword, relationship]);
 
       return res.status(201).json({ message: "User registered successfully" });
     } catch (error) {
@@ -37,7 +39,7 @@ const UserController = {
 
     try {
       // find user by email
-      const user = await db.query("SELECT * FROM users WHERE email = ?", [email]);
+      const user = db.query("SELECT * FROM users WHERE email = ?", [email]);
 
       if (user.length === 0) {
         return res.status(404).json({ error: "User not found." });
@@ -61,4 +63,4 @@ const UserController = {
   },
 };
 
-module.exports = UserController;
+module.exports = UserController; */

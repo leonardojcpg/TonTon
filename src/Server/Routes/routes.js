@@ -1,4 +1,4 @@
-const express = require("express");
+/* const express = require("express");
 const router = express.Router();
 const UserController = require("../Controllers/controllers.js");
 const authenticateToken = require("../Middlewares/authenticatedToken.js");
@@ -15,4 +15,4 @@ router.get("/", authenticateToken, (req, res) => {
     res.json({ message: `Welcome to the dashboard, ${user.username}`})
 }) 
 
-module.exports = router;
+module.exports = router; */
