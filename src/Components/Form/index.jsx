@@ -12,17 +12,25 @@ import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Api } from "../../Service/api";
+import { toast } from "react-toastify";
+
+
 
 export const FormComponent = () => {
   const navigate = useNavigate();
 
   const schema = Yup.object().shape({
-    email: Yup.string().email("Type a valid email").required("Email is required"),
+    email: Yup.string()
+      .email("Type a valid email")
+      .required("Email is required"),
     password: Yup.string().required("Password is required"),
     relationship: Yup.string()
-      .oneOf(["parent", "grandparent", "sibling", "other"], "Invalid relationship")
+      .oneOf(
+        ["parent", "grandparent", "sibling", "other"],
+        "Invalid relationship"
+      )
       .required("Relationship is required"),
   });
 
@@ -30,24 +38,19 @@ export const FormComponent = () => {
     resolver: yupResolver(schema),
   });
 
-  const registerUser = async (data) => {
-    try {
-      const response = await axios.post("http://localhost:3000/register", data);
-      console.log("Resposta do servidor:", response);
-      return response.data;
-      
-    } catch (error) {
-      console.error(error);
-    }
-  };
+   const handleSignup = async (data) => {
+    console.log(data)
+    Api
+    .post("/register", data)
+    .then((response) => {
+      toast.success("User successfully registered!")
+      navigate("/login")
+    })
+    .catch((err) => {
+      toast.error("Email already in use.")
+    })
+  }
 
-  const onSubmit = async (data) => {
-    const responseData = await registerUser(data);
-    if (responseData && responseData.token) {
-      localStorage.setItem("token", responseData.token);
-      navigate("/login");
-    }
-  };
 
   return (
     <Paper elevation={3} sx={{ padding: 3 }}>
@@ -66,7 +69,7 @@ export const FormComponent = () => {
           />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form onSubmit={handleSubmit(handleSignup)}>
             <Typography variant="h4" sx={{ textAlign: "center" }}>
               Register
             </Typography>

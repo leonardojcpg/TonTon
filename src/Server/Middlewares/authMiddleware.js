@@ -1,8 +1,7 @@
 const jwt = require("jsonwebtoken");
 const secretKey = process.env.SECRET_KEY;
 
-
-const authMiddleware = (req, res, next) => {
+function authMiddleware(req, res, next) {
   // Check if the JWT token is present in the request headers
   const token = req.header("Authorization");
 
@@ -13,17 +12,14 @@ const authMiddleware = (req, res, next) => {
   try {
     // Verify and decrypt the JWT token
     const decoded = jwt.verify(token, secretKey);
-
     // Add the decoded user to the request for later use
     req.user = decoded;
-
-    // continue to next route
-    next(); 
+    // continue to the next route
+    next();
   } catch (error) {
-    
     console.error("Authentication error:", error);
     return res.status(401).json({ error: "Invalid token." });
   }
-};
+}
 
 module.exports = authMiddleware;

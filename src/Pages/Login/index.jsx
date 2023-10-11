@@ -1,16 +1,14 @@
 import { Container, Grid, Paper, TextField, Typography } from "@mui/material";
-
 import { FormButton } from "../../Components/Button";
 import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Api } from "../../Service/api";
 
 export const Login = () => {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -29,19 +27,29 @@ export const Login = () => {
 
   const loginUser = async (data) => {
     try {
-      const response = await axios.post("http://localhost:3000/login", data);
-      if (response.status === 200 && response.data.token) {
-        localStorage.setItem("token", response.data.token);
-        navigate("/dashboard");
+      const response = await fetch(`${Api}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.status === 200) {
+        const responseData = await response.json();
+        if (responseData.token) {
+          localStorage.setItem("token", responseData.token);
+          navigate("/dashboard");
+        }
+      } else {
+        // Trate erros de autenticação aqui
+        console.error("Authentication error:", response);
       }
     } catch (error) {
       console.error(error);
     }
   };
 
-
-
-  
   return (
     <Container
       style={{
