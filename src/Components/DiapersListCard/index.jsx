@@ -1,10 +1,10 @@
 // DiapersListCard.js
-import React from "react"
-import Card from "@mui/material/Card"
-import CardContent from "@mui/material/CardContent"
-import Typography from "@mui/material/Typography"
+import React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import Typography from "@mui/material/Typography";
 
-const DiapersListCard = ({ diapers }) => {
+export const DiapersListCard = ({ diapers }) => {
   const diapersBySize = {};
   diapers.forEach((diaper) => {
     if (!diapersBySize[diaper.type]) {
@@ -22,7 +22,9 @@ const DiapersListCard = ({ diapers }) => {
             <Typography variant="subtitle1">{size}</Typography>
             <ul>
               {diapersBySize[size].map((diaper, index) => (
-                <li key={index}>{`${diaper.time} - Quantity: ${diaper.quantity}`}</li>
+                <li
+                  key={index}
+                >{`${diaper.time} - Quantity: ${diaper.quantity}`}</li>
               ))}
             </ul>
           </div>
@@ -31,5 +33,3 @@ const DiapersListCard = ({ diapers }) => {
     </Card>
   );
 };
-
-export default DiapersListCard;

@@ -53,7 +53,7 @@ export const FormComponent = () => {
 
 
   return (
-    <Paper elevation={3} sx={{ padding: 3 }}>
+    <Paper elevation={3} sx={{ padding: 3 , borderRadius: ".6rem"}}>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6}>
           <img
