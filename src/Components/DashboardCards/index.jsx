@@ -3,8 +3,8 @@ import "./styles.css";
 export const DashboardCards = () => {
   const cardDataList = [
     {
-      name: "Antonella",
-      ageInDays: 40 + " Days",
+      baby: "Baby",
+      babyName:"Antonella",
     },
     {
       breastFeeding: "Last Breast Side Used",
@@ -25,13 +25,13 @@ export const DashboardCards = () => {
       {cardDataList.map((cardData, index) => (
         <div key={index} className="cards">
           <h1>
-            {cardData.name ||
+            {cardData.baby ||
               cardData.breastFeeding ||
               cardData.sleep ||
               cardData.diaperSide}
           </h1>
           <span>
-            {cardData.ageInDays ||
+            {cardData.babyName ||
               cardData.lastBreastFeedingSide ||
               cardData.sleepDurationInHour ||
               cardData.remainingDiapers}

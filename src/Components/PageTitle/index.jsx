@@ -2,7 +2,6 @@ import { Typography } from "@mui/material";
 
 export const PageTitle = ({ pageTitle }) => {
   return (
-    <>
       <div
         style={{
           backgroundColor: "#508b50",
@@ -14,6 +13,5 @@ export const PageTitle = ({ pageTitle }) => {
           {pageTitle}
         </Typography>
       </div>
-    </>
   );
 };
