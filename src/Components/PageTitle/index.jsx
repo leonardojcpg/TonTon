@@ -6,7 +6,7 @@ export const PageTitle = ({ pageTitle }) => {
         style={{
           backgroundColor: "#508b50",
           textAlign: "center",
-          padding: "1rem",
+          padding: "0.5rem",
         }}
       >
         <Typography variant="h4" style={{ color: "#fff" }}>

@@ -1,10 +1,12 @@
 import ReactApexChart from "react-apexcharts";
+import "./styles.css"
 
 export const DashboardChart = ({ chartData }) => {
     const options = {
         chart: {
           type: "line",
           background: "transparent",
+          fontFamily: "Poppins",
         },
         xaxis: {
           categories: chartData.labels,
@@ -29,12 +31,14 @@ export const DashboardChart = ({ chartData }) => {
       };    
 
     return (
+        <div className="chart-container">
         <ReactApexChart
-        options={options}
-        series={chartData.datasets}
-        type={options.chart.type}
-        height="350"
-      />
+          options={options}
+          series={chartData.datasets}
+          type={options.chart.type}
+          height="350"
+        />
+      </div>
         )
 }
 
