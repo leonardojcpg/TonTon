@@ -56,7 +56,7 @@ export const Login = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        backgroundColor: "#a4dfa4",
+        backgroundColor: "#BEE9CB",
         justifyContent: "center",
         height: "100vh",
       }}

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";  // Importe o Link do React Router
 import {
   AppBar,
   Toolbar,
@@ -23,7 +24,7 @@ export const ResponsiveHeader = () => {
 
   const menuItems = [
     { label: "Home", href: "/" },
-    { label: "Baby", href: "/baby"},  
+    { label: "Baby", href: "/baby" },
     { label: "Breast-Feeding", href: "/breastfeeding" },
     { label: "Sleep", href: "/sleep" },
     { label: "Diapers", href: "/diapers" },
@@ -72,12 +73,13 @@ export const ResponsiveHeader = () => {
               </IconButton>
               <Typography
                 variant="h6"
-                href="/"
-                component="div"
+                component={Link}  // Use o componente Link do React Router
+                to="/register"    // Defina a rota para a qual você deseja navegar
                 sx={{
                   flexGrow: 1,
                   fontFamily: "Roboto",
                   color: "#D6FFD6",
+                  textDecoration: "none", // Remova a decoração de texto padrão do link
                 }}
               >
                 TonTon
@@ -87,9 +89,9 @@ export const ResponsiveHeader = () => {
             <>
               <Typography
                 variant="h6"
-                href="/"
-                component="div"
-                sx={{ flexGrow: 1, fontFamily: "Roboto", color: "#D6FFD6" }}
+                component={Link}
+                to="/" 
+                sx={{ flexGrow: 1, fontFamily: "Roboto", color: "#D6FFD6", textDecoration: "none" }}
               >
                 TonTon
               </Typography>
@@ -97,7 +99,8 @@ export const ResponsiveHeader = () => {
                 <Button
                   key={item.label}
                   color="inherit"
-                  href={item.href}
+                  component={Link}
+                  to={item.href}
                   sx={{
                     color: "#fff",
                     "&:hover": {

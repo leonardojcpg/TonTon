@@ -16,16 +16,17 @@ export const DashboardChart = ({ chartData }) => {
             text: "Ganho de Peso (kg)",
           },
         },
-        colors: ["#5D915D"], // Cor da linha
+        colors: ["#5D915D"],
         dataLabels: {
           enabled: true,
         },
         title: {
-          text: "Weight gain (kg)",
+          text: "Weight Gain",
           align: "center",
           margin: 20,
           style: {
-            fontSize: "24px",
+            fontSize: "28px",
+            fontWeight: "600",
           },
         },
       };    
@@ -36,7 +37,7 @@ export const DashboardChart = ({ chartData }) => {
           options={options}
           series={chartData.datasets}
           type={options.chart.type}
-          height="350"
+          height="550"
         />
       </div>
         )

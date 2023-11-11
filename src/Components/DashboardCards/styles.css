@@ -8,7 +8,7 @@
 .cards {
   margin: 1rem;
   width: 15.625rem;
-  height: 90px;
+  height: 7.5rem;
   background-color: #fff;
   border: 0.0625rem solid #e8e8e8;
   border-radius: 0.5rem;
@@ -21,7 +21,15 @@
   justify-content: center;
 }
 
-.cards:hover{
+@media (max-width: 768px) {
+  .cards {
+    width: 100%;
+    margin: 0.2rem 0;
+    height: auto;
+  }
+}
+
+.cards:hover {
   background-color: #D6FFD6;
   transition: ease-in .2s;
 }
@@ -30,17 +38,10 @@
   font-size: 1.375rem;
   color: #333;
   text-align: center;
-
 }
 
 .cards span {
-  font-size: 18px;
+  font-size: 1.125rem;
   color: #5D915D;
   font-weight: bold;
-
-}
-
-ul,
-li {
-  list-style: none;
 }
