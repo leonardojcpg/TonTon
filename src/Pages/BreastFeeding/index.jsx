@@ -188,7 +188,7 @@ export const BreastFeeding = () => {
                           <>
                             Breast-Side: {entry.side}
                             <br />
-                            Hour: {entry.hour}
+                            Time: {entry.hour + " h"}
                           </>
                         }
                       />

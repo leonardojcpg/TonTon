@@ -5,6 +5,8 @@ import { Dashboard } from '../Pages/Dashboard';
 import { BreastFeeding } from '../Pages/BreastFeeding';
 import { Sleep } from '../Pages/Sleep';
 import {Register} from '../Pages/Register'
+import { Baby } from '../Pages/Baby';
+import { Diapers } from '../Pages/Diapers';
 
 
 export const RouteApp = () => {
@@ -17,6 +19,8 @@ export const RouteApp = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/breastfeeding" element={<BreastFeeding />} />
         <Route path="/sleep" element={<Sleep />} />
+        <Route path="/baby" element={<Baby />} />
+        <Route path="/diapers" element={<Diapers />} />
       </Routes>
     </Router>
   );

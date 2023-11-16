@@ -12,14 +12,13 @@ import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useNavigate } from "react-router-dom";
-import { Api } from "../../Service/api";
-import { toast } from "react-toastify";
+//import { useNavigate } from "react-router-dom";
+//import { toast } from "react-toastify";
 
 
 
 export const FormComponent = () => {
-  const navigate = useNavigate();
+  //const navigate = useNavigate();
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -40,15 +39,6 @@ export const FormComponent = () => {
 
    const handleSignup = async (data) => {
     console.log(data)
-    Api
-    .post("/register", data)
-    .then((response) => {
-      toast.success("User successfully registered!")
-      navigate("/login")
-    })
-    .catch((err) => {
-      toast.error("Email already in use.")
-    })
   }
 
 

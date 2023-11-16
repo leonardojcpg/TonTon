@@ -1,13 +1,13 @@
-import { Container, Grid, Paper } from "@mui/material";
-import { PageTitle } from "../../Components/PageTitle";
-import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
+import { Container, Grid, Paper } from "@mui/material"
+import { PageTitle } from "../../Components/PageTitle"
+import { ResponsiveHeader } from "../../Components/ResponsiveHeader"
 
-export const Diapers = () => {
-  return (
-    <>
-      <ResponsiveHeader />
-      <PageTitle pageTitle="Diapers" />
-      <Paper
+export const Baby = () => {
+    return (
+        <>
+        <ResponsiveHeader />
+        <PageTitle pageTitle="Baby" />
+        <Paper
         elevation={3}
         style={{
           width: "100%",
@@ -27,8 +27,8 @@ export const Diapers = () => {
             spacing={3}
             style={{ margin: "1rem", marginLeft: "3rem" }}
           ></Grid>
-        </Container>
-      </Paper>
-    </>
-  );
-};
+          </Container>
+        </Paper>
+        </>
+    )
+}

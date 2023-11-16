@@ -5,7 +5,6 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate } from "react-router-dom";
-import { Api } from "../../Service/api";
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -27,7 +26,7 @@ export const Login = () => {
 
   const loginUser = async (data) => {
     try {
-      const response = await fetch(`${Api}/login`, {
+      const response = await fetch(`/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
