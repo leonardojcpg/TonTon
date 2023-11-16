@@ -9,12 +9,12 @@ export const useBabyContext = () => {
 export const BabyProvider = ({ children }) => {
   const [babyData, setBabyData] = useState({});
 
-  const setBabyInfo = (data) => {
+  const setDataInfo = (data) => {
     setBabyData(data);
   };
 
   return (
-    <BabyContext.Provider value={{ babyData, setBabyInfo }}>
+    <BabyContext.Provider value={{ babyData, setDataInfo }}>
       {children}
     </BabyContext.Provider>
   );

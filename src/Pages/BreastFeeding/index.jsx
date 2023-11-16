@@ -18,7 +18,7 @@ import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { useBabyContext } from "../../Context/BabyContext/";
 
 export const BreastFeeding = () => {
-  const { setBabyInfo } = useBabyContext()
+  const { setDataInfo } = useBabyContext()
 
   const [feedTime, setFeedTime] = useState(0)
   const [breastSide, setBreastSide] = useState("")
@@ -29,7 +29,7 @@ export const BreastFeeding = () => {
     if (feedTime && breastSide && feedHour) {
       const newFeedEntry = { time: feedTime, side: breastSide, hour: feedHour }
       setFeed([...feed, newFeedEntry])
-      setBabyInfo({ time: feedTime, side: breastSide, hour: feedHour })
+      setDataInfo({ time: feedTime, side: breastSide, hour: feedHour })
       setFeedTime("")
       setBreastSide("")
       setFeedHour("")

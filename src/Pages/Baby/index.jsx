@@ -17,7 +17,7 @@ import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
 
 export const Baby = () => {
-  const { setBabyInfo } = useBabyContext();
+  const { setDataInfo } = useBabyContext();
   const [babyName, setBabyName] = useState("");
   const [babyAge, setBabyAge] = useState("");
   const [babyWeight, setBabyWeight] = useState(0);
@@ -33,7 +33,7 @@ export const Baby = () => {
         blood: babyBloodType,
       };
       setBaby([...baby, newBabyEntry]);
-      setBabyInfo({
+      setDataInfo({
         name: babyName,
         age: babyAge,
         weight: babyWeight,

@@ -15,7 +15,7 @@ import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
 
 export const Sleep = () => {
-  const { setBabyInfo } = useBabyContext();
+  const { setDataInfo } = useBabyContext();
   const [sleepDate, setSleepDate] = useState("");
   const [sleepStartTime, setSleepStartTime] = useState("");
   const [sleepDuration, setSleepDuration] = useState(0);
@@ -29,7 +29,7 @@ export const Sleep = () => {
         duration: sleepDuration,
       };
       setBaby([...baby, newBabyEntry]);
-      setBabyInfo({
+      setDataInfo({
         date: sleepDate,
         startTime: sleepStartTime,
         duration: sleepDuration,
