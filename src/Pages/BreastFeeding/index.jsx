@@ -72,12 +72,12 @@ export const BreastFeeding = () => {
           <Grid
             container
             spacing={3}
-            style={{ margin: "1rem", marginLeft: "3rem" }}
+            style={{ marginLeft: "3rem", margin: "0.5rem" }}
           >
             {/* Left Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Feeding-Duration</Typography>
-              <div style={{ display: "flex", alignItems: "center" }}>
+              <div style={{ display: "flex", alignItems: "center", marginTop: ".5rem" }}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -122,7 +122,7 @@ export const BreastFeeding = () => {
                 Breast-Side
               </Typography>
               <Select
-                style={{ width: "250px" }}
+                style={{ width: "250px", marginTop: ".5rem" }}
                 label="Breast Side"
                 variant="outlined"
                 value={breastSide}
@@ -135,7 +135,7 @@ export const BreastFeeding = () => {
                 Feeding Hour
               </Typography>
               <TextField
-                style={{ width: "250px" }}
+                style={{ width: "250px", marginTop: ".5rem" }}
                 label="Hour"
                 variant="outlined"
                 value={feedHour}
