@@ -33,7 +33,12 @@ export const Baby = () => {
         blood: babyBloodType,
       };
       setBaby([...baby, newBabyEntry]);
-      setBabyInfo({ name: babyName, age: babyAge, weight: babyWeight });
+      setBabyInfo({
+        name: babyName,
+        age: babyAge,
+        weight: babyWeight,
+        blood: babyBloodType,
+      });
       setBabyName("");
       setBabyAge("");
       setBabyBloodType("");
@@ -158,14 +163,14 @@ export const Baby = () => {
                 value={babyBloodType}
                 onChange={(e) => setBabyBloodType(e.target.value)}
               >
-                <MenuItem value="a+">A+</MenuItem>
-                <MenuItem value="a-">A-</MenuItem>
-                <MenuItem value="b+">B+</MenuItem>
-                <MenuItem value="b-">B-</MenuItem>
-                <MenuItem value="ab+">AB+</MenuItem>
-                <MenuItem value="ab-">AB-</MenuItem>
-                <MenuItem value="o+">O+</MenuItem>
-                <MenuItem value="o-">O-</MenuItem>
+                <MenuItem value="A+">A+</MenuItem>
+                <MenuItem value="A-">A-</MenuItem>
+                <MenuItem value="B+">B+</MenuItem>
+                <MenuItem value="B-">B-</MenuItem>
+                <MenuItem value="AB+">AB+</MenuItem>
+                <MenuItem value="AB-">AB-</MenuItem>
+                <MenuItem value="O+">O+</MenuItem>
+                <MenuItem value="O-">O-</MenuItem>
               </Select>
               <Button
                 style={{ display: "flex", width: "250px" }}
@@ -184,12 +189,12 @@ export const Baby = () => {
                   },
                 }}
               >
-                Add Info
+                Add Baby Info
               </Button>
             </Grid>
             {/* Right Column */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Feeding Details:</Typography>
+              <Typography variant="h5">Baby Details:</Typography>
               <div
                 style={{
                   maxHeight: "50vh",
@@ -205,16 +210,18 @@ export const Baby = () => {
                         borderRadius: "5px",
                         marginBottom: "0.5rem",
                         padding: "0.5rem",
-                        backgroundColor: "#f5f5f5",
+                        backgroundColor: "#e9e9e9",
                       }}
                     >
                       <ListItemText
-                        primary={`Duration: ${entry.time} minutes`}
+                        primary={`Name: ${entry.name}`}
                         secondary={
                           <>
-                            Breast-Side: {entry.side}
+                            Age: {entry.age} months
                             <br />
-                            Time: {entry.hour + " h"}
+                            Weight: {entry.weight + " g"}
+                            <br />
+                            Blood-type: {entry.blood}
                           </>
                         }
                       />
