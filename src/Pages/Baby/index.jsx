@@ -87,7 +87,7 @@ export const Baby = () => {
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Name</Typography>
               <TextField
-                style={{ width: "250px", marginTop: "1rem" }}
+                style={{ width: "250px", marginTop: ".5rem" }}
                 label="Name"
                 variant="outlined"
                 value={babyName}
@@ -97,7 +97,7 @@ export const Baby = () => {
                 Age
               </Typography>
               <TextField
-                style={{ width: "250px", marginTop: "1rem" }}
+                style={{ width: "250px", marginTop: ".5rem" }}
                 label="Age (months)"
                 variant="outlined"
                 value={babyAge}
@@ -110,7 +110,7 @@ export const Baby = () => {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  marginTop: "1rem",
+                  marginTop: ".5rem",
                 }}
               >
                 <Button
