@@ -18,37 +18,37 @@ import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { useBabyContext } from "../../Context/BabyContext/";
 
 export const BreastFeeding = () => {
-  const { setBabyInfo } = useBabyContext();
+  const { setBabyInfo } = useBabyContext()
 
-  const [feedTime, setFeedTime] = useState(0);
-  const [breastSide, setBreastSide] = useState("");
-  const [feed, setFeed] = useState([]);
-  const [feedHour, setFeedHour] = useState("");
+  const [feedTime, setFeedTime] = useState(0)
+  const [breastSide, setBreastSide] = useState("")
+  const [feed, setFeed] = useState([])
+  const [feedHour, setFeedHour] = useState("")
 
   const addFeed = () => {
     if (feedTime && breastSide && feedHour) {
-      const newFeedEntry = { time: feedTime, side: breastSide, hour: feedHour };
-      setFeed([...feed, newFeedEntry]);
-      setBabyInfo({ time: feedTime, side: breastSide, hour: feedHour });
-      setFeedTime("");
-      setBreastSide("");
-      setFeedHour("");
+      const newFeedEntry = { time: feedTime, side: breastSide, hour: feedHour }
+      setFeed([...feed, newFeedEntry])
+      setBabyInfo({ time: feedTime, side: breastSide, hour: feedHour })
+      setFeedTime("")
+      setBreastSide("")
+      setFeedHour("")
     } else {
       console.log(
         `Dados de alimentação inválidos: feedTime = ${feedTime}, breastSide = ${breastSide}, hour = ${feedHour}`
-      );
+      )
     }
-  };
+  }
 
   const incrementFeedTime = () => {
-    setFeedTime((prevFeedTime) => prevFeedTime + 5);
-  };
+    setFeedTime((prevFeedTime) => prevFeedTime + 5)
+  }
 
   const decrementFeedTime = () => {
     if (feedTime >= 5) {
-      setFeedTime((prevFeedTime) => prevFeedTime - 5);
+      setFeedTime((prevFeedTime) => prevFeedTime - 5)
     }
-  };
+  }
 
   return (
     <>
