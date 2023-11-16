@@ -41,7 +41,6 @@ export const Login = () => {
           navigate("/dashboard");
         }
       } else {
-        // Trate erros de autenticação aqui
         console.error("Authentication error:", response);
       }
     } catch (error) {

@@ -142,13 +142,17 @@ export const Diary = () => {
                     >
                       <ListItemText
                         primary={`Date: ${entry.date}`}
-                        secondary={
-                          <>
-                            Hour: {entry.hour} months
-                            <br />
-                            Observation: {entry.observation}
-                          </>
-                        }
+                        secondary={`Observation: ${entry.observation}`}
+                        primaryTypographyProps={{ variant: "subtitle1" }}
+                        secondaryTypographyProps={{
+                          component: "div",
+                          variant: "body2",
+                        }}
+                        sx={{
+                          overflow: "auto",
+                          textOverflow: "ellipsis",
+                          whiteSpace: "normal",
+                        }}
                       />
                     </ListItem>
                   ))}
