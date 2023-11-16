@@ -178,7 +178,7 @@ export const Diapers = () => {
           </Grid>
           {/* Right Column */}
           <Grid item xs={12} sm={6}>
-            <Typography variant="h5">Diapers Details:</Typography>
+            <Typography variant="h5">Diapers Info:</Typography>
             <div
               style={{
                 maxHeight: "50vh",

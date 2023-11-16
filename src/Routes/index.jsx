@@ -7,6 +7,7 @@ import { Sleep } from '../Pages/Sleep';
 import {Register} from '../Pages/Register'
 import { Baby } from '../Pages/Baby';
 import { Diapers } from '../Pages/Diapers';
+import { Diary } from '../Pages/Diary';
 
 
 export const RouteApp = () => {
@@ -21,6 +22,7 @@ export const RouteApp = () => {
         <Route path="/sleep" element={<Sleep />} />
         <Route path="/baby" element={<Baby />} />
         <Route path="/diapers" element={<Diapers />} />
+        <Route path="/diary" element={<Diary />} />
       </Routes>
     </Router>
   );

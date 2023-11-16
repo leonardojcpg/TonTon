@@ -14,50 +14,40 @@ import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
 
-export const Sleep = () => {
+export const Diary = () => {
   const { setDataInfo } = useBabyContext();
-  const [sleepDate, setSleepDate] = useState("");
-  const [sleepStartTime, setSleepStartTime] = useState("");
-  const [sleepDuration, setSleepDuration] = useState(0);
+  const [date, setDate] = useState("");
+  const [hour, setHour] = useState("");
+  const [observation, setObservation] = useState(0);
   const [baby, setBaby] = useState([]);
 
-  const addSleep = () => {
-    if (sleepDate && sleepStartTime && sleepDuration) {
+  const addFeed = () => {
+    if (date && hour && observation) {
       const newBabyEntry = {
-        date: sleepDate,
-        startTime: sleepStartTime,
-        duration: sleepDuration,
+        date: date,
+        hour: hour,
+        observation: observation,
       };
       setBaby([...baby, newBabyEntry]);
       setDataInfo({
-        date: sleepDate,
-        startTime: sleepStartTime,
-        duration: sleepDuration,
+        date: date,
+        hour: hour,
+        observation: observation,
       });
-      setSleepDate("");
-      setSleepStartTime("");
-      setSleepDuration("");
+      setDate("");
+      setHour("");
+      setObservation("");
     } else {
       console.log(
-        `Dados de alimentação inválidos: date = ${sleepDate}, startTime = ${sleepStartTime}, duration = ${sleepDuration}`
+        `Dados de alimentação inválidos: date = ${date}, age = ${hour}, observation = ${observation}`
       );
-    }
-  };
-
-  const incrementSleepTime = () => {
-    setSleepDuration((prevSleepTime) => prevSleepTime + 1);
-  };
-
-  const decrementSleepTime = () => {
-    if (sleepDuration > 0) {
-      setSleepDuration((prevSleepTime) => prevSleepTime - 1);
     }
   };
 
   return (
     <>
       <ResponsiveHeader />
-      <PageTitle pageTitle="Sleep" />
+      <PageTitle pageTitle="Baby" />
       <Paper
         elevation={3}
         style={{
@@ -85,75 +75,36 @@ export const Sleep = () => {
                 style={{ width: "250px", marginTop: ".5rem" }}
                 label="Date"
                 variant="outlined"
-                value={sleepDate}
-                onChange={(e) => setSleepDate(e.target.value)}
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
               />
               <Typography variant="h5" style={{ marginTop: "1rem" }}>
-                Start-Time
+                Hour
               </Typography>
               <TextField
                 style={{ width: "250px", marginTop: ".5rem" }}
-                label="Age (months)"
+                label="Hour"
                 variant="outlined"
-                value={sleepStartTime}
-                onChange={(e) => setSleepStartTime(e.target.value)}
+                value={hour}
+                onChange={(e) => setHour(e.target.value)}
               />
               <Typography variant="h5" style={{ marginTop: "1rem" }}>
-                Sleep Duration
+                Observation
               </Typography>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginTop: ".5rem",
-                }}
-              >
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={decrementSleepTime}
-                  sx={{
-                    marginTop: 1,
-                    backgroundColor: "#508b50",
-                    "&:hover": {
-                      backgroundColor: "#a4dfa4",
-                      borderColor: "#a4dfa4",
-                      color: "#508b50",
-                    },
-                  }}
-                >
-                  -
-                </Button>
-                <TextField
-                  style={{ width: "6.25rem", margin: "0 0.625rem" }}
-                  variant="outlined"
-                  type="number"
-                  value={sleepDuration}
-                  onChange={(e) => setSleepDuration(e.target.value)}
-                />
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={incrementSleepTime}
-                  sx={{
-                    marginTop: 1,
-                    backgroundColor: "#508b50",
-                    "&:hover": {
-                      backgroundColor: "#a4dfa4",
-                      borderColor: "#a4dfa4",
-                      color: "#508b50",
-                    },
-                  }}
-                >
-                  +
-                </Button>
-              </div>
+              <TextField
+                multiline
+                rows={10}
+                style={{ width: "100%", marginTop: ".5rem" }}
+                label="Put your observation here!"
+                variant="outlined"
+                onChange={(e) => setObservation(e.target.value)}
+              />
               <Button
-                style={{ display: "flex", width: "250px" }}
+                style={{ display: "flex", width: "250px", marginTop: "1rem" }}
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  addSleep();
+                  addFeed();
                 }}
                 sx={{
                   marginTop: 1,
@@ -165,12 +116,12 @@ export const Sleep = () => {
                   },
                 }}
               >
-                Add Baby Info
+                Add Observation
               </Button>
             </Grid>
             {/* Right Column */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Sleep Info:</Typography>
+              <Typography variant="h5">Observation:</Typography>
               <div
                 style={{
                   maxHeight: "50vh",
@@ -193,9 +144,9 @@ export const Sleep = () => {
                         primary={`Date: ${entry.date}`}
                         secondary={
                           <>
-                            Start-Time: {entry.startTime} h
+                            Hour: {entry.hour} months
                             <br />
-                            Duration: {entry.duration} h
+                            Observation: {entry.observation}
                           </>
                         }
                       />

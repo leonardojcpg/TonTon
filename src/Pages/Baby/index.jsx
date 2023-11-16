@@ -173,7 +173,7 @@ export const Baby = () => {
                 <MenuItem value="O-">O-</MenuItem>
               </Select>
               <Button
-                style={{ display: "flex", width: "250px" }}
+                style={{ display: "flex", width: "250px", marginTop: "1rem" }}
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -194,7 +194,7 @@ export const Baby = () => {
             </Grid>
             {/* Right Column */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Baby Details:</Typography>
+              <Typography variant="h5">Baby Info:</Typography>
               <div
                 style={{
                   maxHeight: "50vh",

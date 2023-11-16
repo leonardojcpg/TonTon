@@ -163,7 +163,7 @@ export const BreastFeeding = () => {
             </Grid>
             {/* Right Column */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Feeding Details:</Typography>
+              <Typography variant="h5">Feeding Info:</Typography>
               <div
                 style={{
                   maxHeight: "50vh",
