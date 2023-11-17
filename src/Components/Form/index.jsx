@@ -27,7 +27,7 @@ export const FormComponent = () => {
     password: Yup.string().required("Password is required"),
     relationship: Yup.string()
       .oneOf(
-        ["parent", "grandparent", "sibling", "other"],
+        ["parent", "grandparent", "other"],
         "Invalid relationship"
       )
       .required("Relationship is required"),
@@ -102,7 +102,6 @@ export const FormComponent = () => {
             >
               <MenuItem value="parent">Parent</MenuItem>
               <MenuItem value="grandparent">Grandparent</MenuItem>
-              <MenuItem value="sibling">Sibling</MenuItem>
               <MenuItem value="other">Other</MenuItem>
             </Select>
             {formState.errors.relationship && (
