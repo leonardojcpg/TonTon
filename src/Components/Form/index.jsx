@@ -15,8 +15,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 //import { useNavigate } from "react-router-dom";
 //import { toast } from "react-toastify";
 
-
-
 export const FormComponent = () => {
   //const navigate = useNavigate();
 
@@ -27,10 +25,7 @@ export const FormComponent = () => {
       .required("Email is required"),
     password: Yup.string().required("Password is required"),
     relationship: Yup.string()
-      .oneOf(
-        ["parent", "grandparent", "other"],
-        "Invalid relationship"
-      )
+      .oneOf(["parent", "grandparent", "other"], "Invalid relationship")
       .required("Relationship is required"),
   });
 
@@ -38,14 +33,16 @@ export const FormComponent = () => {
     resolver: yupResolver(schema),
   });
 
-   const handleSignup = async (data) => {
-    console.log(data)
-  }
-
+  const handleSignup = async (data) => {
+    console.log(data);
+  };
 
   return (
-    <Paper elevation={3} sx={{ alignItems: "center", padding: 3 , borderRadius: ".6rem"}}>
-      <Grid container spacing={3} sx={{alignItems: "center"}}>
+    <Paper
+      elevation={3}
+      sx={{ alignItems: "center", padding: 3, borderRadius: ".6rem" }}
+    >
+      <Grid container spacing={3} sx={{ alignItems: "center" }}>
         <Grid item xs={12} sm={6}>
           <img
             src={newBornBaby}
