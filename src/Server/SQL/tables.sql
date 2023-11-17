@@ -1,4 +1,3 @@
--- CREATE TABLE for 'users'
 CREATE TABLE IF NOT EXISTS users (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -7,7 +6,6 @@ CREATE TABLE IF NOT EXISTS users (
   relationship user_relationship NOT NULL
 );
 
--- CREATE TABLE for 'baby'
 CREATE TABLE IF NOT EXISTS baby (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -16,7 +14,6 @@ CREATE TABLE IF NOT EXISTS baby (
   blood_type baby_blood_type NOT NULL
 );
 
--- CREATE TABLE for 'breast_feeding'
 CREATE TABLE IF NOT EXISTS breast_feeding (
   id SERIAL PRIMARY KEY,
   baby_id INT NOT NULL,
@@ -26,7 +23,6 @@ CREATE TABLE IF NOT EXISTS breast_feeding (
   FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
 
--- CREATE TABLE for 'diapers'
 CREATE TABLE IF NOT EXISTS diapers (
   id SERIAL PRIMARY KEY,
   baby_id INT NOT NULL,
@@ -36,7 +32,6 @@ CREATE TABLE IF NOT EXISTS diapers (
   FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
 
--- CREATE TABLE for 'sleep'
 CREATE TABLE IF NOT EXISTS sleep (
   id SERIAL PRIMARY KEY,
   baby_id INT NOT NULL,
@@ -46,7 +41,6 @@ CREATE TABLE IF NOT EXISTS sleep (
   FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
 
--- CREATE TABLE for 'diary'
 CREATE TABLE IF NOT EXISTS diary (
   id SERIAL PRIMARY KEY,
   baby_id INT NOT NULL,

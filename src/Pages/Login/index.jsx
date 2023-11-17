@@ -59,21 +59,22 @@ export const Login = () => {
         height: "100vh",
       }}
     >
-      <Paper elevation={3} sx={{ padding: 3, borderRadius: "0.6rem" }}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} sm={6}>
-            <img
-              src={newBornBaby}
-              alt=""
-              style={{
-                width: "15.625rem",
-                height: "16.25rem",
-                margin: "0 auto",
-                marginTop: "2.188rem",
-                marginLeft: "2.5rem",
-              }}
-            />
-          </Grid>
+    <Paper elevation={3} sx={{ alignItems: "center", padding: 3 , borderRadius: ".6rem"}}>
+      <Grid container spacing={3} sx={{alignItems: "center"}}>
+        <Grid item xs={12} sm={6} sx={{alignItems: "center"}}>
+          <img
+            src={newBornBaby}
+            alt=""
+            style={{
+              width: "15.625rem",
+              height: "15.625rem",
+              display: "block",
+              margin: "0 auto",
+              alignItems: "center",
+
+            }}
+          />
+        </Grid>
           <Grid item xs={12} sm={6}>
             <form onSubmit={handleSubmit(loginUser)}>
               <Typography variant="h4" sx={{ textAlign: "center" }}>

@@ -21,6 +21,7 @@ export const FormComponent = () => {
   //const navigate = useNavigate();
 
   const schema = Yup.object().shape({
+    name: Yup.string().required("Type your name"),
     email: Yup.string()
       .email("Type a valid email")
       .required("Email is required"),
@@ -43,8 +44,8 @@ export const FormComponent = () => {
 
 
   return (
-    <Paper elevation={3} sx={{ padding: 3 , borderRadius: ".6rem"}}>
-      <Grid container spacing={3}>
+    <Paper elevation={3} sx={{ alignItems: "center", padding: 3 , borderRadius: ".6rem"}}>
+      <Grid container spacing={3} sx={{alignItems: "center"}}>
         <Grid item xs={12} sm={6}>
           <img
             src={newBornBaby}
@@ -52,9 +53,8 @@ export const FormComponent = () => {
             style={{
               width: "15.625rem",
               height: "15.625rem",
+              display: "block",
               margin: "0 auto",
-              marginTop: "3.438rem",
-              marginLeft: "2.5rem",
             }}
           />
         </Grid>
@@ -63,6 +63,18 @@ export const FormComponent = () => {
             <Typography variant="h4" sx={{ textAlign: "center" }}>
               Register
             </Typography>
+            <TextField
+              label="Name"
+              variant="outlined"
+              fullWidth
+              margin="dense"
+              name="name"
+              {...register("name")}
+              error={!!formState.errors.name}
+              helperText={formState.errors.name?.message}
+              autoComplete="name"
+            />
+
             <TextField
               label="Email"
               variant="outlined"
