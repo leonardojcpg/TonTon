@@ -1,66 +1,51 @@
-
--- Table for 'baby'
-CREATE TABLE baby (
-  baby_id SERIAL PRIMARY KEY,
-  name VARCHAR(255),
-  age INT,
-  weight DECIMAL(5,2),
-  blood_type baby_blood_type,
-  -- Add other baby-related fields as needed
+CREATE TABLE IF NOT EXISTS users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  password VARCHAR(255) NOT NULL,
+  relationship user_relationship NOT NULL
 );
 
--- Table for 'users'
-CREATE TABLE users (
-  user_id SERIAL PRIMARY KEY,
-  name VARCHAR(255),
-  email VARCHAR(255),
-  password VARCHAR(255),
-  -- Add other user-related fields as needed
+CREATE TABLE IF NOT EXISTS baby (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(255) NOT NULL,
+  age INT NOT NULL,
+  weight DECIMAL(5, 2) NOT NULL,
+  blood_type baby_blood_type NOT NULL
 );
 
--- Table for 'users_babies' to represent the N:N relationship
-CREATE TABLE users_babies (
-  user_id INT REFERENCES users(user_id),
-  baby_id INT REFERENCES baby(baby_id),
-  PRIMARY KEY (user_id, baby_id)
+CREATE TABLE IF NOT EXISTS breast_feeding (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  baby_id INT NOT NULL,
+  time DATETIME NOT NULL,
+  side breast_feeding_side NOT NULL,
+  hour DECIMAL(4, 2) NOT NULL,
+  FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
 
--- Table for 'sleep'
-CREATE TABLE sleep (
-  sleep_id SERIAL PRIMARY KEY,
-  baby_id INT REFERENCES baby(baby_id),
-  date DATE,
-  start_time TIME,
-  duration INTERVAL,
-  -- Add other sleep-related fields as needed
+CREATE TABLE IF NOT EXISTS diapers (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  baby_id INT NOT NULL,
+  label VARCHAR(50) NOT NULL,
+  size diapers_size NOT NULL,
+  quantity INT NOT NULL,
+  FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
 
--- Table for 'diapers'
-CREATE TABLE diapers (
-  diapers_id SERIAL PRIMARY KEY,
-  baby_id INT REFERENCES baby(baby_id),
-  label VARCHAR(255),
-  size diapers_size,
-  quantity INT,
-  -- Add other diapers-related fields as needed
+CREATE TABLE IF NOT EXISTS sleep (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  baby_id INT NOT NULL,
+  date DATE NOT NULL,
+  start_time TIME NOT NULL,
+  duration INT NOT NULL,
+  FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
 
--- Table for 'breast_feeding'
-CREATE TABLE breast_feeding (
-  breast_feeding_id SERIAL PRIMARY KEY,
-  baby_id INT REFERENCES baby(baby_id),
-  time TIME,
-  side breast_feeding_side,
-  hour INT,
-  -- Add other breast_feeding-related fields as needed
-);
-
--- Table for 'diary'
-CREATE TABLE diary (
-  diary_id SERIAL PRIMARY KEY,
-  baby_id INT REFERENCES baby(baby_id),
-  date DATE,
-  hour TIME,
-  observation TEXT,
-  -- Add other diary-related fields as needed
+CREATE TABLE IF NOT EXISTS diary (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  baby_id INT NOT NULL,
+  date DATE NOT NULL,
+  hour TIME NOT NULL,
+  observation TEXT NOT NULL,
+  FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
