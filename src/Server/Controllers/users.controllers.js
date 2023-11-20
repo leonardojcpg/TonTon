@@ -9,7 +9,7 @@ import {
 export const createUserController = async (req, res) => {
   try {
     const user = await createUsersService(req.body);
-    return res.status(200).json(user);
+    return res.status(201).json(user);
   } catch (error) {
     console.error("Error creating user:", error);
     return res.status(500).json({ error: "Internal Server Error" });
@@ -42,14 +42,18 @@ export const listUsersByIdController = async (req, res) => {
   }
 };
 
-export const updateUserController = async (res, req) => {
+export const updateUserController = async (req, res) => {
   const user = await updateUserService(req.params.userId, req.body);
 
   return res.status(200).json(user);
 };
 
-export const deleteUserController = async (res, req) => {
-  await deleteUserService(req.params.userId);
-
-  return res.status(204).json();
+export const deleteUserController = async (req, res) => {
+  try {
+    await deleteUserService(req.params.userId);
+    return res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
 };
