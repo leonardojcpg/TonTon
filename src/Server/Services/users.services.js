@@ -1,5 +1,6 @@
 import format from "pg-format"
 import { client } from "../database.js"
+import AppError from "../Errors/app.error.js";
 
 // create user -> POST
 export const createUsersService = async (data) => {
@@ -20,6 +21,6 @@ export const listUsersService = async(req, res) => {
     const listUserQueryResult = await client.query(listUserQuery)
     return listUserQueryResult.rows;
   } catch(error){
-    throw new Error("Error fetching users from the database")
+    throw new AppError("Error fetching users from the database")
   }
 }
