@@ -1,6 +1,6 @@
 import format from "pg-format";
 import { client } from "../database.js";
-import AppError from "../Errors/app.error.js";
+import AppError from "../Errors/App.error.js";
 
 // create user -> POST
 export const createUsersService = async (data) => {
