@@ -24,29 +24,30 @@ export const listUsersService = async (req, res) => {
   }
 };
 // list user by id -> GET
-export const listUsersById = async (req, res) => {
-  const userId = req.params.id;
-
+export const listUsersByIdService = async (userId) => {
   try {
+    console.log('UserID:', userId);
     const query = 'SELECT * FROM users WHERE id = $1';
+    console.log('Query:', query);
+    
     const result = await client.query(query, [userId]);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
+      return null;
     }
 
     const user = result.rows[0];
-    return res.status(200).json(user);
+    return user;
   } catch (error) {
     console.error('Error fetching user by ID:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    throw new Error('Error fetching user by ID');
   }
 };
 
 
 
 // update users -> PUT
-export const updateUser = async (userId, data) => {
+export const updateUserService = async (userId, data) => {
   const updateUserQueryFormat = format(
     'UPDATE "users" SET (%I) = ROW (%L) WHERE "id" = $1 RETURNING *;',
     Object.keys(data),
@@ -57,7 +58,7 @@ export const updateUser = async (userId, data) => {
   return updateUserQueryResult.rows[0]
 };
 
-export const deleteUser = async(userId) => {
+export const deleteUserService = async(userId) => {
   const deleteUserQuery = format(
     'DELETE FROM "users" WHERE "id" = $1;'
   )
