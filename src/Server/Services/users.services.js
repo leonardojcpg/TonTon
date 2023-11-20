@@ -23,6 +23,28 @@ export const listUsersService = async (req, res) => {
     throw new AppError("Error fetching users from the database");
   }
 };
+// list user by id -> GET
+export const listUsersById = async (req, res) => {
+  const userId = req.params.id;
+
+  try {
+    const query = 'SELECT * FROM users WHERE id = $1';
+    const result = await client.query(query, [userId]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const user = result.rows[0];
+    return res.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching user by ID:', error);
+    return res.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
+
+
 // update users -> PUT
 export const updateUser = async (userId, data) => {
   const updateUserQueryFormat = format(

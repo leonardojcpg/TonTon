@@ -8,8 +8,8 @@ export const userRoutes = Router()
 userRoutes.get("/", listUsersController)
 userRoutes.post("/", verifyEmail, createUserController)
 
-userRoutes.use("/userId", verifyUserId)
-userRoutes.get("/userId", listUsersController)
+userRoutes.use("/:userId", verifyUserId)
+userRoutes.get("/:userId", verifyUserId, listUsersController);
 userRoutes.patch("/userId")
 userRoutes.delete("/userId")
 
