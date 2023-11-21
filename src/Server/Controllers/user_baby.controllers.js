@@ -2,7 +2,7 @@ import AppError from "../Errors/App.error.js";
 import {
   associateUserBabyService,
   disassociateUserBabyService,
-} from "../Services/user_baby.service.js";
+} from "../Services/user_baby.services.js";
 
 export const associateUserBabyController = async (req, res) => {
   const { userId, babyId } = req.params;
