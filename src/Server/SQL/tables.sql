@@ -14,6 +14,15 @@ CREATE TABLE IF NOT EXISTS baby (
   blood_type baby_blood_type NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS user_baby (
+  user_id INT NOT NULL,
+  baby_id INT NOT NULL,
+  PRIMARY KEY (user_id, baby_id),
+  FOREIGN KEY (user_id) REFERENCES users(id),
+  FOREIGN KEY (baby_id) REFERENCES baby(id)
+);
+
+
 CREATE TABLE IF NOT EXISTS breast_feeding (
   id SERIAL PRIMARY KEY,
   baby_id INT NOT NULL,

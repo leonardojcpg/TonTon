@@ -50,12 +50,12 @@ export const Baby = () => {
   };
 
   const incrementBabyWeight = () => {
-    setBabyWeight((prevBabyWeight) => prevBabyWeight + 50);
+    setBabyWeight((prevBabyWeight) => prevBabyWeight + 1);
   };
 
   const decrementBabyWeight = () => {
     if (babyWeight > 0) {
-      setBabyWeight((prevBabyWeight) => prevBabyWeight - 50);
+      setBabyWeight((prevBabyWeight) => prevBabyWeight - 1);
     }
   };
 
@@ -104,7 +104,7 @@ export const Baby = () => {
                 onChange={(e) => setBabyAge(e.target.value)}
               />
               <Typography variant="h5" style={{ marginTop: "1rem" }}>
-                Weight (g)
+                Weight
               </Typography>
               <div
                 style={{

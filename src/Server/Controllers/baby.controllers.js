@@ -1,8 +1,14 @@
-import { createBabyService, deleteBabyService, listBabiesByIdService, listBabyService, updateBabyService } from "../Services/baby.services.js";
+import {
+  createBabyService,
+  deleteBabyService,
+  listBabiesByIdService,
+  listBabyService,
+  updateBabyService,
+} from "../Services/baby.services.js";
 
 export const createBabyController = async (req, res) => {
   try {
-    const data = {...req.body}
+    const data = { ...req.body };
     const baby = await createBabyService(data);
     return res.status(201).json(baby);
   } catch (error) {
@@ -50,7 +56,7 @@ export const deleteBabyController = async (req, res) => {
     await deleteBabyService(req.params.babyId);
     return res.status(204).send();
   } catch (error) {
-    console.error('Error deleting baby:', error);
-    return res.status(500).json({ error: 'Internal Server Error' });
+    console.error("Error deleting baby:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
   }
 };
