@@ -1,5 +1,5 @@
 import { client } from "../database.js";
-import AppError from "../Errors/app.error.js";
+import AppError from "../Errors/App.error.js";
 
 export const verifyEmail = async (req, res, next) => {
   const { email } = req.body;

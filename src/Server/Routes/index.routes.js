@@ -5,6 +5,7 @@ import { userBabyRoutes } from "./user_baby.routes.js";
 import { breastFeedingRoutes } from "./breastFeeding.routes.js";
 import { sleepRoutes } from "./sleep.routes.js";
 import { diaperRoutes } from "./diapers.routes.js";
+import { diaryRoutes } from "./diary.routes.js";
 
 export const routes = Router()
 
@@ -14,3 +15,4 @@ routes.use("/user_baby", userBabyRoutes);
 routes.use("/breast_feeding", breastFeedingRoutes)
 routes.use("/sleep", sleepRoutes)
 routes.use("/diapers", diaperRoutes)
+routes.use("/diary", diaryRoutes)
