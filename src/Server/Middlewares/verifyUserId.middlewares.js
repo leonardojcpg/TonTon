@@ -1,4 +1,4 @@
-import AppError from "../Errors/app.error.js"
+import AppError from "../Errors/App.error.js"
 import { client } from "../database.js"
 
 export const verifyUserId = async(req, res, next) =>{
