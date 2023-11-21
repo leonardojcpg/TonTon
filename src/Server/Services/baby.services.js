@@ -45,16 +45,16 @@ export const updateBabyService = async (babyId, data) => {
     'UPDATE "baby" SET (%I) = ROW (%L) WHERE "id" = $1 RETURNING *;',
     Object.keys(data),
     Object.values(data)
-  )
+  );
 
-  const updateBabyQueryResult = await client.query(updateBabyQueryFormat, [babyId])
-  return updateBabyQueryResult.rows[0]
+  const updateBabyQueryResult = await client.query(updateBabyQueryFormat, [
+    babyId,
+  ]);
+  return updateBabyQueryResult.rows[0];
 };
 
-export const deleteBabyService = async(babyId) => {
-  const deleteBabyQuery = format(
-    'DELETE FROM "baby" WHERE "id" = $1;'
-  )
-  const deleteBabyQueryResult = await client.query(deleteBabyQuery, [babyId])
-  return deleteBabyQueryResult.rows[0]
-}
+export const deleteBabyService = async (babyId) => {
+  const deleteBabyQuery = format('DELETE FROM "baby" WHERE "id" = $1;');
+  const deleteBabyQueryResult = await client.query(deleteBabyQuery, [babyId]);
+  return deleteBabyQueryResult.rows[0];
+};

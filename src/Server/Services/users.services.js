@@ -2,7 +2,6 @@ import format from "pg-format";
 import { client } from "../database.js";
 import AppError from "../Errors/App.error.js";
 
-// create user -> POST
 export const createUsersService = async (data) => {
   const queryFormat = format(
     'INSERT INTO "users" (%I) VALUES (%L) RETURNING *;',
@@ -13,7 +12,6 @@ export const createUsersService = async (data) => {
   return queryResult.rows[0];
 };
 
-// list users -> GET
 export const listUsersService = async (req, res) => {
   try {
     const listUserQuery = 'SELECT * FROM "users";';
@@ -23,7 +21,7 @@ export const listUsersService = async (req, res) => {
     throw new AppError("Error fetching users from the database");
   }
 };
-// list user by id -> GET
+
 export const listUsersByIdService = async (userId) => {
   try {
     console.log('UserID:', userId);
@@ -46,7 +44,6 @@ export const listUsersByIdService = async (userId) => {
 
 
 
-// update users -> PUT
 export const updateUserService = async (userId, data) => {
   const updateUserQueryFormat = format(
     'UPDATE "users" SET (%I) = ROW (%L) WHERE "id" = $1 RETURNING *;',
