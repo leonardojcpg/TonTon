@@ -14,3 +14,4 @@ babyRoutes.get("/", listBabyController);
 babyRoutes.get("/:babyId", listBabiesByIdController);
 babyRoutes.patch("/:babyId", updateBabyController);
 babyRoutes.delete("/:babyId", deleteBabyController);
+babyRoutes.post("/:userId", createBabyController);

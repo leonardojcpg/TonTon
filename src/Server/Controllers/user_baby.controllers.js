@@ -8,15 +8,12 @@ export const associateUserBabyController = async (req, res) => {
   const { userId, babyId } = req.params;
 
   try {
-    await associateUserBabyService(userId, babyId);
-    return res
-      .status(200)
-      .json({ message: "User and baby associated successfully" });
+      const updatedBaby = await associateUserBabyService(userId, babyId);
+      return res.status(200).json(updatedBaby);
   } catch (error) {
-    throw new AppError("Error associating user and baby");
+      throw new AppError('Error associating user and baby:', error);
   }
-};
-
+}
 
 export const disassociateUserBabyController = async (req, res) => {
   const { userId, babyId } = req.params;

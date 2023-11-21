@@ -8,12 +8,16 @@ import {
 
 export const createBabyController = async (req, res) => {
   try {
-    const data = { ...req.body };
-    const baby = await createBabyService(data);
-    return res.status(201).json(baby);
+      const data = { ...req.body };
+      const baby = await createBabyService(data);
+
+      const associatedUserId = req.body.userId || null;
+      const babyWithAssociation = { ...baby, associatedUserId };
+
+      return res.status(201).json(babyWithAssociation);
   } catch (error) {
-    console.error("Error creating baby:", error);
-    return res.status(500).json({ error: "Internal Server Error" });
+      console.error("Error creating baby:", error);
+      return res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
