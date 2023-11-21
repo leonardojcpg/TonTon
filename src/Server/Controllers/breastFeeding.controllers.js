@@ -54,7 +54,7 @@ export const updateBreastFeedingController = async (req, res) => {
 export const deleteBreastFeedingController = async (req, res) => {
   try {
     await deleteBreastFeedingService(req.params.breastFeedingId);
-    return res.status(204).send();
+    return res.status(200).json({message: "Breast Feeding successfully deleted!"});
   } catch (error) {
     throw new AppError("Error deleting breast feeding:", error);
   }
