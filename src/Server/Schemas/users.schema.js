@@ -1,5 +1,3 @@
-/* 
-
 import {z} from "zod"
 
 const relationship = z.enum(["parent", "grandparent", "other"])
@@ -13,7 +11,5 @@ export const userSchema = z.object({
 })
 
 export const userCreateSchema = userSchema.omit({id: true})
-
 export const userUpdateSchema = userCreateSchema.partial() 
 
-*/

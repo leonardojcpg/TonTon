@@ -6,6 +6,7 @@ import { breastFeedingRoutes } from "./breastFeeding.routes.js";
 import { sleepRoutes } from "./sleep.routes.js";
 import { diaperRoutes } from "./diapers.routes.js";
 import { diaryRoutes } from "./diary.routes.js";
+import { sessionRouter } from "./session.router.js";
 
 export const routes = Router()
 
@@ -16,3 +17,4 @@ routes.use("/breast_feeding", breastFeedingRoutes)
 routes.use("/sleep", sleepRoutes)
 routes.use("/diapers", diaperRoutes)
 routes.use("/diary", diaryRoutes)
+routes.use("/login", sessionRouter)
