@@ -1,5 +1,7 @@
-import { verify } from "jsonwebtoken"
-import AppError from "../Errors/App.error"
+import pkg from 'jsonwebtoken';
+import AppError from "../Errors/App.error.js"
+
+const { verify } = pkg;
 
 export const verifyToken = (req, res, next) => {
 
