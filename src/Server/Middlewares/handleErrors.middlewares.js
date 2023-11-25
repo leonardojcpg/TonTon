@@ -1,5 +1,6 @@
-import { JsonWebTokenError } from "jsonwebtoken";
 import AppError from "../Errors/App.error.js";
+import pkg from 'jsonwebtoken';
+const { JsonWebTokenError } = pkg;
 
 export const handleErrors = (error, req, res, next) => {
   if (error instanceof AppError) {
