@@ -3,6 +3,7 @@ import { client } from "../database.js";
 import AppError from "../Errors/App.error.js";
 
 const {sign} = pkg
+
 export const loginService = async (data) => {
   const loginQuery = await client.query(
     'SELECT * FROM "users" WHERE "email" = $1;',

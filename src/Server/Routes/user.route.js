@@ -13,7 +13,7 @@ import { verifyPermission } from "../Middlewares/verifyPermissions.middleware.js
 
 export const userRoutes = Router();
 
-userRoutes.get("/", listUsersController);
+userRoutes.get("/", verifyToken, listUsersController);
 userRoutes.post("/", verifyEmail, createUserController);
 
 userRoutes.use("/:userId", verifyToken, verifyPermission, verifyUserId);
