@@ -10,32 +10,57 @@ import {
 import { FormButton } from "../Button";
 import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-//import { useNavigate } from "react-router-dom";
-//import { toast } from "react-toastify";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {AxiosApi} from "../../Axios/axios.create.js";
 
 export const FormComponent = () => {
-  //const navigate = useNavigate();
-
-  const schema = Yup.object().shape({
-    name: Yup.string().required("Type your name"),
-    email: Yup.string()
-      .email("Type a valid email")
-      .required("Email is required"),
-    password: Yup.string().required("Password is required"),
-    relationship: Yup.string()
-      .oneOf(["parent", "grandparent", "other"], "Invalid relationship")
-      .required("Relationship is required"),
+  //form schema
+  const schema = z.object({
+    name: z
+      .string().min(3).max(50)
+      .refine((data) => data.trim() !== "", {
+        message: "Type your name",
+      }),
+    email: z
+      .string().email("Type a valid email")
+      .refine((data) => data.trim() !== "", {
+        message: "Email is required",
+      }),
+    password: z
+      .string().min(6)
+      .refine((data) => data.trim() !== "", {
+        message: "Password is required",
+      }),
+    relationship: z
+      .string()
+      .refine(
+        (data) => ["parent", "grandparent", "other"].includes(data.trim()),
+        {
+          message: "Invalid relationship",
+        }
+      )
+      .refine((data) => data.trim() !== "", {
+        message: "Relationship is required",
+      }),
   });
 
-  const { register, formState, handleSubmit } = useForm({
-    resolver: yupResolver(schema),
+  const { register, handleSubmit, formState } = useForm({
+    resolver: zodResolver(schema),
   });
 
   const handleSignup = async (data) => {
-    console.log(data);
+    try {
+      const response = await AxiosApi.post("/users", data);
+      console.log("Registro bem-sucedido:", response.data);
+      // Adicione lógica para redirecionar ou exibir mensagem de sucesso
+    } catch (error) {
+      console.error("Erro no registro:", error);
+      // Trate o erro conforme necessário
+    }
   };
+  
+  
 
   return (
     <Paper
@@ -65,7 +90,6 @@ export const FormComponent = () => {
               variant="outlined"
               fullWidth
               margin="dense"
-              name="name"
               {...register("name")}
               error={!!formState.errors.name}
               helperText={formState.errors.name?.message}
@@ -77,7 +101,6 @@ export const FormComponent = () => {
               variant="outlined"
               fullWidth
               margin="dense"
-              name="email"
               {...register("email")}
               error={!!formState.errors.email}
               helperText={formState.errors.email?.message}
@@ -88,7 +111,6 @@ export const FormComponent = () => {
               variant="outlined"
               fullWidth
               margin="dense"
-              name="password"
               type="password"
               {...register("password")}
               error={!!formState.errors.password}
@@ -104,7 +126,6 @@ export const FormComponent = () => {
               fullWidth
               defaultValue="parent"
               margin="dense"
-              name="relationship"
               {...register("relationship")}
               error={!!formState.errors.relationship}
               autoComplete="relationship"
@@ -118,7 +139,10 @@ export const FormComponent = () => {
                 {formState.errors.relationship.message}
               </Typography>
             )}
-            <FormButton buttonName="Sign Up" />
+            <FormButton 
+            onClick={handleSubmit(handleSignup)}
+            buttonName="Sign Up" 
+            />
             <Typography
               variant="body2"
               sx={{ textAlign: "center", marginTop: 2 }}
