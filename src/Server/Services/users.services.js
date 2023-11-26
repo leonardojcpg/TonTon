@@ -74,7 +74,6 @@ export const updateUserService = async (userId, data) => {
 
     return userReturnSchema.parse(updateUserQueryResult.rows[0]);
   } catch (error) {
-    console.error("Error updating user:", error);
 
     if (error instanceof AppError) {
       throw error;
