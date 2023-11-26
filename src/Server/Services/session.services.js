@@ -1,8 +1,10 @@
-import pkg from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { client } from "../database.js";
 import AppError from "../Errors/App.error.js";
+import bcrypt from 'bcryptjs';
 
-const {sign} = pkg
+const { compare } = bcrypt;
+const { sign } = jwt;
 
 export const loginService = async (data) => {
   const loginQuery = await client.query(
@@ -15,8 +17,9 @@ export const loginService = async (data) => {
   }
 
   const user = loginQuery.rows[0];
-  if (user.password !== data.password) {
-    throw new AppError("Password or email is incorrect.");
+  const verifyPassword = await compare(data.password, user.password);
+  if (!verifyPassword) {
+    throw new AppError("Password or email is incorrect.", 401);
   }
 
   const token = sign(

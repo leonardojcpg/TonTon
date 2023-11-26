@@ -18,5 +18,5 @@ userRoutes.post("/", verifyEmail, createUserController);
 
 userRoutes.use("/:userId", verifyToken, verifyPermission, verifyUserId);
 userRoutes.get("/:userId", verifyUserId, listUsersByIdController);
-userRoutes.patch("/:userId", verifyEmail, updateUserController);
+userRoutes.patch("/:userId", updateUserController);
 userRoutes.delete("/:userId", deleteUserController);
