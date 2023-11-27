@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
+import { AxiosApi } from "../../Axios/axios.create";
 
 export const Baby = () => {
   const { setDataInfo } = useBabyContext();
@@ -24,30 +25,48 @@ export const Baby = () => {
   const [babyBloodType, setBabyBloodType] = useState("");
   const [baby, setBaby] = useState([]);
 
-  const addFeed = () => {
-    if (babyName && babyAge && babyWeight) {
-      const newBabyEntry = {
-        name: babyName,
-        age: babyAge,
-        weight: babyWeight,
-        blood: babyBloodType,
-      };
-      setBaby([...baby, newBabyEntry]);
-      setDataInfo({
-        name: babyName,
-        age: babyAge,
-        weight: babyWeight,
-        blood: babyBloodType,
-      });
-      setBabyName("");
-      setBabyAge("");
-      setBabyBloodType("");
-    } else {
-      console.log(
-        `Dados de alimentação inválidos: babyName = ${babyName}, age = ${babyAge}, weight = ${babyWeight}, blood = ${babyBloodType}`
-      );
+  const addFeed = async () => {
+    try {
+      const authToken = localStorage.getItem('authToken');
+      const userId = localStorage.getItem('userId');
+  
+      if (!authToken || !userId) {
+        console.error('Usuário não autenticado.');
+        return;
+      }
+  
+      if (babyName && babyAge && babyWeight) {
+        const newBabyEntry = {
+          name: babyName,
+          age: babyAge,
+          weight: babyWeight,
+          blood_type: babyBloodType,
+          userId: userId,
+        };
+  
+        await AxiosApi.post("/baby", newBabyEntry);
+  
+        setBaby([...baby, newBabyEntry]);
+        setDataInfo({
+          name: babyName,
+          age: babyAge,
+          weight: babyWeight,
+          blood_type: babyBloodType,
+        });
+  
+        setBabyName("");
+        setBabyAge("");
+        setBabyBloodType("");
+      } else {
+        console.log(
+          `Dados de alimentação inválidos: babyName = ${babyName}, age = ${babyAge}, weight = ${babyWeight}, blood = ${babyBloodType}`
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao adicionar informações do bebê:", error);
     }
   };
+  
 
   const incrementBabyWeight = () => {
     setBabyWeight((prevBabyWeight) => prevBabyWeight + 1);
