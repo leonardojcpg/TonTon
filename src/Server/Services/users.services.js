@@ -32,10 +32,7 @@ export const listUsersService = async (req, res) => {
 
 export const listUsersByIdService = async (userId) => {
   try {
-    console.log("UserID:", userId);
     const query = "SELECT * FROM users WHERE id = $1";
-    console.log("Query:", query);
-
     const result = await client.query(query, [userId]);
 
     if (result.rows.length === 0) {

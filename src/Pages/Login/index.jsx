@@ -38,11 +38,10 @@ export const Login = () => {
   const loginUser = async (data) => {
     try {
       const response = await AxiosApi.post("/login", data);
-      const { token, userId } = response.data;
+      const { token } = response.data;
 
       localStorage.setItem('authToken', token);
-      localStorage.setItem('userId', userId);
-
+      
       toast.success("You are logged in!");
       navigate("/dashboard");
     } catch (error) {
@@ -50,6 +49,7 @@ export const Login = () => {
       console.error("Error trying to login", error)
     }
   };
+  
   return (
     <Container
       style={{
