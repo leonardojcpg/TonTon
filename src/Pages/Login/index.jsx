@@ -2,49 +2,47 @@ import { Container, Grid, Paper, TextField, Typography } from "@mui/material";
 import { FormButton } from "../../Components/Button";
 import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosApi } from "../../Axios/axios.create.js";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const Login = () => {
-  const navigate = useNavigate();
-
-  const schema = Yup.object().shape({
-    email: Yup.string()
-      .email("Type a valid email")
-      .required("Email is required"),
-    password: Yup.string().required("Password is required"),
+  const schema = z.object({
+    email: z
+      .string()
+      .email()
+      .min(1)
+      .refine((data) => data.trim() !== "", {
+        message: "email is required",
+      }),
+    password: z
+      .string()
+      .min(1)
+      .refine((data) => data.trim() !== "", {
+        message: "Password is required",
+      }),
   });
+
+  const navigate = useNavigate();
 
   const {
     register,
     formState: { errors },
     handleSubmit,
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: zodResolver(schema),
   });
 
   const loginUser = async (data) => {
     try {
-      const response = await fetch(`/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.status === 200) {
-        const responseData = await response.json();
-        if (responseData.token) {
-          localStorage.setItem("token", responseData.token);
-          navigate("/dashboard");
-        }
-      } else {
-        console.error("Authentication error:", response);
-      }
+      await AxiosApi.post("/login", data);
+      toast.success("You are logged in!")
+      navigate("/dashboard");
     } catch (error) {
-      console.error(error);
+      console.error("Erro no login:", error);
+      // Trate o erro conforme necessário
     }
   };
 
@@ -59,22 +57,24 @@ export const Login = () => {
         height: "100vh",
       }}
     >
-    <Paper elevation={3} sx={{ alignItems: "center", padding: 3 , borderRadius: ".6rem"}}>
-      <Grid container spacing={3} sx={{alignItems: "center"}}>
-        <Grid item xs={12} sm={6} sx={{alignItems: "center"}}>
-          <img
-            src={newBornBaby}
-            alt=""
-            style={{
-              width: "15.625rem",
-              height: "15.625rem",
-              display: "block",
-              margin: "0 auto",
-              alignItems: "center",
-
-            }}
-          />
-        </Grid>
+      <Paper
+        elevation={3}
+        sx={{ alignItems: "center", padding: 3, borderRadius: ".6rem" }}
+      >
+        <Grid container spacing={3} sx={{ alignItems: "center" }}>
+          <Grid item xs={12} sm={6} sx={{ alignItems: "center" }}>
+            <img
+              src={newBornBaby}
+              alt=""
+              style={{
+                width: "15.625rem",
+                height: "15.625rem",
+                display: "block",
+                margin: "0 auto",
+                alignItems: "center",
+              }}
+            />
+          </Grid>
           <Grid item xs={12} sm={6}>
             <form onSubmit={handleSubmit(loginUser)}>
               <Typography variant="h4" sx={{ textAlign: "center" }}>
