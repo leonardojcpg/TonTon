@@ -13,8 +13,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {AxiosApi} from "../../Axios/axios.create.js";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export const FormComponent = () => {
+  const navigate = useNavigate(); // Obtenha a função de navegação
   //form schema
   const schema = z.object({
     name: z
@@ -28,7 +31,7 @@ export const FormComponent = () => {
         message: "Email is required",
       }),
     password: z
-      .string().min(6)
+      .string().min(4)
       .refine((data) => data.trim() !== "", {
         message: "Password is required",
       }),
@@ -51,12 +54,11 @@ export const FormComponent = () => {
 
   const handleSignup = async (data) => {
     try {
-      const response = await AxiosApi.post("/users", data);
-      console.log("Registro bem-sucedido:", response.data);
-      // Adicione lógica para redirecionar ou exibir mensagem de sucesso
+      await AxiosApi.post("/users", data);
+      toast.success("You are successfully registered!")
+      navigate("/login")
     } catch (error) {
-      console.error("Erro no registro:", error);
-      // Trate o erro conforme necessário
+      toast.error("Erro no registro:", error);
     }
   };
   
