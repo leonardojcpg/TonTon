@@ -37,15 +37,17 @@ export const Login = () => {
 
   const loginUser = async (data) => {
     try {
-      await AxiosApi.post("/login", data);
+      const response = await AxiosApi.post("/login", data);
+      const { token } = response.data;
+      localStorage.setItem('authToken', token);
       toast.success("You are logged in!")
       navigate("/dashboard");
     } catch (error) {
-      console.error("Erro no login:", error);
-      // Trate o erro conforme necessário
+      toast.error("Error trying to login");
+      console.error("Error trying to login", error)
     }
   };
-
+  
   return (
     <Container
       style={{
