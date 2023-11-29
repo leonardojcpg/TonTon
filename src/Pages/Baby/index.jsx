@@ -29,21 +29,21 @@ export const Baby = () => {
     try {
       const authToken = localStorage.getItem('authToken');
       const userId = localStorage.getItem('userId');
-  
+      
       if (!authToken || !userId) {
         console.error('Usuário não autenticado.');
         return;
       }
+      
   
-      if (babyName && babyAge && babyWeight) {
+      if (babyName && babyAge && babyWeight !== null) {
         const newBabyEntry = {
           name: babyName,
           age: babyAge,
           weight: babyWeight,
           blood_type: babyBloodType,
-          userId: userId,
         };
-  
+        
         await AxiosApi.post("/baby", newBabyEntry);
   
         setBaby([...baby, newBabyEntry]);
@@ -53,9 +53,10 @@ export const Baby = () => {
           weight: babyWeight,
           blood_type: babyBloodType,
         });
-  
+
         setBabyName("");
         setBabyAge("");
+        setBabyWeight(0);
         setBabyBloodType("");
       } else {
         console.log(
@@ -63,10 +64,10 @@ export const Baby = () => {
         );
       }
     } catch (error) {
-      console.error("Erro ao adicionar informações do bebê:", error);
+      console.error("Erro ao adicionar informações do bebê:", error.message);
     }
   };
-  
+    
 
   const incrementBabyWeight = () => {
     setBabyWeight((prevBabyWeight) => prevBabyWeight + 1);
@@ -196,7 +197,7 @@ export const Baby = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  addFeed();
+                  addFeed()
                 }}
                 sx={{
                   marginTop: 1,
