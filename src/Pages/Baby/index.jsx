@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -11,7 +12,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
 import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
@@ -23,30 +23,63 @@ export const Baby = () => {
   const [babyAge, setBabyAge] = useState("");
   const [babyWeight, setBabyWeight] = useState(0);
   const [babyBloodType, setBabyBloodType] = useState("");
-  const [baby, setBaby] = useState([]);
+  const [selectedParent, setSelectedParent] = useState("");
+  const [babyList, setBabyList] = useState([]);
+  const [availableUsers, setAvailableUsers] = useState([]);
 
-  const addFeed = async () => {
+
+  useEffect(() => {
+    const fetchAvailableUsers = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          console.error("Usuário não autenticado.");
+          return;
+        }
+        const response = await AxiosApi.get("/users", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+          setAvailableUsers(response.data);
+      } catch (error) {
+        console.error("Erro ao obter usuários:", error.message);
+      }
+    };
+
+    fetchAvailableUsers();
+  }, []);
+
+  const addBaby = async () => {
     try {
-      const authToken = localStorage.getItem('authToken');
-      const userId = localStorage.getItem('userId');
-      
-      if (!authToken || !userId) {
-        console.error('Usuário não autenticado.');
+      const authToken = localStorage.getItem("authToken");
+
+      if (!authToken) {
+        console.error("Usuário não autenticado.");
         return;
       }
-      
-  
-      if (babyName && babyAge && babyWeight !== null) {
+
+      if (
+        babyName &&
+        babyAge &&
+        babyWeight &&
+        babyBloodType &&
+        selectedParent &&
+        availableUsers.length > 0
+      ) {
         const newBabyEntry = {
           name: babyName,
           age: babyAge,
           weight: babyWeight,
           blood_type: babyBloodType,
         };
-        
-        await AxiosApi.post("/baby", newBabyEntry);
-  
-        setBaby([...baby, newBabyEntry]);
+
+        const babyResponse = await AxiosApi.post("/baby", newBabyEntry);
+        const newBaby = babyResponse.data;
+
+        await AxiosApi.post(`/user_baby/${selectedParent}/baby/${newBaby.id}/associate`);
+        setBabyList([...babyList, newBaby]);
+
         setDataInfo({
           name: babyName,
           age: babyAge,
@@ -56,18 +89,16 @@ export const Baby = () => {
 
         setBabyName("");
         setBabyAge("");
-        setBabyWeight(0);
+        setBabyWeight("");
         setBabyBloodType("");
+        setSelectedParent("");
       } else {
-        console.log(
-          `Dados de alimentação inválidos: babyName = ${babyName}, age = ${babyAge}, weight = ${babyWeight}, blood = ${babyBloodType}`
-        );
+        console.log("Dados de alimentação inválidos ou nenhum usuário disponível.");
       }
     } catch (error) {
       console.error("Erro ao adicionar informações do bebê:", error.message);
     }
   };
-    
 
   const incrementBabyWeight = () => {
     setBabyWeight((prevBabyWeight) => prevBabyWeight + 1);
@@ -101,7 +132,7 @@ export const Baby = () => {
           <Grid
             container
             spacing={3}
-            style={{ marginLeft: "3rem", margin: "0.5rem" }}
+            style={{ marginLeft: "3rem", margin: "0 auto" }}
           >
             {/* Left Column */}
             <Grid item xs={12} sm={6}>
@@ -113,7 +144,7 @@ export const Baby = () => {
                 value={babyName}
                 onChange={(e) => setBabyName(e.target.value)}
               />
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Age
               </Typography>
               <TextField
@@ -123,7 +154,7 @@ export const Baby = () => {
                 value={babyAge}
                 onChange={(e) => setBabyAge(e.target.value)}
               />
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Weight
               </Typography>
               <div
@@ -173,7 +204,7 @@ export const Baby = () => {
                   +
                 </Button>
               </div>
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Blood Type
               </Typography>
               <Select
@@ -183,22 +214,38 @@ export const Baby = () => {
                 value={babyBloodType}
                 onChange={(e) => setBabyBloodType(e.target.value)}
               >
-                <MenuItem value="A+">A+</MenuItem>
-                <MenuItem value="A-">A-</MenuItem>
-                <MenuItem value="B+">B+</MenuItem>
-                <MenuItem value="B-">B-</MenuItem>
-                <MenuItem value="AB+">AB+</MenuItem>
-                <MenuItem value="AB-">AB-</MenuItem>
-                <MenuItem value="O+">O+</MenuItem>
-                <MenuItem value="O-">O-</MenuItem>
+                <MenuItem value="a+">A+</MenuItem>
+                <MenuItem value="a-">A-</MenuItem>
+                <MenuItem value="b+">B+</MenuItem>
+                <MenuItem value="b-">B-</MenuItem>
+                <MenuItem value="ab+">AB+</MenuItem>
+                <MenuItem value="ab-">AB-</MenuItem>
+                <MenuItem value="o+">O+</MenuItem>
+                <MenuItem value="o-">O-</MenuItem>
               </Select>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
+                Select Baby Parent
+              </Typography>
+              <Select
+                style={{ width: "250px" }}
+                label="Select Parent"
+                variant="outlined"
+                value={selectedParent}
+                onChange={(e) => setSelectedParent(e.target.value)}
+              >
+                {availableUsers.map((user) => (
+                  <MenuItem key={user.id} value={user.id}>
+                    {user.name}
+                  </MenuItem>
+                ))}
+              </Select>
+
+
               <Button
-                style={{ display: "flex", width: "250px", marginTop: "1rem" }}
+                style={{ display: "flex", width: "250px", marginTop: ".5rem" }}
                 variant="contained"
                 color="primary"
-                onClick={() => {
-                  addFeed()
-                }}
+                onClick={addBaby}
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",
@@ -209,7 +256,7 @@ export const Baby = () => {
                   },
                 }}
               >
-                Add Baby Info
+                Add Baby
               </Button>
             </Grid>
             {/* Right Column */}
@@ -222,7 +269,7 @@ export const Baby = () => {
                 }}
               >
                 <List>
-                  {baby.map((entry, index) => (
+                  {babyList.map((entry, index) => (
                     <ListItem
                       key={index}
                       sx={{
