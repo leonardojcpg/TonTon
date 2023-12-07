@@ -2,6 +2,7 @@ import AppError from "../Errors/App.error.js";
 import {
   associateUserBabyService,
   disassociateUserBabyService,
+  listBabyIdForUserService,
 } from "../Services/user_baby.services.js";
 
 export const associateUserBabyController = async (req, res) => {
@@ -14,6 +15,17 @@ export const associateUserBabyController = async (req, res) => {
       throw new AppError('Error associating user and baby:', error);
   }
 }
+
+export const listBabyIdForUserController = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const babyId = await listBabyIdForUserService(userId);
+    return res.status(200).json({ babyId });
+  } catch (error) {
+    return res.status(404).json({ error: error.message });
+  }
+};
 
 export const disassociateUserBabyController = async (req, res) => {
   const { userId, babyId } = req.params;

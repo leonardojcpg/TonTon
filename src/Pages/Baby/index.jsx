@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   Button,
+  ButtonBase,
   Container,
   Grid,
   List,
@@ -16,8 +17,17 @@ import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
 import { AxiosApi } from "../../Axios/axios.create";
+import { useNavigate } from "react-router-dom";
 
 export const Baby = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      navigate("/login");
+    }
+  }, []);
+
   const { setDataInfo } = useBabyContext();
   const [babyName, setBabyName] = useState("");
   const [babyAge, setBabyAge] = useState("");
@@ -26,7 +36,6 @@ export const Baby = () => {
   const [selectedParent, setSelectedParent] = useState("");
   const [babyList, setBabyList] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
-
 
   useEffect(() => {
     const fetchAvailableUsers = async () => {
@@ -41,13 +50,35 @@ export const Baby = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-          setAvailableUsers(response.data);
+        setAvailableUsers(response.data);
       } catch (error) {
         console.error("Erro ao obter usuários:", error.message);
       }
     };
 
+    const fetchBabyList = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          console.error("Usuário não autenticado.");
+          return;
+        }
+        const response = await AxiosApi.get(
+          `/user_baby/${selectedParent}/baby`
+        );
+        const responseData = response.data;
+
+        if (Array.isArray(responseData)) {
+          setBabyList(responseData);
+        } else {
+          console.error("Invalid response format:", responseData);
+        }
+      } catch (error) {
+        console.log("Error trying to list babies.", error.message);
+      }
+    };
     fetchAvailableUsers();
+    fetchBabyList();
   }, []);
 
   const addBaby = async () => {
@@ -77,9 +108,10 @@ export const Baby = () => {
         const babyResponse = await AxiosApi.post("/baby", newBabyEntry);
         const newBaby = babyResponse.data;
 
-        await AxiosApi.post(`/user_baby/${selectedParent}/baby/${newBaby.id}/associate`);
-        setBabyList([...babyList, newBaby]);
-
+        await AxiosApi.post(
+          `/user_baby/${selectedParent}/baby/${newBaby.id}/associate`
+        );
+        setBabyList((prevList) => [...prevList, newBaby]);
         setDataInfo({
           name: babyName,
           age: babyAge,
@@ -93,7 +125,9 @@ export const Baby = () => {
         setBabyBloodType("");
         setSelectedParent("");
       } else {
-        console.log("Dados de alimentação inválidos ou nenhum usuário disponível.");
+        console.log(
+          "Dados de alimentação inválidos ou nenhum usuário disponível."
+        );
       }
     } catch (error) {
       console.error("Erro ao adicionar informações do bebê:", error.message);
@@ -105,10 +139,11 @@ export const Baby = () => {
   };
 
   const decrementBabyWeight = () => {
-    if (babyWeight > 0) {
+    if (Number(babyWeight) > 0) {
       setBabyWeight((prevBabyWeight) => prevBabyWeight - 1);
     }
   };
+
 
   return (
     <>
@@ -239,8 +274,6 @@ export const Baby = () => {
                   </MenuItem>
                 ))}
               </Select>
-
-
               <Button
                 style={{ display: "flex", width: "250px", marginTop: ".5rem" }}
                 variant="contained"
@@ -261,7 +294,7 @@ export const Baby = () => {
             </Grid>
             {/* Right Column */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Baby Info:</Typography>
+              <Typography variant="h5">Created Baby Info:</Typography>
               <div
                 style={{
                   maxHeight: "50vh",
@@ -269,7 +302,7 @@ export const Baby = () => {
                 }}
               >
                 <List>
-                  {babyList.map((entry, index) => (
+                  {babyList.map((baby, index) => (
                     <ListItem
                       key={index}
                       sx={{
@@ -281,14 +314,14 @@ export const Baby = () => {
                       }}
                     >
                       <ListItemText
-                        primary={`Name: ${entry.name}`}
+                        primary={`Name: ${baby.name}`}
                         secondary={
                           <>
-                            Age: {entry.age} months
+                            Age: {baby.age} months
                             <br />
-                            Weight: {entry.weight + " g"}
+                            Weight: {baby.weight + " kg"}
                             <br />
-                            Blood-type: {entry.blood}
+                            Blood-type: {baby.blood_type}
                           </>
                         }
                       />

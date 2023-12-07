@@ -19,6 +19,21 @@ export const associateUserBabyService = async (userId, babyId) => {
   return babyResult.rows[0];
 };
 
+export const listBabyIdForUserService = async (userId) => {
+  try {
+    const query = 'SELECT baby_id FROM "user_baby" WHERE user_id = $1;';
+    const result = await client.query(query, [userId]);
+
+    if (result.rows.length === 0) {
+      throw new AppError("Baby not found for the given user.");
+    }
+
+    return result.rows[0].baby_id;
+  } catch (error) {
+    throw new AppError("Error getting baby for user:", error);
+  }
+};
+
 export const disassociateUserBabyService = async (userId, babyId) => {
   const query = 'DELETE FROM "user_baby" WHERE user_id = $1 AND baby_id = $2;';
   await client.query(query, [userId, babyId]);

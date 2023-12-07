@@ -7,7 +7,6 @@ import { listUserSchema, userReturnSchema } from "../Schemas/users.schema.js";
 const { hash } = pkg;
 
 export const createUsersService = async (data) => {
-  //password hashing - use 10 always for better security and performance
   data.password = await hash(data.password, 10);
 
   const queryFormat = format(
