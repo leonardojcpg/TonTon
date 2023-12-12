@@ -19,6 +19,10 @@ import { useNavigate } from "react-router-dom";
 import { AxiosApi } from "../../Axios/axios.create";
 import { toast } from "react-toastify";
 
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+
+
 export const BreastFeeding = () => {
   const { setDataInfo } = useBabyContext();
   const navigate = useNavigate();
@@ -29,6 +33,9 @@ export const BreastFeeding = () => {
   const [feedHour, setFeedHour] = useState("");
   const [babyList, setBabyList] = useState([]);
   const [selectedBaby, setSelectedBaby] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -72,7 +79,7 @@ export const BreastFeeding = () => {
           console.error("Invalid response format:", responseData);
         }
       } catch (error) {
-        console.log("Error trying to list babies.", error.message);
+        console.log("Error trying to list feed.", error.message);
       }
     };
 
@@ -89,21 +96,32 @@ export const BreastFeeding = () => {
       }
 
       if (feedTime && breastSide && feedHour && selectedBaby) {
+
+        const currentDate = new Date().toISOString().split('T')[0];
         const newFeedEntry = {
           duration: feedTime,
           side: breastSide,
           hour: feedHour,
+          date: currentDate,
           baby_id: selectedBaby.id,
         };
+
+        console.log(currentDate)
 
         const response = await AxiosApi.post("/breast_feeding", newFeedEntry);
 
         const createdBreastFeeding = await response.json();
         setFeed([...feed, createdBreastFeeding]);
-        setDataInfo({ duration: feedTime, side: breastSide, hour: feedHour });
+        setDataInfo({ duration: feedTime, side: breastSide, hour: feedHour, date: currentDate });
         setFeedTime("");
         setBreastSide("");
         setFeedHour("");
+
+        if(response.status === 200){
+          toast.success("Feed added successfully")
+          return
+        }
+
       } else {
         console.log("Erro, invalid data.");
       }
@@ -121,6 +139,24 @@ export const BreastFeeding = () => {
       setFeedTime((prevFeedTime) => prevFeedTime - 5);
     }
   };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const formatDate = (inputDate) => {
+    const date = new Date(inputDate);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const formattedDay = day.toString().padStart(2, "0");
+    const formattedMonth = month.toString().padStart(2, "0");
+  
+    return `${formattedDay}/${formattedMonth}/${year}`;
+  };
+  
+  
 
   return (
     <>
@@ -195,7 +231,7 @@ export const BreastFeeding = () => {
                   +
                 </Button>
               </div>
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Breast-Side
               </Typography>
               <Select
@@ -208,7 +244,7 @@ export const BreastFeeding = () => {
                 <MenuItem value="left">Left</MenuItem>
                 <MenuItem value="right">Right</MenuItem>
               </Select>
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Feeding Hour
               </Typography>
               <TextField
@@ -218,7 +254,7 @@ export const BreastFeeding = () => {
                 value={feedHour}
                 onChange={(e) => setFeedHour(e.target.value)}
               />
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Select Baby
               </Typography>
               <Select
@@ -234,6 +270,14 @@ export const BreastFeeding = () => {
                   </MenuItem>
                 ))}
               </Select>
+              <Typography variant="h5" style={{ marginTop: ".5rem", marginBottom: ".5rem" }}>
+                Select Date
+              </Typography>
+              <DatePicker
+                selected={selectedDate}
+                onChange={handleDateChange}
+                dateFormat="yyyy/MM/dd"
+              />
               <Button
                 style={{ display: "flex", width: "250px", marginTop: ".5rem" }}
                 variant="contained"
@@ -261,7 +305,8 @@ export const BreastFeeding = () => {
                 }}
               >
                 <List>
-                  {feed.map((entry, index) => (
+                  {feed.filter((entry) => entry.baby_id === selectedBaby.id)
+                  .map((entry, index) => (
                     <ListItem
                       key={index}
                       sx={{
@@ -280,7 +325,10 @@ export const BreastFeeding = () => {
                             {entry.side.charAt(0).toUpperCase() +
                               entry.side.slice(1).toLowerCase()}
                             <br />
-                            Hour: {entry.hour + " h"}
+                            Dia: {entry.hour + " h"}
+                            <br />
+                            Date: {formatDate(entry.date)}
+
                           </>
                         }
                       />
