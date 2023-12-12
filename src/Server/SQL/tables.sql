@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS user_baby (
 CREATE TABLE IF NOT EXISTS breast_feeding (
   id SERIAL PRIMARY KEY,
   baby_id INT NOT NULL,
-  time TIMESTAMP NOT NULL,
+  duration INTEGER NOT NULL,
   side breast_feeding_side NOT NULL,
   hour DECIMAL(4, 2) NOT NULL,
   FOREIGN KEY (baby_id) REFERENCES baby(id)

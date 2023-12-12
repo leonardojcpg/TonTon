@@ -11,5 +11,4 @@ export const client = new Client({
 
 export const startDatabase = async () => {
   await client.connect();
-  console.log("database connected!");
 };

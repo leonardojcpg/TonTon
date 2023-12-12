@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -12,43 +12,115 @@ import {
   ListItem,
   List,
 } from "@mui/material";
-
 import { PageTitle } from "../../Components/PageTitle";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { useBabyContext } from "../../Context/BabyContext/";
+import { useNavigate } from "react-router-dom";
+import { AxiosApi } from "../../Axios/axios.create";
+import { toast } from "react-toastify";
 
 export const BreastFeeding = () => {
-  const { setDataInfo } = useBabyContext()
+  const { setDataInfo } = useBabyContext();
+  const navigate = useNavigate();
 
-  const [feedTime, setFeedTime] = useState(0)
-  const [breastSide, setBreastSide] = useState("")
-  const [feed, setFeed] = useState([])
-  const [feedHour, setFeedHour] = useState("")
+  const [feedTime, setFeedTime] = useState(0);
+  const [breastSide, setBreastSide] = useState("");
+  const [feed, setFeed] = useState([]);
+  const [feedHour, setFeedHour] = useState("");
+  const [babyList, setBabyList] = useState([]);
+  const [selectedBaby, setSelectedBaby] = useState("");
 
-  const addFeed = () => {
-    if (feedTime && breastSide && feedHour) {
-      const newFeedEntry = { time: feedTime, side: breastSide, hour: feedHour }
-      setFeed([...feed, newFeedEntry])
-      setDataInfo({ time: feedTime, side: breastSide, hour: feedHour })
-      setFeedTime("")
-      setBreastSide("")
-      setFeedHour("")
-    } else {
-      console.log(
-        `Dados de alimentação inválidos: feedTime = ${feedTime}, breastSide = ${breastSide}, hour = ${feedHour}`
-      )
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      navigate("/login");
     }
-  }
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchBabyList = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          toast.error("User has to authenticate");
+          return;
+        }
+        const response = await AxiosApi.get("/baby", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        setBabyList(response.data);
+      } catch (error) {
+        console.error("Erro ao obter lista de bebês:", error.message);
+      }
+    };
+
+    const fetchFeedList = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          toast.error("Usuário não autenticado.");
+          return;
+        }
+        const response = await AxiosApi.get("/breast_feeding");
+        const responseData = response.data;
+
+        if (Array.isArray(responseData)) {
+          setFeed(responseData);
+        } else {
+          console.error("Invalid response format:", responseData);
+        }
+      } catch (error) {
+        console.log("Error trying to list babies.", error.message);
+      }
+    };
+
+    fetchFeedList();
+    fetchBabyList();
+  }, []);
+
+  const addFeed = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        navigate("/login");
+        return;
+      }
+
+      if (feedTime && breastSide && feedHour && selectedBaby) {
+        const newFeedEntry = {
+          duration: feedTime,
+          side: breastSide,
+          hour: feedHour,
+          baby_id: selectedBaby.id,
+        };
+
+        const response = await AxiosApi.post("/breast_feeding", newFeedEntry);
+
+        const createdBreastFeeding = await response.json();
+        setFeed([...feed, createdBreastFeeding]);
+        setDataInfo({ duration: feedTime, side: breastSide, hour: feedHour });
+        setFeedTime("");
+        setBreastSide("");
+        setFeedHour("");
+      } else {
+        console.log("Erro, invalid data.");
+      }
+    } catch (error) {
+      //console.log("Error creating breast feeding");
+    }
+  };
 
   const incrementFeedTime = () => {
-    setFeedTime((prevFeedTime) => prevFeedTime + 5)
-  }
+    setFeedTime((prevFeedTime) => prevFeedTime + 5);
+  };
 
   const decrementFeedTime = () => {
-    if (feedTime >= 5) {
-      setFeedTime((prevFeedTime) => prevFeedTime - 5)
+    if (feedTime >= 0) {
+      setFeedTime((prevFeedTime) => prevFeedTime - 5);
     }
-  }
+  };
 
   return (
     <>
@@ -72,12 +144,17 @@ export const BreastFeeding = () => {
           <Grid
             container
             spacing={3}
-            style={{ marginLeft: "3rem", margin: "0.5rem" }}
+            style={{ marginLeft: "3rem", margin: "0 auto" }}
           >
-            {/* Left Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Feeding-Duration</Typography>
-              <div style={{ display: "flex", alignItems: "center", marginTop: ".5rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginTop: ".5rem",
+                }}
+              >
                 <Button
                   variant="contained"
                   color="primary"
@@ -141,13 +218,27 @@ export const BreastFeeding = () => {
                 value={feedHour}
                 onChange={(e) => setFeedHour(e.target.value)}
               />
+              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+                Select Baby
+              </Typography>
+              <Select
+                style={{ width: "250px", marginTop: ".5rem" }}
+                label="Select Baby"
+                variant="outlined"
+                value={selectedBaby}
+                onChange={(e) => setSelectedBaby(e.target.value)}
+              >
+                {babyList.map((baby) => (
+                  <MenuItem key={baby.id} value={baby}>
+                    {baby.name}
+                  </MenuItem>
+                ))}
+              </Select>
               <Button
-                style={{ display: "flex", width: "250px" }}
+                style={{ display: "flex", width: "250px", marginTop: ".5rem" }}
                 variant="contained"
                 color="primary"
-                onClick={() => {
-                  addFeed();
-                }}
+                onClick={addFeed}
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",
@@ -161,7 +252,6 @@ export const BreastFeeding = () => {
                 Add Feeding
               </Button>
             </Grid>
-            {/* Right Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Feeding Info:</Typography>
               <div
@@ -183,12 +273,14 @@ export const BreastFeeding = () => {
                       }}
                     >
                       <ListItemText
-                        primary={`Duration: ${entry.time} minutes`}
+                        primary={`Duration: ${entry.duration} minutes`}
                         secondary={
                           <>
-                            Breast-Side: {entry.side}
+                            Breast-Side:{" "}
+                            {entry.side.charAt(0).toUpperCase() +
+                              entry.side.slice(1).toLowerCase()}
                             <br />
-                            Time: {entry.hour + " h"}
+                            Hour: {entry.hour + " h"}
                           </>
                         }
                       />
