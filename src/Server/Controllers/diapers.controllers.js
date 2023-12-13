@@ -9,8 +9,8 @@ import {
   
   export const createDiaperController = async (req, res) => {
     try {
-      const diaperRecord = await createDiaperService(req.body);
-      return res.status(201).json(diaperRecord);
+      const diapersRecord = await createDiaperService(req.body);
+      return res.status(201).json(diapersRecord);
     } catch (error) {
       throw new AppError("Error creating diaper record", error);
     }

@@ -16,6 +16,7 @@ export const createDiaperService = async (data) => {
   }
 };
 
+
 export const listDiapersService = async () => {
   try {
     const query = 'SELECT * FROM "diapers";';
