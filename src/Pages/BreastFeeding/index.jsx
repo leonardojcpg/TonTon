@@ -106,8 +106,6 @@ export const BreastFeeding = () => {
           baby_id: selectedBaby.id,
         };
 
-        console.log(currentDate)
-
         const response = await AxiosApi.post("/breast_feeding", newFeedEntry);
 
         const createdBreastFeeding = await response.json();
@@ -155,7 +153,6 @@ export const BreastFeeding = () => {
   
     return `${formattedDay}/${formattedMonth}/${year}`;
   };
-  
   
 
   return (

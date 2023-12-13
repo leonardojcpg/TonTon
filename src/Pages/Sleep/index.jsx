@@ -5,42 +5,96 @@ import {
   List,
   ListItem,
   ListItemText,
+  MenuItem,
   Paper,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
+import { toast } from "react-toastify";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import { AxiosApi } from "../../Axios/axios.create";
 
 export const Sleep = () => {
   const { setDataInfo } = useBabyContext();
-  const [sleepDate, setSleepDate] = useState("");
   const [sleepStartTime, setSleepStartTime] = useState("");
   const [sleepDuration, setSleepDuration] = useState(0);
-  const [baby, setBaby] = useState([]);
+  const [sleep, setSleep] = useState([]);
+  const [babyList, setBabyList] = useState([])
+  const [selectedBaby, setSelectedBaby] = useState("");
+  const [currentSleepDate, setCurrentSleepDate] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  
 
-  const addSleep = () => {
-    if (sleepDate && sleepStartTime && sleepDuration) {
-      const newBabyEntry = {
-        date: sleepDate,
-        startTime: sleepStartTime,
-        duration: sleepDuration,
-      };
-      setBaby([...baby, newBabyEntry]);
-      setDataInfo({
-        date: sleepDate,
-        startTime: sleepStartTime,
-        duration: sleepDuration,
-      });
-      setSleepDate("");
-      setSleepStartTime("");
-      setSleepDuration("");
-    } else {
-      console.log(
-        `Dados de alimentação inválidos: date = ${sleepDate}, startTime = ${sleepStartTime}, duration = ${sleepDuration}`
-      );
+  useEffect(() => {
+    const fetchSleepData = async () => {
+      try {
+        const response = await AxiosApi.get("/sleep");
+        setSleep(response.data);
+      } catch (error) {
+        console.error("Error fetching sleep data:", error.message);
+      }
+    };
+
+    const fetchBabyList = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          toast.error("User has to authenticate");
+          return;
+        }
+        const response = await AxiosApi.get("/baby", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        setBabyList(response.data);
+      } catch (error) {
+        console.error("Erro ao obter lista de bebês:", error.message);
+      }
+    };
+
+    fetchBabyList();
+    fetchSleepData();
+  }, []);
+
+  const addSleep = async () => {
+    try {
+      if (sleepStartTime && sleepDuration && currentSleepDate) {
+        const currentSleepDate = new Date().toISOString().split('T')[0];
+        const newSleepEntry = {
+          date: currentSleepDate,
+          start_time: sleepStartTime,
+          duration: sleepDuration,
+          baby_id: selectedBaby.id,
+        };
+
+        const response = await AxiosApi.post("/sleep", newSleepEntry);
+        const createdSleep = await response.json();
+        setSleep([...sleep, createdSleep])
+        setDataInfo({
+          date: currentSleepDate,
+          startTime: sleepStartTime,
+          duration: sleepDuration,
+          baby_id: selectedBaby.id,
+        });
+
+        setCurrentSleepDate("");
+        setSleepStartTime("");
+        setSleepDuration("");
+
+      } else {
+        console.log(
+          `Dados de sono inválidos: date = ${currentSleepDate}, startTime = ${sleepStartTime}, duration = ${sleepDuration}`
+        );
+      }
+    } catch (error) {
+      //console.error("Error creating sleep record:", error.message);
     }
   };
 
@@ -49,11 +103,27 @@ export const Sleep = () => {
   };
 
   const decrementSleepTime = () => {
-    if (sleepDuration > 0) {
+    if (sleepDuration >= 0) {
       setSleepDuration((prevSleepTime) => prevSleepTime - 1);
     }
   };
 
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+   const formatDate = (inputDate) => {
+    const date = new Date(inputDate);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const formattedDay = day.toString().padStart(2, "0");
+    const formattedMonth = month.toString().padStart(2, "0");
+  
+    return `${formattedDay}/${formattedMonth}/${year}`;
+  };
+ 
   return (
     <>
       <ResponsiveHeader />
@@ -80,20 +150,37 @@ export const Sleep = () => {
           >
             {/* Left Column */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Date</Typography>
-              <TextField
+            <Typography variant="h5" style={{ marginTop: ".5rem" }}>
+                Select Baby
+              </Typography>
+              <Select
                 style={{ width: "250px", marginTop: ".5rem" }}
-                label="Date"
+                label="Select Baby"
                 variant="outlined"
-                value={sleepDate}
-                onChange={(e) => setSleepDate(e.target.value)}
+                value={selectedBaby}
+                onChange={(e) => setSelectedBaby(e.target.value)}
+              >
+                {babyList.map((baby) => (
+                  <MenuItem key={baby.id} value={baby}>
+                    {baby.name}
+                  </MenuItem>
+                ))}
+              </Select>
+
+              <Typography variant="h5" style={{ marginTop: ".5rem", marginBottom: ".5rem" }}>
+                Select Date
+              </Typography>
+              <DatePicker
+                selected={selectedDate}
+                onChange={handleDateChange}
+                dateFormat="yyyy/MM/dd"
               />
               <Typography variant="h5" style={{ marginTop: "1rem" }}>
                 Start-Time
               </Typography>
               <TextField
                 style={{ width: "250px", marginTop: ".5rem" }}
-                label="Age (months)"
+                label="Start-Time"
                 variant="outlined"
                 value={sleepStartTime}
                 onChange={(e) => setSleepStartTime(e.target.value)}
@@ -152,9 +239,7 @@ export const Sleep = () => {
                 style={{ display: "flex", width: "250px" }}
                 variant="contained"
                 color="primary"
-                onClick={() => {
-                  addSleep();
-                }}
+                onClick={addSleep}
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",
@@ -165,7 +250,7 @@ export const Sleep = () => {
                   },
                 }}
               >
-                Add Baby Info
+                Add Sleep
               </Button>
             </Grid>
             {/* Right Column */}
@@ -178,7 +263,9 @@ export const Sleep = () => {
                 }}
               >
                 <List>
-                  {baby.map((entry, index) => (
+                  {sleep
+                  .filter((entry) => entry.baby_id === selectedBaby.id)
+                  .map((entry, index) => (
                     <ListItem
                       key={index}
                       sx={{
@@ -190,10 +277,10 @@ export const Sleep = () => {
                       }}
                     >
                       <ListItemText
-                        primary={`Date: ${entry.date}`}
+                        primary={`Date: ${formatDate(entry.date)}`  }
                         secondary={
                           <>
-                            Start-Time: {entry.startTime} h
+                            Start-Time: {entry.start_time}
                             <br />
                             Duration: {entry.duration} h
                           </>
