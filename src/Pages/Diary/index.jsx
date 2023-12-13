@@ -20,14 +20,14 @@ import { AxiosApi } from "../../Axios/axios.create.js";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 
 export const Diary = () => {
+
   const navigate = useNavigate();
   const { setDataInfo } = useBabyContext();
-  const [date, setDate] = useState("");
-  const [hour, setHour] = useState("");
-  const [observation, setObservation] = useState(0);
 
+  const [note, setNote] = useState("");
   const [diary, setDiary] = useState([]);
   const [babyList, setBabyList] = useState([]);
   const [selectedBaby, setSelectedBaby] = useState("");
@@ -82,40 +82,41 @@ export const Diary = () => {
   }, []);
 
   const addDiary = async () => {
-    try{
-      if (date && hour && observation) {
-        const currentDate = new Date().toISOString().split("T")[0];
-        console.log(currentDate)
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        navigate("/login");
+        return;
+      }
+
+      if (note && selectedBaby) {
+
+        const currentDate = new Date().toISOString().split('T')[0];
         const newDiaryEntry = {
           date: currentDate,
-          hour: hour,
-          observation: observation,
+          note: note,
           baby_id: selectedBaby.id,
         };
-        const response = await AxiosApi.post("/diary", newDiaryEntry);
-        if (response.status === 200) {
-          const createdDiary = await response.data;
-          setDiary([...diary, createdDiary]);
-          setDataInfo({
-            date: currentDate,
-            hour: hour,
-            observation: observation,
-            baby_id: selectedBaby.id,
-          });
-          setDate("");
-          setHour("");
-          setObservation("");
-        }
-      } else {
-        console.error(
-          `Dados de alimentação inválidos: date = ${currentDate}, age = ${hour}, observation = ${observation}`
-        );
-      }
-    } catch(error){
-      //console.error("error creating diary")
-    }
-  };
 
+        const response = await AxiosApi.post("/diary", newDiaryEntry);
+
+        const createdDiaryInfo = await response.json();
+        setFeed([...diary, createdDiaryInfo]);
+        setDataInfo({ date: currentDate, note: note});
+        setNote("");
+
+        if(response.status === 200 || 201){
+          toast.success("Feed added successfully")
+          return
+        }
+
+      } else {
+        console.log("Erro, invalid data.");
+      }
+    } catch (error) {
+      //console.log("Error creating diary");
+    }
+  };      
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -183,16 +184,6 @@ export const Diary = () => {
                 dateFormat="yyyy/MM/dd"
               />
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
-                Hour
-              </Typography>
-              <TextField
-                style={{ width: "250px", marginTop: ".5rem" }}
-                label="Hour"
-                variant="outlined"
-                value={hour}
-                onChange={(e) => setHour(e.target.value)}
-              />
-              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Note
               </Typography>
               <TextField
@@ -201,7 +192,7 @@ export const Diary = () => {
                 style={{ width: "100%", marginTop: ".5rem" }}
                 label="Put your note here!"
                 variant="outlined"
-                onChange={(e) => setObservation(e.target.value)}
+                onChange={(e) => setNote(e.target.value)}
               />
               <Button
                 style={{ display: "flex", width: "250px", marginTop: ".5rem" }}
@@ -233,7 +224,9 @@ export const Diary = () => {
                 }}
               >
                 <List>
-                  {diary.map((entry, index) => (
+                  {diary
+                  .filter((entry) => entry.baby_id === selectedBaby.id)
+                  .map((entry, index) => (
                     <ListItem
                       key={index}
                       sx={{
@@ -246,7 +239,7 @@ export const Diary = () => {
                     >
                       <ListItemText
                         primary={`Date: ${formatDate(entry.date)}`}
-                        secondary={`Note: ${entry.observation}`}
+                        secondary={`Note: ${entry.note}`}
                         primaryTypographyProps={{ variant: "subtitle1" }}
                         secondaryTypographyProps={{
                           component: "div",

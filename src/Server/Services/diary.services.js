@@ -3,13 +3,13 @@ import AppError from "../Errors/App.error.js";
 
 export const createDiaryService = async (data) => {
   try {
-    const { baby_id, date, hour, observation } = data;
+    const { baby_id, date, note } = data;
     const query = `
-      INSERT INTO "diary" (baby_id, date, hour, observation)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO "diary" (baby_id, date, note)
+      VALUES ($1, $2, $3)
       RETURNING *;
     `;
-    const result = await client.query(query, [baby_id, date, hour, observation]);
+    const result = await client.query(query, [baby_id, date, note]);
     return result.rows[0];
   } catch (error) {
     throw new AppError("Error creating diary entry", error);
@@ -43,14 +43,14 @@ export const listDiaryByIdService = async (diaryId) => {
 
 export const updateDiaryByIdService = async (diaryId, data) => {
   try {
-    const { baby_id, date, hour, observation } = data;
+    const { baby_id, date, note } = data;
     const query = `
       UPDATE "diary"
-      SET baby_id = $1, date = $2, hour = $3, observation = $4
+      SET baby_id = $1, date = $2, note = $3
       WHERE id = $5
       RETURNING *;
     `;
-    const result = await client.query(query, [baby_id, date, hour, observation, diaryId]);
+    const result = await client.query(query, [baby_id, date, note, diaryId]);
 
     if (result.rows.length === 0) {
       return null;

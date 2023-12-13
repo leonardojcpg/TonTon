@@ -54,7 +54,6 @@ CREATE TABLE IF NOT EXISTS diary (
   id SERIAL PRIMARY KEY,
   baby_id INT NOT NULL,
   date DATE NOT NULL,
-  hour TIME NOT NULL,
-  observation TEXT NOT NULL,
+  note TEXT NOT NULL,
   FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
