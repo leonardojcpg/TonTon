@@ -66,7 +66,7 @@ export const Diary = () => {
           <Grid
             container
             spacing={3}
-            style={{ marginLeft: "3rem", margin: "0.5rem" }}
+            style={{ margin: "0 auto" }}
           >
             {/* Left Column */}
             <Grid item xs={12} sm={6}>
@@ -78,7 +78,7 @@ export const Diary = () => {
                 value={date}
                 onChange={(e) => setDate(e.target.value)}
               />
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Hour
               </Typography>
               <TextField
@@ -88,7 +88,7 @@ export const Diary = () => {
                 value={hour}
                 onChange={(e) => setHour(e.target.value)}
               />
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Observation
               </Typography>
               <TextField
@@ -100,7 +100,7 @@ export const Diary = () => {
                 onChange={(e) => setObservation(e.target.value)}
               />
               <Button
-                style={{ display: "flex", width: "250px", marginTop: "1rem" }}
+                style={{ display: "flex", width: "250px", marginTop: ".5rem" }}
                 variant="contained"
                 color="primary"
                 onClick={() => {

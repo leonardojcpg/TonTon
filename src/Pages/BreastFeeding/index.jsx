@@ -177,7 +177,7 @@ export const BreastFeeding = () => {
           <Grid
             container
             spacing={3}
-            style={{ marginLeft: "3rem", margin: "0 auto" }}
+            style={{ margin: "0 auto" }}
           >
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Feeding-Duration</Typography>

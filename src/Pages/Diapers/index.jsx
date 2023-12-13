@@ -140,7 +140,7 @@ export const Diapers = () => {
           <Grid
             container
             spacing={3}
-            style={{ marginLeft: "3rem", margin: "0 auto" }}
+            style={{ margin: "0 auto" }}
           >
             {/* Left Column */}
             <Grid item xs={12} sm={6}>
@@ -160,14 +160,14 @@ export const Diapers = () => {
                   </MenuItem>
                 ))}
               </Select>
-              <Typography variant="h5">Label</Typography>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>Label</Typography>
               <TextField
                 style={{ width: "250px", marginTop: ".5rem" }}
                 variant="outlined"
                 value={diapersLabel}
                 onChange={(e) => setDiapersLabel(e.target.value)}
               />
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Size
               </Typography>
               <Select
@@ -184,7 +184,7 @@ export const Diapers = () => {
                 <MenuItem value="xl">XL</MenuItem>
                 <MenuItem value="xxl">XXL</MenuItem>
               </Select>
-              <Typography variant="h5" style={{ marginTop: "1rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Quantity
               </Typography>
               <div

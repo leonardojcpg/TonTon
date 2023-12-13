@@ -167,7 +167,7 @@ export const Baby = () => {
           <Grid
             container
             spacing={3}
-            style={{ marginLeft: "3rem", margin: "0 auto" }}
+            style={{ margin: "0 auto" }}
           >
             {/* Left Column */}
             <Grid item xs={12} sm={6}>
