@@ -18,7 +18,6 @@ import { PageTitle } from "../../Components/PageTitle";
 import { useNavigate } from "react-router-dom";
 import { AxiosApi } from "../../Axios/axios.create";
 import { toast } from "react-toastify";
-import { Axios } from "axios";
 
 export const Diapers = () => {
   const { setDataInfo } = useBabyContext();

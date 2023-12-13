@@ -5,49 +5,137 @@ import {
   List,
   ListItem,
   ListItemText,
+  MenuItem,
   Paper,
+  Select,
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
+import { useNavigate } from "react-router-dom";
+import { AxiosApi } from "../../Axios/axios.create.js";
+
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const Diary = () => {
+  const navigate = useNavigate();
   const { setDataInfo } = useBabyContext();
   const [date, setDate] = useState("");
   const [hour, setHour] = useState("");
   const [observation, setObservation] = useState(0);
-  const [baby, setBaby] = useState([]);
 
-  const addFeed = () => {
-    if (date && hour && observation) {
-      const newBabyEntry = {
-        date: date,
-        hour: hour,
-        observation: observation,
-      };
-      setBaby([...baby, newBabyEntry]);
-      setDataInfo({
-        date: date,
-        hour: hour,
-        observation: observation,
-      });
-      setDate("");
-      setHour("");
-      setObservation("");
-    } else {
-      console.log(
-        `Dados de alimentação inválidos: date = ${date}, age = ${hour}, observation = ${observation}`
-      );
+  const [diary, setDiary] = useState([]);
+  const [babyList, setBabyList] = useState([]);
+  const [selectedBaby, setSelectedBaby] = useState("");
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
+  useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      navigate("/login");
     }
+  }, [navigate]);
+
+  useEffect(() => {
+    const fetchBabyList = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          toast.error("User has to authenticate");
+          return;
+        }
+        const response = await AxiosApi.get("/baby", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        setBabyList(response.data);
+      } catch (error) {
+        //console.error("Erro ao obter lista de bebês:", error.message);
+      }
+    };
+
+    const fetchDiary = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          toast.error("User has to authenticate");
+          return;
+        }
+        const response = await AxiosApi.get("/diary", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        setDiary(response.data);
+      } catch (error) {
+        console.log("Error trying to list diapers");
+      }
+    };
+
+    fetchDiary();
+    fetchBabyList();
+  }, []);
+
+  const addDiary = async () => {
+    try{
+      if (date && hour && observation) {
+        const currentDate = new Date().toISOString().split("T")[0];
+        console.log(currentDate)
+        const newDiaryEntry = {
+          date: currentDate,
+          hour: hour,
+          observation: observation,
+          baby_id: selectedBaby.id,
+        };
+        const response = await AxiosApi.post("/diary", newDiaryEntry);
+        if (response.status === 200) {
+          const createdDiary = await response.data;
+          setDiary([...diary, createdDiary]);
+          setDataInfo({
+            date: currentDate,
+            hour: hour,
+            observation: observation,
+            baby_id: selectedBaby.id,
+          });
+          setDate("");
+          setHour("");
+          setObservation("");
+        }
+      } else {
+        console.error(
+          `Dados de alimentação inválidos: date = ${currentDate}, age = ${hour}, observation = ${observation}`
+        );
+      }
+    } catch(error){
+      //console.error("error creating diary")
+    }
+  };
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
+  const formatDate = (inputDate) => {
+    const date = new Date(inputDate);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+
+    const formattedDay = day.toString().padStart(2, "0");
+    const formattedMonth = month.toString().padStart(2, "0");
+
+    return `${formattedDay}/${formattedMonth}/${year}`;
   };
 
   return (
     <>
       <ResponsiveHeader />
-      <PageTitle pageTitle="Baby" />
+      <PageTitle pageTitle="Diary" />
       <Paper
         elevation={3}
         style={{
@@ -63,20 +151,36 @@ export const Diary = () => {
             padding: "1rem",
           }}
         >
-          <Grid
-            container
-            spacing={3}
-            style={{ margin: "0 auto" }}
-          >
+          <Grid container spacing={3} style={{ margin: "0 auto" }}>
             {/* Left Column */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Date</Typography>
-              <TextField
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
+                Select Baby
+              </Typography>
+              <Select
                 style={{ width: "250px", marginTop: ".5rem" }}
-                label="Date"
+                label="Select Baby"
                 variant="outlined"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
+                value={selectedBaby}
+                onChange={(e) => setSelectedBaby(e.target.value)}
+              >
+                {babyList.map((baby) => (
+                  <MenuItem key={baby.id} value={baby}>
+                    {baby.name}
+                  </MenuItem>
+                ))}
+              </Select>
+
+              <Typography
+                variant="h5"
+                style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
+              >
+                Select Date
+              </Typography>
+              <DatePicker
+                selected={selectedDate}
+                onChange={handleDateChange}
+                dateFormat="yyyy/MM/dd"
               />
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Hour
@@ -89,13 +193,13 @@ export const Diary = () => {
                 onChange={(e) => setHour(e.target.value)}
               />
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
-                Observation
+                Note
               </Typography>
               <TextField
                 multiline
-                rows={10}
+                rows={5}
                 style={{ width: "100%", marginTop: ".5rem" }}
-                label="Put your observation here!"
+                label="Put your note here!"
                 variant="outlined"
                 onChange={(e) => setObservation(e.target.value)}
               />
@@ -104,7 +208,7 @@ export const Diary = () => {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  addFeed();
+                  addDiary();
                 }}
                 sx={{
                   marginTop: 1,
@@ -116,12 +220,12 @@ export const Diary = () => {
                   },
                 }}
               >
-                Add Observation
+                Add Note
               </Button>
             </Grid>
             {/* Right Column */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5">Observation:</Typography>
+              <Typography variant="h5">Note:</Typography>
               <div
                 style={{
                   maxHeight: "50vh",
@@ -129,7 +233,7 @@ export const Diary = () => {
                 }}
               >
                 <List>
-                  {baby.map((entry, index) => (
+                  {diary.map((entry, index) => (
                     <ListItem
                       key={index}
                       sx={{
@@ -141,8 +245,8 @@ export const Diary = () => {
                       }}
                     >
                       <ListItemText
-                        primary={`Date: ${entry.date}`}
-                        secondary={`Observation: ${entry.observation}`}
+                        primary={`Date: ${formatDate(entry.date)}`}
+                        secondary={`Note: ${entry.observation}`}
                         primaryTypographyProps={{ variant: "subtitle1" }}
                         secondaryTypographyProps={{
                           component: "div",

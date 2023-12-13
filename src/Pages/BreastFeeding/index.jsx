@@ -19,9 +19,8 @@ import { useNavigate } from "react-router-dom";
 import { AxiosApi } from "../../Axios/axios.create";
 import { toast } from "react-toastify";
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const BreastFeeding = () => {
   const { setDataInfo } = useBabyContext();
@@ -34,8 +33,6 @@ export const BreastFeeding = () => {
   const [babyList, setBabyList] = useState([]);
   const [selectedBaby, setSelectedBaby] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -96,8 +93,7 @@ export const BreastFeeding = () => {
       }
 
       if (feedTime && breastSide && feedHour && selectedBaby) {
-
-        const currentDate = new Date().toISOString().split('T')[0];
+        const currentDate = new Date().toISOString().split("T")[0];
         const newFeedEntry = {
           duration: feedTime,
           side: breastSide,
@@ -110,16 +106,20 @@ export const BreastFeeding = () => {
 
         const createdBreastFeeding = await response.json();
         setFeed([...feed, createdBreastFeeding]);
-        setDataInfo({ duration: feedTime, side: breastSide, hour: feedHour, date: currentDate });
+        setDataInfo({
+          duration: feedTime,
+          side: breastSide,
+          hour: feedHour,
+          date: currentDate,
+        });
         setFeedTime("");
         setBreastSide("");
         setFeedHour("");
 
-        if(response.status === 200){
-          toast.success("Feed added successfully")
-          return
+        if (response.status === 200) {
+          toast.success("Feed added successfully");
+          return;
         }
-
       } else {
         console.log("Erro, invalid data.");
       }
@@ -150,10 +150,9 @@ export const BreastFeeding = () => {
 
     const formattedDay = day.toString().padStart(2, "0");
     const formattedMonth = month.toString().padStart(2, "0");
-  
+
     return `${formattedDay}/${formattedMonth}/${year}`;
   };
-  
 
   return (
     <>
@@ -174,11 +173,7 @@ export const BreastFeeding = () => {
             padding: "1rem",
           }}
         >
-          <Grid
-            container
-            spacing={3}
-            style={{ margin: "0 auto" }}
-          >
+          <Grid container spacing={3} style={{ margin: "0 auto" }}>
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Feeding-Duration</Typography>
               <div
@@ -267,7 +262,10 @@ export const BreastFeeding = () => {
                   </MenuItem>
                 ))}
               </Select>
-              <Typography variant="h5" style={{ marginTop: ".5rem", marginBottom: ".5rem" }}>
+              <Typography
+                variant="h5"
+                style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
+              >
                 Select Date
               </Typography>
               <DatePicker
@@ -302,35 +300,35 @@ export const BreastFeeding = () => {
                 }}
               >
                 <List>
-                  {feed.filter((entry) => entry.baby_id === selectedBaby.id)
-                  .map((entry, index) => (
-                    <ListItem
-                      key={index}
-                      sx={{
-                        border: "1px solid #ccc",
-                        borderRadius: "5px",
-                        marginBottom: "0.5rem",
-                        padding: "0.5rem",
-                        backgroundColor: "#f5f5f5",
-                      }}
-                    >
-                      <ListItemText
-                        primary={`Duration: ${entry.duration} minutes`}
-                        secondary={
-                          <>
-                            Breast-Side:{" "}
-                            {entry.side.charAt(0).toUpperCase() +
-                              entry.side.slice(1).toLowerCase()}
-                            <br />
-                            Dia: {entry.hour + " h"}
-                            <br />
-                            Date: {formatDate(entry.date)}
-
-                          </>
-                        }
-                      />
-                    </ListItem>
-                  ))}
+                  {feed
+                    .filter((entry) => entry.baby_id === selectedBaby.id)
+                    .map((entry, index) => (
+                      <ListItem
+                        key={index}
+                        sx={{
+                          border: "1px solid #ccc",
+                          borderRadius: "5px",
+                          marginBottom: "0.5rem",
+                          padding: "0.5rem",
+                          backgroundColor: "#f5f5f5",
+                        }}
+                      >
+                        <ListItemText
+                          primary={`Duration: ${entry.duration} minutes`}
+                          secondary={
+                            <>
+                              Breast-Side:{" "}
+                              {entry.side.charAt(0).toUpperCase() +
+                                entry.side.slice(1).toLowerCase()}
+                              <br />
+                              Dia: {entry.hour + " h"}
+                              <br />
+                              Date: {formatDate(entry.date)}
+                            </>
+                          }
+                        />
+                      </ListItem>
+                    ))}
                 </List>
               </div>
             </Grid>
