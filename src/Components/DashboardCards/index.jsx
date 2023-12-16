@@ -60,7 +60,6 @@ export const DashboardCards = () => {
         }
         const response = await AxiosApi.get("/baby");
         const listedBabies = response.data;
-        
         setBabies(listedBabies);
       } catch (error) {
         console.error("Error trying to get babyId");
@@ -79,6 +78,7 @@ export const DashboardCards = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
+
         setFeed(response.data);
       } catch (error) {
         console.error("Erro ao obter lista de bebês:", error.message);
@@ -133,35 +133,35 @@ export const DashboardCards = () => {
           .filter((baby) => baby.user_id == userId)
           .slice(0, 1)
           .map((baby) => (
-            <div key={baby.id}>
+            <div key={baby.id} onClick={() => openModal(baby)}>
               <h1>{baby.name}</h1>
               <span>{baby.blood_type.toUpperCase()}</span>
             </div>
           ))}
       </div>
       <div className="cards">
-        {feedList
-          .filter((feed) => feed.user_id == userId)
-          .map((feedEntry, index) => (
-            <div key={index}>
-              <h1>{feedEntry.name}</h1>
-            </div>
-          ))}
+        <h1>Last Breast Side</h1>
+        {feedList.slice(-1).map((feed) => (
+          <div key={feed.id}>
+            <span>{feed.side.toUpperCase()}</span>
+          </div>
+        ))}
       </div>
       <div className="cards">
-      <h1>Last Nap</h1>
-        {sleepList
-          .filter((sleep) => sleep.baby_id == userId)
-          .map((entry, index) => (
-            <span key={index}>{entry.name}</span>
-          ))}
+        <h1>Last Nap</h1>
+      {sleepList.slice(-1).map((feed) => (
+          <div key={feed.id}>
+            <span>{feed.duration + "h"}</span>
+          </div>
+        ))}
       </div>
       <div className="cards">
-        {diapersList
-          .filter((diaper) => diaper.user_id == userId)
-          .map((entry, index) => (
-            <span key={index}>{entry.label}</span>
-          ))}
+      <h1>Diapers</h1>
+      {diapersList.slice(-1).map((feed) => (
+          <div key={feed.id}>
+            <span>{feed.quantity}</span>
+          </div>
+        ))}
       </div>
     </div>
   );
