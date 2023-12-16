@@ -24,6 +24,10 @@ export const listBabyService = async (req, res) => {
 
 export const listBabiesByIdService = async (babyId) => {
   try {
+    if (babyId === null || isNaN(babyId) || !Number.isInteger(Number(babyId))) {
+      throw new AppError("Invalid babyId parameter");
+    }
+
     const query = "SELECT * FROM baby WHERE id = $1";
 
     const result = await client.query(query, [babyId]);
@@ -39,6 +43,7 @@ export const listBabiesByIdService = async (babyId) => {
     throw new Error("Error fetching baby by ID");
   }
 };
+
 
 export const updateBabyService = async (babyId, data) => {
   const updateBabyQueryFormat = format(

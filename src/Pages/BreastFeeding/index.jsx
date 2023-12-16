@@ -302,7 +302,8 @@ export const BreastFeeding = () => {
                 }}
               >
                 <List>
-                  {feed.filter((entry) => entry.baby_id === selectedBaby.id)
+                  {feed
+                  .filter((entry) => entry.baby_id === selectedBaby.id)
                   .map((entry, index) => (
                     <ListItem
                       key={index}

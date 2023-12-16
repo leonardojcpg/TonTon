@@ -144,7 +144,6 @@ export const Baby = () => {
     }
   };
 
-
   return (
     <>
       <ResponsiveHeader />
@@ -164,11 +163,7 @@ export const Baby = () => {
             padding: "1rem",
           }}
         >
-          <Grid
-            container
-            spacing={3}
-            style={{ margin: "0 auto" }}
-          >
+          <Grid container spacing={3} style={{ margin: "0 auto" }}>
             {/* Left Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Name</Typography>
@@ -321,7 +316,7 @@ export const Baby = () => {
                             <br />
                             Weight: {baby.weight + " kg"}
                             <br />
-                            Blood-type: {baby.blood_type}
+                            Blood-type: {baby.blood_type.toUpperCase()}
                           </>
                         }
                       />

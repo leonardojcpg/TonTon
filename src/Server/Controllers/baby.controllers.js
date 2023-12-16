@@ -36,6 +36,10 @@ export const listBabiesByIdController = async (req, res) => {
   const babyId = req.params.babyId;
 
   try {
+    if (babyId === null || isNaN(babyId) || !Number.isInteger(Number(babyId))) {
+      return res.status(400).json({ error: "Invalid babyId parameter" });
+    }
+
     const baby = await listBabiesByIdService(babyId);
 
     if (!baby) {
@@ -48,6 +52,7 @@ export const listBabiesByIdController = async (req, res) => {
     return res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 export const updateBabyController = async (req, res) => {
   const baby = await updateBabyService(req.params.babyId, req.body);
