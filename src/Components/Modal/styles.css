@@ -4,7 +4,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.35); /* Ajuste a opacidade conforme necessário */
+  background: rgba(0, 0, 0, 0.65); /* Ajuste a opacidade conforme necessário */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -16,7 +16,7 @@
   max-width: 37.5rem;
   width: 100%;
   padding: 1.25rem;
-  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.3);
   border-radius: 1rem;
   z-index: 1001;
 }
@@ -49,14 +49,15 @@
 }
 
 button{
-  width: 1.5625rem;
-  height: 1.5625rem;
+  width: 2.1875rem;
+  height: 2.1875rem;
   border: none;
   background-color: #5d915d;
   border-radius: .3125rem;
   cursor: pointer;
   text-align: center;
   color: #fff;
+  font-size: 1.25rem;
 }
 
 

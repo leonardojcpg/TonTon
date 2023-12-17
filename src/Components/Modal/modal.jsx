@@ -7,7 +7,9 @@ export const Modal = ({ isOpen, closeModal, content }) => {
   return (
     <div className="modal-container">
       <div className="modal">
-        {content}
+        <div className="modal-content">
+          {content}
+        </div>
         <button onClick={closeModal}>
           <span>x</span>
         </button>

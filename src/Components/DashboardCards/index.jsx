@@ -2,6 +2,7 @@ import "./styles.css";
 import { useEffect, useState } from "react";
 import { AxiosApi } from "../../Axios/axios.create";
 import { Modal } from "../Modal/modal";
+import { format } from 'date-fns';
 
 const decodeJwtToken = (token) => {
   try {
@@ -28,8 +29,10 @@ export const DashboardCards = () => {
   const [babies, setBabies] = useState([]);
   const [userId, setUserId] = useState(null);
 
-  const [selectedBaby, setSelectedBaby] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isBabyModalOpen, setIsBabyModalOpen] = useState(false);
+  const [isFeedModalOpen, setIsFeedModalOpen] = useState(false);
+  const [isSleepModalOpen, setIsSleepModalOpen] = useState(false);
+  const [isDiapersModalOpen, setIsDiapersModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -130,14 +133,36 @@ export const DashboardCards = () => {
     fetchDiapersList();
   }, []);
 
-  const openModal = (baby) => {
-    setSelectedBaby(baby);
-    setIsModalOpen(true);
+  const openBabyModal = () => {
+    setIsBabyModalOpen(true);
   };
 
-  const closeModal = () => {
-    setSelectedBaby(null);
-    setIsModalOpen(false);
+  const openFeedModal = () => {
+    setIsFeedModalOpen(true);
+  };
+
+  const openSleepModal = () => {
+    setIsSleepModalOpen(true);
+  };
+
+  const openDiapersModal = () => {
+    setIsDiapersModalOpen(true);
+  };
+
+  const closeBabyModal = () => {
+    setIsBabyModalOpen(false);
+  };
+
+  const closeFeedModal = () => {
+    setIsFeedModalOpen(false);
+  };
+
+  const closeSleepModal = () => {
+    setIsSleepModalOpen(false);
+  };
+
+  const closeDiapersModal = () => {
+    setIsDiapersModalOpen(false);
   };
 
   return (
@@ -147,21 +172,21 @@ export const DashboardCards = () => {
           .filter((baby) => baby.user_id == userId)
           .slice(0, 1)
           .map((baby) => (
-            <div key={baby.id} onClick={() => openModal(baby)}>
+            <div key={baby.id} onClick={openBabyModal}>
               <h1>{baby.name}</h1>
               <span>{baby.blood_type.toUpperCase()}</span>
             </div>
           ))}
       </div>
-      <div className="cards">
+      <div className="cards" onClick={openFeedModal}>
         <h1>Last Breast Side</h1>
         {feedList.slice(-1).map((feed) => (
-          <div key={feed.id}>
+          <div key={feed.id} >
             <span>{feed.side.toUpperCase()}</span>
           </div>
         ))}
       </div>
-      <div className="cards">
+      <div className="cards" onClick={openSleepModal}>
         <h1>Last Nap</h1>
         {sleepList.slice(-1).map((feed) => (
           <div key={feed.id}>
@@ -169,7 +194,7 @@ export const DashboardCards = () => {
           </div>
         ))}
       </div>
-      <div className="cards">
+      <div className="cards" onClick={openDiapersModal}>
         <h1>Diapers</h1>
         {diapersList.slice(-1).map((feed) => (
           <div key={feed.id}>
@@ -178,8 +203,8 @@ export const DashboardCards = () => {
         ))}
       </div>
       <Modal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
+        isOpen={isBabyModalOpen}
+        closeModal={closeBabyModal}
         content={
           <div className="modal-content">
             {babies
@@ -188,68 +213,85 @@ export const DashboardCards = () => {
               .map((baby) => (
                 <div key={baby.id}>
                   <h1>{baby.name}</h1>
-                  <span>Age: <p>{baby.age + " months"}</p></span>
-                  <span>Weight: <p>{baby.weight + " kg"}</p></span>
-                  <span>Blood Type: <p>{baby.blood_type.toUpperCase()}</p></span>
+                  <span>
+                    Age: <p>{baby.age + " months"}</p>
+                  </span>
+                  <span>
+                    Weight: <p>{baby.weight + " kg"}</p>
+                  </span>
+                  <span>
+                    Blood Type: <p>{baby.blood_type.toUpperCase()}</p>
+                  </span>
                 </div>
               ))}
           </div>
         }
       />
-        <Modal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
+      <Modal
+        isOpen={isFeedModalOpen}
+        closeModal={closeFeedModal}
         content={
           <div className="modal-content">
             {feedList
-              .filter((feed) => feed.user_id == userId)
-              .slice(0, 1)
-              .map((baby) => (
-                <div key={baby.id}>
-                  <h1>{baby.name}</h1>
-                  <span>Age: <p>{baby.age + " months"}</p></span>
-                  <span>Weight: <p>{baby.weight + " kg"}</p></span>
-                  <span>Blood Type: <p>{baby.blood_type.toUpperCase()}</p></span>
-                </div>
-              ))}
+            .slice(-1)
+            .map((feed) => (
+              <div key={feed.id}>
+                <h1>Last Breast</h1>
+                <span>
+                  Side: <p>{feed.side}</p>
+                </span>
+                <span>
+                  Hour: <p>{feed.hour}</p>
+                </span>
+                <span>
+                  Date: <p>{format(new Date(feed.date), 'dd/MM/yyyy')}</p>
+                </span>
+              </div>
+            ))}
           </div>
         }
       />
-        <Modal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
+      <Modal
+        isOpen={isSleepModalOpen}
+        closeModal={closeSleepModal}
         content={
           <div className="modal-content">
-            {babies
-              .filter((baby) => baby.user_id == userId)
-              .slice(0, 1)
-              .map((baby) => (
-                <div key={baby.id}>
-                  <h1>{baby.name}</h1>
-                  <span>Age: <p>{baby.age + " months"}</p></span>
-                  <span>Weight: <p>{baby.weight + " kg"}</p></span>
-                  <span>Blood Type: <p>{baby.blood_type.toUpperCase()}</p></span>
-                </div>
-              ))}
+            {sleepList.slice(-1).map((sleep) => (
+              <div key={sleep.id}>
+                <h1>Last Nap</h1>
+                <span>
+                  Date: <p>{format(new Date(sleep.date), 'dd/MM/yyyy')}</p>
+                </span>
+                <span>
+                  Start Time: <p>{sleep.start_time}</p>
+                </span>
+                <span>
+                  Duration: <p>{sleep.duration + "h"}</p>
+                </span>
+              </div>
+            ))}
           </div>
         }
       />
-        <Modal
-        isOpen={isModalOpen}
-        closeModal={closeModal}
+      <Modal
+        isOpen={isDiapersModalOpen}
+        closeModal={closeDiapersModal}
         content={
           <div className="modal-content">
-            {babies
-              .filter((baby) => baby.user_id == userId)
-              .slice(0, 1)
-              .map((baby) => (
-                <div key={baby.id}>
-                  <h1>{baby.name}</h1>
-                  <span>Age: <p>{baby.age + " months"}</p></span>
-                  <span>Weight: <p>{baby.weight + " kg"}</p></span>
-                  <span>Blood Type: <p>{baby.blood_type.toUpperCase()}</p></span>
-                </div>
-              ))}
+            {diapersList.slice(-1).map((diaper) => (
+              <div key={diaper.id}>
+                <h1>Diapers</h1>
+                <span>
+                  Label: <p>{diaper.label}</p>
+                </span>
+                <span>
+                  Size: <p>{diaper.size.toUpperCase()}</p>
+                </span>
+                <span>
+                  Quantity: <p>{diaper.quantity}</p>
+                </span>
+              </div>
+            ))}
           </div>
         }
       />
