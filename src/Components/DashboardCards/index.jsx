@@ -1,6 +1,7 @@
 import "./styles.css";
 import { useEffect, useState } from "react";
 import { AxiosApi } from "../../Axios/axios.create";
+import { Modal } from "../Modal/modal";
 
 const decodeJwtToken = (token) => {
   try {
@@ -26,6 +27,9 @@ export const DashboardCards = () => {
   const [diapersList, setDiapers] = useState([]);
   const [babies, setBabies] = useState([]);
   const [userId, setUserId] = useState(null);
+
+  const [selectedBaby, setSelectedBaby] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -126,6 +130,16 @@ export const DashboardCards = () => {
     fetchDiapersList();
   }, []);
 
+  const openModal = (baby) => {
+    setSelectedBaby(baby);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedBaby(null);
+    setIsModalOpen(false);
+  };
+
   return (
     <div className="card-container">
       <div className="cards">
@@ -149,20 +163,39 @@ export const DashboardCards = () => {
       </div>
       <div className="cards">
         <h1>Last Nap</h1>
-      {sleepList.slice(-1).map((feed) => (
+        {sleepList.slice(-1).map((feed) => (
           <div key={feed.id}>
             <span>{feed.duration + "h"}</span>
           </div>
         ))}
       </div>
       <div className="cards">
-      <h1>Diapers</h1>
-      {diapersList.slice(-1).map((feed) => (
+        <h1>Diapers</h1>
+        {diapersList.slice(-1).map((feed) => (
           <div key={feed.id}>
             <span>{feed.quantity}</span>
           </div>
         ))}
       </div>
+      <Modal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        content={
+          <div className="modal-content">
+            {babies
+              .filter((baby) => baby.user_id == userId)
+              .slice(0, 1)
+              .map((baby) => (
+                <div key={baby.id}>
+                  <h1>{baby.name}</h1>
+                  <span>Age: <p>{baby.age + " months"}</p></span>
+                  <span>Weight: <p>{baby.weight + " kg"}</p></span>
+                  <span>Blood Type: <p>{baby.blood_type.toUpperCase()}</p></span>
+                </div>
+              ))}
+          </div>
+        }
+      />
     </div>
   );
 };
