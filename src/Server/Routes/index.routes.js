@@ -7,6 +7,7 @@ import { sleepRoutes } from "./sleep.routes.js";
 import { diaperRoutes } from "./diapers.routes.js";
 import { diaryRoutes } from "./diary.routes.js";
 import { sessionRouter } from "./session.router.js";
+import {weightGainRoutes} from "./weightGain.routes.js";
 
 export const routes = Router()
 
@@ -18,3 +19,4 @@ routes.use("/sleep", sleepRoutes)
 routes.use("/diapers", diaperRoutes)
 routes.use("/diary", diaryRoutes)
 routes.use("/login", sessionRouter)
+routes.use("/weight_gain", weightGainRoutes )

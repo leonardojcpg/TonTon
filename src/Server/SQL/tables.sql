@@ -57,3 +57,13 @@ CREATE TABLE IF NOT EXISTS diary (
   note TEXT NOT NULL,
   FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
+
+CREATE TABLE IF NOT EXISTS weight_gain (
+  id SERIAL PRIMARY KEY,
+  baby_id INTEGER REFERENCES baby(id),
+  weight DECIMAL(5, 2) NOT NULL,
+  date DATE NOT NULL
+);
+
+
+
