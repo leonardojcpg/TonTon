@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles.css"
+import "./styles.css";
 
 export const Modal = ({ isOpen, closeModal, content }) => {
   if (!isOpen) return null;
@@ -8,7 +8,7 @@ export const Modal = ({ isOpen, closeModal, content }) => {
     <div className="modal-container">
       <div className="modal">
         {content}
-      <button onClick={closeModal}>
+        <button onClick={closeModal}>
           <span>x</span>
         </button>
       </div>

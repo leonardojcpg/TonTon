@@ -196,6 +196,63 @@ export const DashboardCards = () => {
           </div>
         }
       />
+        <Modal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        content={
+          <div className="modal-content">
+            {feedList
+              .filter((feed) => feed.user_id == userId)
+              .slice(0, 1)
+              .map((baby) => (
+                <div key={baby.id}>
+                  <h1>{baby.name}</h1>
+                  <span>Age: <p>{baby.age + " months"}</p></span>
+                  <span>Weight: <p>{baby.weight + " kg"}</p></span>
+                  <span>Blood Type: <p>{baby.blood_type.toUpperCase()}</p></span>
+                </div>
+              ))}
+          </div>
+        }
+      />
+        <Modal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        content={
+          <div className="modal-content">
+            {babies
+              .filter((baby) => baby.user_id == userId)
+              .slice(0, 1)
+              .map((baby) => (
+                <div key={baby.id}>
+                  <h1>{baby.name}</h1>
+                  <span>Age: <p>{baby.age + " months"}</p></span>
+                  <span>Weight: <p>{baby.weight + " kg"}</p></span>
+                  <span>Blood Type: <p>{baby.blood_type.toUpperCase()}</p></span>
+                </div>
+              ))}
+          </div>
+        }
+      />
+        <Modal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        content={
+          <div className="modal-content">
+            {babies
+              .filter((baby) => baby.user_id == userId)
+              .slice(0, 1)
+              .map((baby) => (
+                <div key={baby.id}>
+                  <h1>{baby.name}</h1>
+                  <span>Age: <p>{baby.age + " months"}</p></span>
+                  <span>Weight: <p>{baby.weight + " kg"}</p></span>
+                  <span>Blood Type: <p>{baby.blood_type.toUpperCase()}</p></span>
+                </div>
+              ))}
+          </div>
+        }
+      />
     </div>
   );
 };
