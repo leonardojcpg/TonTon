@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
   Button,
-  ButtonBase,
   Container,
   Grid,
   List,
@@ -51,8 +50,8 @@ export const Baby = () => {
   const [babyAge, setBabyAge] = useState("");
   const [babyWeight, setBabyWeight] = useState(0);
   const [babyBloodType, setBabyBloodType] = useState("");
-  const [selectedParent, setSelectedParent] = useState("");
 
+  const [selectedParent, setSelectedParent] = useState("");
   const [userId, setUserId] = useState(null);
 
   const [babies, setBabies] = useState([]);
@@ -346,35 +345,39 @@ export const Baby = () => {
                 }}
               >
                 <List>
-                  {babies.filter((baby) => baby.user_id == userId).map((baby, index) => (
-                    <ListItem
-                      key={index}
-                      sx={{
-                        border: "1px solid #ccc",
-                        width: "500px",
-                        borderRadius: "7px",
-                        marginBottom: "0.5rem",
-                        margin: "5px 0",
-                        backgroundColor: "#c5e2c1",
-                      }}
-                    >
-                      <ListItemText
-                        primary={`${baby.name}`}
-                        secondary={
-                          <>
-                            <strong>Age: </strong>{baby.age} months
-                            <br />
-                            <strong>Weight: </strong>{baby.weight + " kg"}
-                            <br />
-                            <strong>Blood-type: </strong>{baby.blood_type.toUpperCase()}
-                          </>
-                        }
-                      />
-                    </ListItem>
-                  ))}
+                  {babies
+                    .filter((baby) => baby.user_id == userId)
+                    .map((baby, index) => (
+                      <ListItem
+                        key={index}
+                        sx={{
+                          border: "1px solid #ccc",
+                          width: "500px",
+                          borderRadius: "7px",
+                          marginBottom: "0.5rem",
+                          margin: "5px 0",
+                          backgroundColor: "#c5e2c1",
+                        }}
+                      >
+                        <ListItemText
+                          primary={`${baby.name}`}
+                          secondary={
+                            <>
+                              <strong>Age: </strong>
+                              {baby.age} months
+                              <br />
+                              <strong>Weight: </strong>
+                              {baby.weight + " kg"}
+                              <br />
+                              <strong>Blood-type: </strong>
+                              {baby.blood_type.toUpperCase()}
+                            </>
+                          }
+                        />
+                      </ListItem>
+                    ))}
                 </List>
               </div>
-
               <Typography variant="h5">Created Baby Info:</Typography>
               <div
                 style={{

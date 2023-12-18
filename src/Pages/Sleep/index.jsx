@@ -270,10 +270,11 @@ export const Sleep = () => {
                       key={index}
                       sx={{
                         border: "1px solid #ccc",
-                        borderRadius: "5px",
+                        width: "500px",
+                        borderRadius: "7px",
                         marginBottom: "0.5rem",
-                        padding: "0.5rem",
-                        backgroundColor: "#e9e9e9",
+                        margin: "5px 0",
+                        backgroundColor: "#c5e2c1",
                       }}
                     >
                       <ListItemText

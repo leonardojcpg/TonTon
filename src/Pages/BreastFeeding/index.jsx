@@ -309,10 +309,11 @@ export const BreastFeeding = () => {
                       key={index}
                       sx={{
                         border: "1px solid #ccc",
-                        borderRadius: "5px",
+                        width: "500px",
+                        borderRadius: "7px",
                         marginBottom: "0.5rem",
-                        padding: "0.5rem",
-                        backgroundColor: "#f5f5f5",
+                        margin: "5px 0",
+                        backgroundColor: "#c5e2c1",
                       }}
                     >
                       <ListItemText
