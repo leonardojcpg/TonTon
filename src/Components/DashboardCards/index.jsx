@@ -2,7 +2,7 @@ import "./styles.css";
 import { useEffect, useState } from "react";
 import { AxiosApi } from "../../Axios/axios.create";
 import { Modal } from "../Modal/modal";
-import { format } from 'date-fns';
+import { format } from "date-fns";
 
 const decodeJwtToken = (token) => {
   try {
@@ -28,6 +28,7 @@ export const DashboardCards = () => {
   const [diapersList, setDiapers] = useState([]);
   const [babies, setBabies] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [diaperGroups, setDiaperGroups] = useState([]);
 
   const [isBabyModalOpen, setIsBabyModalOpen] = useState(false);
   const [isFeedModalOpen, setIsFeedModalOpen] = useState(false);
@@ -108,23 +109,40 @@ export const DashboardCards = () => {
         console.error("Erro ao obter lista de bebês:", error.message);
       }
     };
-    const fetchDiapersList = async () => {
-      try {
-        const authToken = localStorage.getItem("authToken");
-        if (!authToken) {
-          console.error("User has to authenticate");
-          return;
-        }
-        const response = await AxiosApi.get("/diapers", {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-        setDiapers(response.data);
-      } catch (error) {
-        console.error("Erro ao obter lista de bebês:", error.message);
+const fetchDiapersList = async () => {
+  try {
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      console.error("User has to authenticate");
+      return;
+    }
+    const response = await AxiosApi.get("/diapers", {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    setDiapers(response.data);
+
+    const groups = response.data.reduce((groups, diaper) => {
+      const { label, quantity, size } = diaper;
+
+      if (!groups[label]) {
+        groups[label] = { label, diapers: [] };
       }
-    };
+
+      groups[label].diapers.push({
+        size,
+        quantity,
+      });
+
+      return groups;
+    }, {});
+    setDiaperGroups(Object.values(groups));
+  } catch (error) {
+    console.error("Erro ao obter lista de fraldas:", error.message);
+  }
+};
+
 
     fetchingBabies();
     fetchUserData();
@@ -181,7 +199,7 @@ export const DashboardCards = () => {
       <div className="cards" onClick={openFeedModal}>
         <h1>Last Breast Side</h1>
         {feedList.slice(-1).map((feed) => (
-          <div key={feed.id} >
+          <div key={feed.id}>
             <span>{feed.side.toUpperCase()}</span>
           </div>
         ))}
@@ -196,12 +214,12 @@ export const DashboardCards = () => {
       </div>
       <div className="cards" onClick={openDiapersModal}>
         <h1>Diapers</h1>
-        {diapersList.slice(-1).map((feed) => (
-          <div key={feed.id}>
-            <span>{feed.quantity}</span>
-          </div>
-        ))}
-      </div>
+  {diapersList.map((diaper) => (
+    <div key={diaper.id}>
+      <span>{diapersList.reduce((total, diaper) => total + diaper.quantity, 0)}</span>
+    </div>
+  ))}
+</div>
       <Modal
         isOpen={isBabyModalOpen}
         closeModal={closeBabyModal}
@@ -232,9 +250,7 @@ export const DashboardCards = () => {
         closeModal={closeFeedModal}
         content={
           <div className="modal-content">
-            {feedList
-            .slice(-1)
-            .map((feed) => (
+            {feedList.slice(-1).map((feed) => (
               <div key={feed.id}>
                 <h1>Last Breast</h1>
                 <span>
@@ -244,7 +260,7 @@ export const DashboardCards = () => {
                   Hour: <p>{feed.hour}</p>
                 </span>
                 <span>
-                  Date: <p>{format(new Date(feed.date), 'dd/MM/yyyy')}</p>
+                  Date: <p>{format(new Date(feed.date), "dd/MM/yyyy")}</p>
                 </span>
               </div>
             ))}
@@ -260,7 +276,7 @@ export const DashboardCards = () => {
               <div key={sleep.id}>
                 <h1>Last Nap</h1>
                 <span>
-                  Date: <p>{format(new Date(sleep.date), 'dd/MM/yyyy')}</p>
+                  Date: <p>{format(new Date(sleep.date), "dd/MM/yyyy")}</p>
                 </span>
                 <span>
                   Start Time: <p>{sleep.start_time}</p>
@@ -273,28 +289,34 @@ export const DashboardCards = () => {
           </div>
         }
       />
-      <Modal
-        isOpen={isDiapersModalOpen}
-        closeModal={closeDiapersModal}
-        content={
-          <div className="modal-content">
-            {diapersList.slice(-1).map((diaper) => (
-              <div key={diaper.id}>
-                <h1>Diapers</h1>
+<Modal
+  isOpen={isDiapersModalOpen}
+  closeModal={closeDiapersModal}
+  content={
+    <div className="modal-content">
+      <h1>Diapers</h1>
+      {diaperGroups.map((diapersGroup) => (
+        <div key={diapersGroup.label}>
+          <span>
+            Label: <p>{diapersGroup.label}</p>
+          </span>
+          <span>
+            {diapersGroup.diapers.map((diaper, index) => (
+              <div key={index}>
                 <span>
-                  Label: <p>{diaper.label}</p>
-                </span>
-                <span>
-                  Size: <p>{diaper.size.toUpperCase()}</p>
+                  Size: <p>{diaper.size}</p>
                 </span>
                 <span>
                   Quantity: <p>{diaper.quantity}</p>
                 </span>
               </div>
             ))}
-          </div>
-        }
-      />
+          </span>
+        </div>
+      ))}
+    </div>
+  }
+/>
     </div>
   );
 };
