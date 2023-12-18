@@ -19,6 +19,24 @@ import { PageTitle } from "../../Components/PageTitle";
 import { AxiosApi } from "../../Axios/axios.create";
 import { useNavigate } from "react-router-dom";
 
+const decodeJwtToken = (token) => {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+        .join("")
+    );
+
+    return JSON.parse(jsonPayload);
+  } catch (error) {
+    console.error("Erro ao decodificar token JWT:", error.message);
+    return null;
+  }
+};
+
 export const Baby = () => {
   const navigate = useNavigate();
   useEffect(() => {
@@ -34,6 +52,10 @@ export const Baby = () => {
   const [babyWeight, setBabyWeight] = useState(0);
   const [babyBloodType, setBabyBloodType] = useState("");
   const [selectedParent, setSelectedParent] = useState("");
+
+  const [userId, setUserId] = useState(null);
+
+  const [babies, setBabies] = useState([]);
   const [babyList, setBabyList] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
 
@@ -42,8 +64,13 @@ export const Baby = () => {
       try {
         const authToken = localStorage.getItem("authToken");
         if (!authToken) {
-          console.error("Usuário não autenticado.");
+          console.error("User has to authenticate");
           return;
+        }
+        const decodedToken = decodeJwtToken(authToken);
+        if (decodedToken) {
+          const userId = decodedToken.sub;
+          setUserId(userId);
         }
         const response = await AxiosApi.get("/users", {
           headers: {
@@ -60,7 +87,7 @@ export const Baby = () => {
       try {
         const authToken = localStorage.getItem("authToken");
         if (!authToken) {
-          console.error("Usuário não autenticado.");
+          console.error("User has to authenticate");
           return;
         }
         const response = await AxiosApi.get(
@@ -77,6 +104,28 @@ export const Baby = () => {
         console.log("Error trying to list babies.", error.message);
       }
     };
+
+    const fetchbabies = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          console.error("User has to authenticate");
+          return;
+        }
+        const response = await AxiosApi.get("/baby");
+        const responseData = response.data;
+
+        if (Array.isArray(responseData)) {
+          setBabies(responseData);
+        } else {
+          console.error("Invalid response format:", responseData);
+        }
+      } catch (error) {
+        console.log("Error trying to list babies.", error.message);
+      }
+    };
+
+    fetchbabies();
     fetchAvailableUsers();
     fetchBabyList();
   }, []);
@@ -289,6 +338,43 @@ export const Baby = () => {
             </Grid>
             {/* Right Column */}
             <Grid item xs={12} sm={6}>
+              <Typography variant="h5">Babies:</Typography>
+              <div
+                style={{
+                  maxHeight: "50vh",
+                  overflowY: "auto",
+                }}
+              >
+                <List>
+                  {babies.filter((baby) => baby.user_id == userId).map((baby, index) => (
+                    <ListItem
+                      key={index}
+                      sx={{
+                        border: "1px solid #ccc",
+                        width: "500px",
+                        borderRadius: "7px",
+                        marginBottom: "0.5rem",
+                        margin: "5px 0",
+                        backgroundColor: "#c5e2c1",
+                      }}
+                    >
+                      <ListItemText
+                        primary={`${baby.name}`}
+                        secondary={
+                          <>
+                            <strong>Age: </strong>{baby.age} months
+                            <br />
+                            <strong>Weight: </strong>{baby.weight + " kg"}
+                            <br />
+                            <strong>Blood-type: </strong>{baby.blood_type.toUpperCase()}
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </div>
+
               <Typography variant="h5">Created Baby Info:</Typography>
               <div
                 style={{

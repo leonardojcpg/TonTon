@@ -28,8 +28,9 @@ export const DashboardCards = () => {
   const [diapersList, setDiapers] = useState([]);
   const [babies, setBabies] = useState([]);
   const [userId, setUserId] = useState(null);
-  const [diaperGroups, setDiaperGroups] = useState([]);
 
+  const [diaperGroups, setDiaperGroups] = useState([]);
+  const [totalDiapersQuantity, setTotalDiapersQuantity] = useState([]);
   const [isBabyModalOpen, setIsBabyModalOpen] = useState(false);
   const [isFeedModalOpen, setIsFeedModalOpen] = useState(false);
   const [isSleepModalOpen, setIsSleepModalOpen] = useState(false);
@@ -109,40 +110,45 @@ export const DashboardCards = () => {
         console.error("Erro ao obter lista de bebês:", error.message);
       }
     };
-const fetchDiapersList = async () => {
-  try {
-    const authToken = localStorage.getItem("authToken");
-    if (!authToken) {
-      console.error("User has to authenticate");
-      return;
-    }
-    const response = await AxiosApi.get("/diapers", {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
-    setDiapers(response.data);
+    const fetchDiapersList = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          console.error("User has to authenticate");
+          return;
+        }
+        const response = await AxiosApi.get("/diapers", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+        setDiapers(response.data);
 
-    const groups = response.data.reduce((groups, diaper) => {
-      const { label, quantity, size } = diaper;
+        const totalQuantity = response.data.reduce(
+          (total, diaper) => total + diaper.quantity,
+          0
+        );
+        setTotalDiapersQuantity(totalQuantity);
 
-      if (!groups[label]) {
-        groups[label] = { label, diapers: [] };
+        const groups = response.data.reduce((groups, diaper) => {
+          const { label, quantity, size } = diaper;
+
+          if (!groups[label]) {
+            groups[label] = { label, diapers: [] };
+          }
+
+          groups[label].diapers.push({
+            size,
+            quantity,
+          });
+
+          return groups;
+        }, {});
+        setDiaperGroups(Object.values(groups));
+      } catch (error) {
+        console.error("Erro ao obter lista de fraldas:", error.message);
       }
-
-      groups[label].diapers.push({
-        size,
-        quantity,
-      });
-
-      return groups;
-    }, {});
-    setDiaperGroups(Object.values(groups));
-  } catch (error) {
-    console.error("Erro ao obter lista de fraldas:", error.message);
-  }
-};
-
+    };
 
     fetchingBabies();
     fetchUserData();
@@ -214,12 +220,10 @@ const fetchDiapersList = async () => {
       </div>
       <div className="cards" onClick={openDiapersModal}>
         <h1>Diapers</h1>
-  {diapersList.map((diaper) => (
-    <div key={diaper.id}>
-      <span>{diapersList.reduce((total, diaper) => total + diaper.quantity, 0)}</span>
-    </div>
-  ))}
-</div>
+        <div>
+          <span>{totalDiapersQuantity}</span>
+        </div>
+      </div>
       <Modal
         isOpen={isBabyModalOpen}
         closeModal={closeBabyModal}
@@ -289,34 +293,40 @@ const fetchDiapersList = async () => {
           </div>
         }
       />
-<Modal
-  isOpen={isDiapersModalOpen}
-  closeModal={closeDiapersModal}
-  content={
-    <div className="modal-content">
-      <h1>Diapers</h1>
-      {diaperGroups.map((diapersGroup) => (
-        <div key={diapersGroup.label}>
-          <span>
-            Label: <p>{diapersGroup.label}</p>
-          </span>
-          <span>
-            {diapersGroup.diapers.map((diaper, index) => (
-              <div key={index}>
+      <Modal
+        isOpen={isDiapersModalOpen}
+        closeModal={closeDiapersModal}
+        content={
+          <div className="modal-content">
+            <h1>Diapers</h1>
+            {diaperGroups.map((diapersGroup) => (
+              <div key={diapersGroup.label}>
                 <span>
-                  Size: <p>{diaper.size}</p>
+                  Label: <p>{diapersGroup.label}</p>
                 </span>
                 <span>
-                  Quantity: <p>{diaper.quantity}</p>
+                  {diapersGroup.diapers.slice(-1).map((diaper, index) => (
+                    <div key={index}>
+                      <span>
+                        Size: <p>{diaper.size.toUpperCase()}</p>
+                      </span>
+                    </div>
+                  ))}
+                </span>
+                <span>
+                  Total Quantity:
+                  <p>
+                    {diapersGroup.diapers.reduce(
+                      (total, diaper) => total + diaper.quantity,
+                      0
+                    )}
+                  </p>
                 </span>
               </div>
             ))}
-          </span>
-        </div>
-      ))}
-    </div>
-  }
-/>
+          </div>
+        }
+      />
     </div>
   );
 };
