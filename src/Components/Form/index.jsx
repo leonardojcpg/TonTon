@@ -17,8 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export const FormComponent = () => {
-  const navigate = useNavigate(); // Obtenha a função de navegação
-  //form schema
+  const navigate = useNavigate();
   const schema = z.object({
     name: z
       .string().min(3).max(50)
