@@ -13,7 +13,7 @@ export const DashboardChart = ({ chartData }) => {
         },
         yaxis: {
           title: {
-            text: "Ganho de Peso (kg)",
+            text: "Weight Gain (kg)",
           },
         },
         colors: ["#5D915D"],
