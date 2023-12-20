@@ -13,28 +13,29 @@ import { useBabyContext } from "../../Context/BabyContext";
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const decodeJwtToken = (token) => {
-  try {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
-        .join("")
-    );
-
-    return JSON.parse(jsonPayload);
-  } catch (error) {
-    console.error("Erro ao decodificar token JWT:", error.message);
-    return null;
-  }
-};
-
 export const WeightGainForm = () => {
+
+  const decodeJwtToken = (token) => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+          .join("")
+      );
+  
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error("Erro ao decodificar token JWT:", error);
+      return null;
+    }
+  };
+
   const { setDataInfo } = useBabyContext();
   const [userId, setUserId] = useState(null)
-  const [babyList, setBabyList] = useState([]);
+  const [babies, setBabies] = useState([]);
   const [selectedBaby, setSelectedBaby] = useState([]);
   const [babyWeight, setBabyWeight] = useState(0);
   const [weightGain, setWeightGain] = useState(0);
@@ -53,35 +54,38 @@ export const WeightGainForm = () => {
           const userId = decodedToken.sub;
           setUserId(userId);
         }
-        await AxiosApi.get("/users", {
+        const response = await AxiosApi.get("/users", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
-        });      
+        });  
+        
       } catch(error){
-        console.error("Erro ao obter usuários:", error.message);
+        console.error("Error trying to fetch:", error);
       }
     }
     
-    const fetchBabyList = async () => {
+    const fetchBabies = async () => {
       try {
         const authToken = localStorage.getItem("authToken");
         if (!authToken) {
-          toast.error("User has to authenticate");
+          console.error("User has to authenticate");
           return;
         }
-        const response = await AxiosApi.get("/baby", {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        });
-        setBabyList(response.data);
+        const response = await AxiosApi.get("/baby");
+        const responseData = response.data;
+
+        if (Array.isArray(responseData)) {
+          setBabies(responseData);
+        } else {
+          console.error("Invalid response format:", responseData);
+        }
       } catch (error) {
-        console.error("Erro ao obter lista de bebês:", error.message);
+        console.log("Error trying to list babies.", error);
       }
     };
-
-    fetchBabyList();
+    fetchUsers()
+    fetchBabies();
   }, []);
 
   const addWeightGain = async () => {
@@ -92,7 +96,7 @@ export const WeightGainForm = () => {
         return;
       }
 
-      if (babyWeight && currentDate && selectedBaby) {
+      if (babyWeight && selectedBaby) {
         const currentDate = new Date().toISOString().split("T")[0];
         const newWeightGainEntry = {
           weight: babyWeight,
@@ -113,34 +117,17 @@ export const WeightGainForm = () => {
         });
         setBabyWeight("");
 
-        if (response.status === 200) {
-          console.log("New baby weight added successfully");
-          return;
-        }
       } else {
         console.log("Erro, invalid data.");
       }
     } catch (error) {
-      //console.log("Error creating breast feeding");
+      console.log("Error creating weight gain");
     }
   };
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
-  /*     const formatDate = (inputDate) => {
-      const date = new Date(inputDate);
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-  
-      const formattedDay = day.toString().padStart(2, "0");
-      const formattedMonth = month.toString().padStart(2, "0");
-    
-      return `${formattedDay}/${formattedMonth}/${year}`;
-    };
-     */
 
   return (
     <Container
@@ -175,11 +162,10 @@ export const WeightGainForm = () => {
       <Select
         style={{ width: "250px", margin: "5px 0px" }}
         variant="outlined"
-        type="number"
         value={selectedBaby}
         onChange={(e) => setSelectedBaby(e.target.value)}
       >
-        {babyList.filter((item) => item.baby_id == userId).map((baby) => (
+        {babies.filter((item) => item.baby_id == userId).map((baby) => (
           <MenuItem key={baby.id}>
             {baby.name}
           </MenuItem>
