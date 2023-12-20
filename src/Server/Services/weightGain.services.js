@@ -2,19 +2,17 @@ import format from "pg-format";
 import { client } from "../database.js";
 import AppError from "../Errors/App.error.js";
 
-export const addWeightGainService = async ({ babyId, weight }) => {
+export const addWeightGainService = async ({ babyId, weight, date }) => {
   try {
-    const currentDate = new Date().toISOString();
-    const dataWithDate = { baby_id: babyId, weight: weight, date: currentDate };
-
-    const addWeightHistoryQuery = format(
+    const dataWithDate = { baby_id: babyId, weight: weight, date: date };
+    const queryFormat = format(
       'INSERT INTO "weight_gain" (%I) VALUES (%L) RETURNING *;',
       Object.keys(dataWithDate),
       Object.values(dataWithDate)
     );
 
-    const addWeightHistoryResult = await client.query(addWeightHistoryQuery);
-    return addWeightHistoryResult.rows[0];
+    const queryResult = await client.query(queryFormat);
+    return queryResult.rows[0];
   } catch (error) {
     console.error("Error adding weight history:", error);
     throw new AppError("Error adding weight history");
@@ -23,13 +21,13 @@ export const addWeightGainService = async ({ babyId, weight }) => {
 
 export const getWeightGainService = async (babyId) => {
   try {
-    const getWeightHistoryQuery = format(
+    const queryFormat = format(
       'SELECT * FROM "weight_gain" ORDER BY "date" DESC;',
       babyId
     );
 
-    const getWeightHistoryResult = await client.query(getWeightHistoryQuery);
-    return getWeightHistoryResult.rows;
+    const queryResult = await client.query(queryFormat);
+    return queryResult.rows;
   } catch (error) {
     console.error("Error fetching weight history:", error);
     throw new AppError("Error fetching weight history");
@@ -42,13 +40,13 @@ export const getWeightGainByIdService = async (babyId) => {
       throw new AppError("Invalid babyId parameter");
     }
 
-    const getWeightHistoryQuery = format(
+    const queryFormat = format(
       'SELECT * FROM "weight_gain" WHERE "baby_id" = %L ORDER BY "date" DESC;',
       babyId
     );
 
-    const getWeightHistoryResult = await client.query(getWeightHistoryQuery);
-    return getWeightHistoryResult.rows;
+    const queryResult = await client.query(queryFormat);
+    return queryResult.rows;
   } catch (error) {
     console.error("Error fetching weight history:", error);
     throw new AppError("Error fetching weight history");
@@ -58,25 +56,25 @@ export const getWeightGainByIdService = async (babyId) => {
 export const updateWeightGainService = async (weightGainId, data) => {
   const { baby_id, weight, date } = data;
   try {
-    const query = `
+    const queryFormat = `
       UPDATE "weight_gain"
       SET baby_id = $1, weight = $2, date = $3
       WHERE id = $4
       RETURNING *;
     `;
 
-    const result = await client.query(query, [
+    const queryResult = await client.query(queryFormat, [
       baby_id,
       weight,
       date,
       weightGainId,
     ]);
 
-    if (result.rows.length === 0) {
+    if (queryResult.rows.length === 0) {
       return null;
     }
 
-    return result.rows[0];
+    return queryResult.rows[0];
   } catch (error) {
     console.error("Error updating weight history:", error);
     throw new AppError("Error updating weight history");

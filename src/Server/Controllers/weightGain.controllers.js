@@ -8,10 +8,10 @@ import {
 
 export const addWeightGainController = async (req, res) => {
   try {
-    const { baby_id, weight } = req.body;
+    const { baby_id, weight, date } = req.body;
 
     const babyId = Number(baby_id);
-    const weightHistory = await addWeightGainService({ babyId, weight });
+    const weightHistory = await addWeightGainService({ babyId, weight, date });
 
     return res.status(201).json(weightHistory);
   } catch (error) {
