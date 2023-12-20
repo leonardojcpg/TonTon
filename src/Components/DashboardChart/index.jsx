@@ -37,7 +37,7 @@ export const DashboardChart = ({ chartData }) => {
           options={options}
           series={chartData.datasets}
           type={options.chart.type}
-          height="550"
+          height="500"
         />
       </div>
         )

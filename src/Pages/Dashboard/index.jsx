@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { AxiosApi } from "../../Axios/axios.create";
 import { format } from "date-fns";
 import { WeightGainForm } from "../../Components/WeightGainForm";
+import { Paper } from "@mui/material";
 
 export const Dashboard = () => {
   const navigate = useNavigate();

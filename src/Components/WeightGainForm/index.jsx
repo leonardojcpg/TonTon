@@ -59,7 +59,6 @@ export const WeightGainForm = () => {
           },
         });
         const userData = response.data;
-        console.log(userData)
         if (userData && Array.isArray(userData.babies)) {
           setBabies(userData.babies);
         } else {
@@ -69,7 +68,7 @@ export const WeightGainForm = () => {
         //console.error("Error trying to fetch user data:", error);
       }
     };
-    
+
     const fetchBabies = async () => {
       try {
         const authToken = localStorage.getItem("authToken");
@@ -107,8 +106,9 @@ export const WeightGainForm = () => {
         const newWeightGainEntry = {
           weight: babyWeight,
           date: currentDate,
-          baby_id: selectedBaby.id,
+          baby_id: selectedBaby,
         };
+
 
         const response = await AxiosApi.post(
           "/weight_gain",
@@ -119,7 +119,7 @@ export const WeightGainForm = () => {
         setDataInfo({
           weight: babyWeight,
           date: currentDate,
-          baby_id: selectedBaby.id,
+          baby_id: selectedBaby,
         });
         setBabyWeight("");
       } else {
@@ -140,6 +140,7 @@ export const WeightGainForm = () => {
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
+        height: "100px",
       }}
     >
       <Typography variant="h6" style={{ margin: "10px 20px" }}>
@@ -168,8 +169,10 @@ export const WeightGainForm = () => {
         style={{ width: "250px", margin: "5px 0px" }}
         variant="outlined"
         value={selectedBaby}
-        onChange={(e) => setSelectedBaby(e.target.value)}
-      >
+        onChange={(e) => {
+          console.log("Selected Baby ID:", e.target.value);
+          setSelectedBaby(e.target.value);
+        }}      >
         {babies.length > 0 ? (
           babies.map((baby) => (
             <MenuItem key={baby.id} value={baby.id}>
@@ -179,7 +182,8 @@ export const WeightGainForm = () => {
         ) : (
           <MenuItem disabled>No babies found</MenuItem>
         )}
-      </Select>      <Button
+      </Select>
+      <Button
         type="submit"
         variant="contained"
         onClick={addWeightGain}
