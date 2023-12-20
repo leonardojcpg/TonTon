@@ -10,11 +10,10 @@ import {
 } from "@mui/material";
 import { useBabyContext } from "../../Context/BabyContext";
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const WeightGainForm = () => {
-
   const decodeJwtToken = (token) => {
     try {
       const base64Url = token.split(".")[1];
@@ -25,7 +24,7 @@ export const WeightGainForm = () => {
           .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
           .join("")
       );
-  
+
       return JSON.parse(jsonPayload);
     } catch (error) {
       console.error("Erro ao decodificar token JWT:", error);
@@ -34,16 +33,16 @@ export const WeightGainForm = () => {
   };
 
   const { setDataInfo } = useBabyContext();
-  const [userId, setUserId] = useState(null)
+  const [userId, setUserId] = useState(null);
   const [babies, setBabies] = useState([]);
-  const [selectedBaby, setSelectedBaby] = useState([]);
+  const [selectedBaby, setSelectedBaby] = useState("");
   const [babyWeight, setBabyWeight] = useState(0);
   const [weightGain, setWeightGain] = useState(0);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
-    const fetchUsers = async() => {
-      try{
+    const fetchUserData = async () => {
+      try {
         const authToken = localStorage.getItem("authToken");
         if (!authToken) {
           console.error("User has to authenticate");
@@ -54,16 +53,22 @@ export const WeightGainForm = () => {
           const userId = decodedToken.sub;
           setUserId(userId);
         }
-        const response = await AxiosApi.get("/users", {
+        const response = await AxiosApi.get(`/users/${userId}`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
-        });  
-        
-      } catch(error){
-        console.error("Error trying to fetch:", error);
+        });
+        const userData = response.data;
+        console.log(userData)
+        if (userData && Array.isArray(userData.babies)) {
+          setBabies(userData.babies);
+        } else {
+          console.error("Invalid user data format:", userData);
+        }
+      } catch (error) {
+        //console.error("Error trying to fetch user data:", error);
       }
-    }
+    };
     
     const fetchBabies = async () => {
       try {
@@ -84,7 +89,8 @@ export const WeightGainForm = () => {
         console.log("Error trying to list babies.", error);
       }
     };
-    fetchUsers()
+
+    fetchUserData();
     fetchBabies();
   }, []);
 
@@ -97,7 +103,7 @@ export const WeightGainForm = () => {
       }
 
       if (babyWeight && selectedBaby) {
-        const currentDate = new Date().toISOString().split("T")[0];
+        const currentDate = selectedDate.toISOString().split("T")[0];
         const newWeightGainEntry = {
           weight: babyWeight,
           date: currentDate,
@@ -116,12 +122,11 @@ export const WeightGainForm = () => {
           baby_id: selectedBaby.id,
         });
         setBabyWeight("");
-
       } else {
         console.log("Erro, invalid data.");
       }
     } catch (error) {
-      console.log("Error creating weight gain");
+      //console.log("Error creating weight gain");
     }
   };
 
@@ -165,13 +170,16 @@ export const WeightGainForm = () => {
         value={selectedBaby}
         onChange={(e) => setSelectedBaby(e.target.value)}
       >
-        {babies.filter((item) => item.baby_id == userId).map((baby) => (
-          <MenuItem key={baby.id}>
-            {baby.name}
-          </MenuItem>
-        ))}
-      </Select>
-      <Button
+        {babies.length > 0 ? (
+          babies.map((baby) => (
+            <MenuItem key={baby.id} value={baby.id}>
+              {baby.name}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem disabled>No babies found</MenuItem>
+        )}
+      </Select>      <Button
         type="submit"
         variant="contained"
         onClick={addWeightGain}

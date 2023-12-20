@@ -2,13 +2,12 @@ import format from "pg-format";
 import { client } from "../database.js";
 import AppError from "../Errors/App.error.js";
 
-export const addWeightGainService = async ({ babyId, weight, date }) => {
+export const addWeightGainService = async (data) => {
   try {
-    const dataWithDate = { baby_id: babyId, weight: weight, date: date };
     const queryFormat = format(
       'INSERT INTO "weight_gain" (%I) VALUES (%L) RETURNING *;',
-      Object.keys(dataWithDate),
-      Object.values(dataWithDate)
+      Object.keys(data),
+      Object.values(data)
     );
 
     const queryResult = await client.query(queryFormat);

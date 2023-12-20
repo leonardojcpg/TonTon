@@ -11,8 +11,8 @@ import { WeightGainForm } from "../../Components/WeightGainForm";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
-  const [userId, setUserId] = useState(null);
-  const [babyId, setBabyId] = useState(null);
+  const [userId, setUserId] = useState("");
+  const [babyId, setBabyId] = useState("");
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -36,11 +36,10 @@ export const Dashboard = () => {
 
       return JSON.parse(jsonPayload);
     } catch (error) {
-      console.error("Erro ao decodificar token JWT:", error);
+      console.error("Error trying to decode JWT:", error);
       return null;
     }
   };
-
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -49,33 +48,26 @@ export const Dashboard = () => {
           console.error("User has to authenticate");
           return;
         }
-
+  
         const decodedToken = decodeJwtToken(authToken);
         if (decodedToken) {
           const userId = decodedToken.sub;
           setUserId(userId);
         }
-
+  
         const response = await AxiosApi.get("/baby", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         });
-
-        const userBabies = response.data.filter(
-          (item) => item.user_id == userId
-        );
-        if (userBabies.length === 0) {
-          console.error("User has no associated babies.");
-          return;
-        }
-
-        setBabyId(userBabies[0].id);
+  
+        const userBabies = response.data.filter((item) => item.user_id == userId);
+        setBabyId(userBabies.length > 0 ? userBabies[0].id : "");
       } catch (error) {
-        console.error("Error fetching user data:", error);
+        //console.error("Error fetching user data:", error);
       }
     };
-
+  
     const fetchData = async () => {
       try {
         const authToken = localStorage.getItem("authToken");
@@ -83,15 +75,14 @@ export const Dashboard = () => {
           navigate("/login");
           return;
         }
-
+  
         const response = await AxiosApi.get(`/weight_gain/${babyId}`, {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
         });
-
-        const weightGainData = response.data;
-        console.log(weightGainData);
+  
+        const weightGainData = response.data;  
         const formattedData = {
           labels: weightGainData
             .map((item) => new Date(item.date))
@@ -110,11 +101,11 @@ export const Dashboard = () => {
         console.error("Error fetching weight gain data:", error);
       }
     };
-
+  
     fetchUserData();
     fetchData();
-  }, []);
-
+  }, [babyId]);
+  
   const handleAddWeight = (newWeight) => {
     setChartData((prevChartData) => {
       const updatedData = {

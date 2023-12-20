@@ -8,12 +8,10 @@ import {
 
 export const addWeightGainController = async (req, res) => {
   try {
-    const { baby_id, weight, date } = req.body;
+    const data = { ...req.body };
+    const weightGain = await addWeightGainService(data)
 
-    const babyId = Number(baby_id);
-    const weightHistory = await addWeightGainService({ babyId, weight, date });
-
-    return res.status(201).json(weightHistory);
+    return res.status(201).json(weightGain);
   } catch (error) {
     console.error("Error adding weight history:", error);
     return res.status(500).json({ error: "Internal Server Error" });
