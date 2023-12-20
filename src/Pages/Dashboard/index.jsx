@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AxiosApi } from "../../Axios/axios.create";
 import { format } from "date-fns";
+import { WeightGainForm } from "../../Components/WeightGainForm";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ export const Dashboard = () => {
     labels: [],
     datasets: [
       {
-        name: "Example Weight Gain",
+        name: "Weight Gain",
         data: [],
       },
     ],
@@ -57,12 +58,28 @@ export const Dashboard = () => {
     fetchData();
   }, [navigate]);
 
+  const handleAddWeight = (newWeight) => {
+    setChartData((prevChartData) => {
+      const updatedData = {
+        labels: [...prevChartData.labels, newWeight.date],
+        datasets: [
+          {
+            name: "Weight Gain",
+            data: [...prevChartData.datasets[0].data, newWeight.weight],
+          },
+        ],
+      };
+      return updatedData;
+    });
+  };
+
   return (
     <>
       <ResponsiveHeader />
       <PageTitle pageTitle="Dashboard" />
       <DashboardCards />
       <DashboardChart chartData={chartData} />
+      <WeightGainForm  />
       <ContainerContent />
     </>
   );
