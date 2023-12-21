@@ -15,7 +15,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const WeightGainForm = () => {
-  const isSmallScreen = useMediaQuery("(max-width:600px)");
+  const isSmallScreen = useMediaQuery("(max-width:813px)");
 
   const decodeJwtToken = (token) => {
     try {
@@ -112,7 +112,6 @@ export const WeightGainForm = () => {
           baby_id: selectedBaby,
         };
 
-
         const response = await AxiosApi.post(
           "/weight_gain",
           newWeightGainEntry
@@ -143,13 +142,16 @@ export const WeightGainForm = () => {
         display: "flex",
         flexDirection: isSmallScreen ? "column" : "row",
         alignItems: "center",
-        height: isSmallScreen ? "3.125rem" : "6.25rem",
-        backgroundColor: isSmallScreen ? "#f3f3f3" : "transparent",
-
+        padding: isSmallScreen ? "10px" : "10px",
       }}
     >
-      <Typography variant="h6" style={{ margin: ".625rem 1.25rem", marginTop: isSmallScreen ? "4rem" : "0"
- }}>
+      <Typography
+        variant="h6"
+        style={{
+          margin: ".625rem 1.25rem",
+          marginTop: isSmallScreen ? "2rem" : "0",
+        }}
+      >
         Date:
       </Typography>
       <DatePicker
@@ -157,7 +159,10 @@ export const WeightGainForm = () => {
         onChange={handleDateChange}
         dateFormat="yyyy/MM/dd"
       />
-      <Typography variant="h6" style={{ margin: ".625rem 1.25rem" }}>
+      <Typography
+        variant="h6"
+        style={{ margin: "5px 20px", whiteSpace: "nowrap" }}
+      >
         Weight:
       </Typography>
       <TextField
@@ -168,7 +173,10 @@ export const WeightGainForm = () => {
         value={babyWeight}
         onChange={(e) => setBabyWeight(e.target.value)}
       />
-      <Typography variant="h6" style={{ margin: ".625rem 1.25rem", whiteSpace: "nowrap"  }}>
+      <Typography
+        variant="h6"
+        style={{ margin: ".3125rem 1.25rem", whiteSpace: "nowrap" }}
+      >
         Select Baby:
       </Typography>
       <Select
@@ -178,7 +186,8 @@ export const WeightGainForm = () => {
         onChange={(e) => {
           console.log("Selected Baby ID:", e.target.value);
           setSelectedBaby(e.target.value);
-        }}      >
+        }}
+      >
         {babies.length > 0 ? (
           babies.map((baby) => (
             <MenuItem key={baby.id} value={baby.id}>

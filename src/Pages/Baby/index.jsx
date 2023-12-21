@@ -18,6 +18,10 @@ import { PageTitle } from "../../Components/PageTitle";
 import { AxiosApi } from "../../Axios/axios.create";
 import { useNavigate } from "react-router-dom";
 
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { IconButton } from "@mui/material";
+
 const decodeJwtToken = (token) => {
   try {
     const base64Url = token.split(".")[1];
@@ -57,6 +61,11 @@ export const Baby = () => {
   const [babies, setBabies] = useState([]);
   const [babyList, setBabyList] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
+
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingWeightGain, setEditingWeightGain] = useState(null);
+
+
 
   useEffect(() => {
     const fetchAvailableUsers = async () => {
@@ -182,6 +191,46 @@ export const Baby = () => {
     }
   };
 
+  const editBaby = async (babyId, newData) => {
+    try {
+      const authToken = localStorage.getItem('authToken');
+      if (!authToken) {
+        console.error('Usuário não autenticado.');
+        return;
+      }
+
+      const response = await AxiosApi.put(`/baby/${babyId}`, newData);
+      fetchBabyList();
+
+      console.log('Baby edited:', response.data);
+    } catch (error) {
+      console.error('Error editing baby:', error.message);
+    }
+  };
+
+  const startEditBaby = (babyId) => {
+    setEditingBabyId(babyId);
+  };
+
+  const deleteBaby = async (babyId) => {
+    try {
+      const authToken = localStorage.getItem('authToken');
+      if (!authToken) {
+        console.error('Usuário não autenticado.');
+        return;
+      }
+
+      await AxiosApi.delete(`/baby/${babyId}`);
+
+      // Atualize a lista de bebês após a exclusão
+      fetchBabyList();
+
+      console.log('Baby deleted:', babyId);
+    } catch (error) {
+      console.error('Error deleting baby:', error.message);
+    }
+  };
+
   const incrementBabyWeight = () => {
     setBabyWeight((prevBabyWeight) => prevBabyWeight + 1);
   };
@@ -192,6 +241,16 @@ export const Baby = () => {
     }
   };
 
+  const openEditModalHandler = (weightGain) => {
+    setEditingWeightGain(weightGain);
+    setIsEditModalOpen(true);
+  };
+
+  const closeEditModalHandler = () => {
+    setIsEditModalOpen(false);
+    setEditingWeightGain(null);
+  };
+  
   return (
     <>
       <ResponsiveHeader />
@@ -374,9 +433,23 @@ export const Baby = () => {
                             </>
                           }
                         />
+                        <div>
+                          <IconButton
+                            onClick={() => startEditBaby(baby.id)}
+                            aria-label="edit"
+                          >
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() => deleteBaby(baby.id)}
+                            aria-label="delete"
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </div>
                       </ListItem>
                     ))}
-                </List>
+                </List>{" "}
               </div>
               <Typography variant="h5">Created Baby Info:</Typography>
               <div
