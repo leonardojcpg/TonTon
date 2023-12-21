@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
+import { Modal } from "../../Components/Modal/modal";
 
 const decodeJwtToken = (token) => {
   try {
@@ -62,10 +63,7 @@ export const Baby = () => {
   const [babyList, setBabyList] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
 
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingWeightGain, setEditingWeightGain] = useState(null);
-
-
+  const [isEditBabyModalOpen, setIsEditBabyModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchAvailableUsers = async () => {
@@ -191,46 +189,6 @@ export const Baby = () => {
     }
   };
 
-  const editBaby = async (babyId, newData) => {
-    try {
-      const authToken = localStorage.getItem('authToken');
-      if (!authToken) {
-        console.error('Usuário não autenticado.');
-        return;
-      }
-
-      const response = await AxiosApi.put(`/baby/${babyId}`, newData);
-      fetchBabyList();
-
-      console.log('Baby edited:', response.data);
-    } catch (error) {
-      console.error('Error editing baby:', error.message);
-    }
-  };
-
-  const startEditBaby = (babyId) => {
-    setEditingBabyId(babyId);
-  };
-
-  const deleteBaby = async (babyId) => {
-    try {
-      const authToken = localStorage.getItem('authToken');
-      if (!authToken) {
-        console.error('Usuário não autenticado.');
-        return;
-      }
-
-      await AxiosApi.delete(`/baby/${babyId}`);
-
-      // Atualize a lista de bebês após a exclusão
-      fetchBabyList();
-
-      console.log('Baby deleted:', babyId);
-    } catch (error) {
-      console.error('Error deleting baby:', error.message);
-    }
-  };
-
   const incrementBabyWeight = () => {
     setBabyWeight((prevBabyWeight) => prevBabyWeight + 1);
   };
@@ -241,16 +199,14 @@ export const Baby = () => {
     }
   };
 
-  const openEditModalHandler = (weightGain) => {
-    setEditingWeightGain(weightGain);
-    setIsEditModalOpen(true);
+  const openBabyEditModal = () => {
+    setIsEditBabyModalOpen(true);
   };
 
-  const closeEditModalHandler = () => {
-    setIsEditModalOpen(false);
-    setEditingWeightGain(null);
+  const closeBabyEditModal = () => {
+    setIsEditBabyModalOpen(false);
   };
-  
+
   return (
     <>
       <ResponsiveHeader />
@@ -435,21 +391,63 @@ export const Baby = () => {
                         />
                         <div>
                           <IconButton
-                            onClick={() => startEditBaby(baby.id)}
+                            onClick={openBabyEditModal}
                             aria-label="edit"
                           >
                             <EditIcon />
                           </IconButton>
                           <IconButton
-                            onClick={() => deleteBaby(baby.id)}
+                            onClick={openBabyEditModal}
                             aria-label="delete"
                           >
                             <DeleteIcon />
                           </IconButton>
+                          <Modal
+                            isOpen={isEditBabyModalOpen}
+                            closeModal={closeBabyEditModal}
+                            content={
+                              <div
+                                className="modal-content"
+                                style={{
+                                  display: "flex",
+                                  gap: ".5rem",
+                                  flexDirection: "column",
+                                  margin: "10px 0",
+                                }}
+                              >
+                                <TextField placeholder="Name"></TextField>
+                                <TextField placeholder="Age"></TextField>
+                                <TextField placeholder="Weight"></TextField>
+                                <TextField placeholder="Blood Type"></TextField>
+                                <Button
+                                  style={{
+                                    display: "flex",
+                                    width: "100px",
+                                    marginTop: ".5rem",
+                                  }}
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={addBaby}
+                                  sx={{
+                                    marginTop: 1,
+                                    fontWeight: "500",
+                                    backgroundColor: "#508b50",
+                                    "&:hover": {
+                                      backgroundColor: "#a4dfa4",
+                                      borderColor: "#a4dfa4",
+                                      color: "#508b50",
+                                    },
+                                  }}
+                                >
+                                  edit
+                                </Button>
+                              </div>
+                            }
+                          ></Modal>
                         </div>
                       </ListItem>
                     ))}
-                </List>{" "}
+                </List>
               </div>
               <Typography variant="h5">Created Baby Info:</Typography>
               <div
