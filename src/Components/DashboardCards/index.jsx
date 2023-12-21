@@ -250,6 +250,7 @@ export const DashboardCards = () => {
         }
       />
       <Modal
+        buttonName="Close"
         isOpen={isFeedModalOpen}
         closeModal={closeFeedModal}
         content={
@@ -272,6 +273,7 @@ export const DashboardCards = () => {
         }
       />
       <Modal
+        buttonName="Close"
         isOpen={isSleepModalOpen}
         closeModal={closeSleepModal}
         content={
@@ -294,6 +296,7 @@ export const DashboardCards = () => {
         }
       />
       <Modal
+        buttonName="Close"
         isOpen={isDiapersModalOpen}
         closeModal={closeDiapersModal}
         content={

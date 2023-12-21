@@ -57,13 +57,19 @@ export const Baby = () => {
   const [babyBloodType, setBabyBloodType] = useState("");
 
   const [selectedParent, setSelectedParent] = useState("");
-  const [userId, setUserId] = useState(null);
-
+  const [userId, setUserId] = useState("");
+  const [babyId, setBabyId] = useState("")
   const [babies, setBabies] = useState([]);
   const [babyList, setBabyList] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
 
   const [isEditBabyModalOpen, setIsEditBabyModalOpen] = useState(false);
+  const [editingBabyInfo, setEditingBabyInfo] = useState({
+    name: "",
+    age: "",
+    weight: 0,
+    blood_type: "",
+  });
 
   useEffect(() => {
     const fetchAvailableUsers = async () => {
@@ -107,7 +113,7 @@ export const Baby = () => {
           console.error("Invalid response format:", responseData);
         }
       } catch (error) {
-        console.log("Error trying to list babies.", error.message);
+        //console.log("Error trying to list babies.", error);
       }
     };
 
@@ -120,6 +126,8 @@ export const Baby = () => {
         }
         const response = await AxiosApi.get("/baby");
         const responseData = response.data;
+        const babyId = responseData.id
+        setBabyId(babyId)
 
         if (Array.isArray(responseData)) {
           setBabies(responseData);
@@ -185,9 +193,71 @@ export const Baby = () => {
         );
       }
     } catch (error) {
-      console.error("Erro ao adicionar informações do bebê:", error.message);
+      console.error("Erro ao adicionar informações do bebê:", error);
     }
   };
+
+  const saveEditedBaby = async () => {
+    try {
+      const editedFields = {};
+  
+      if (editingBabyInfo.name !== "") {
+        editedFields.name = editingBabyInfo.name;
+      }
+  
+      if (editingBabyInfo.age !== "") {
+        editedFields.age = editingBabyInfo.age;
+      }
+  
+      if (editingBabyInfo.weight !== "") {
+        editedFields.weight = editingBabyInfo.weight;
+      }
+  
+      if (editingBabyInfo.blood_type !== "") {
+        editedFields.blood_type = editingBabyInfo.blood_type;
+      }
+  
+      if (Object.keys(editedFields).length > 0) {
+        await editBaby(editBaby.id, editedFields);
+        closeBabyEditModal();
+        setEditingBabyInfo({
+          name: "",
+          age: "",
+          weight: "",
+          blood_type: "",
+        });
+      } else {
+        console.log("Nenhum campo editado.");
+      }
+    } catch (error) {
+      console.error("Erro ao editar bebê:", error);
+    }
+  };
+  
+  
+  const editBaby = async (newData) => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        console.error("Usuário não autenticado.");
+        return;
+      }
+      
+      const response = await AxiosApi.patch(`/baby/${babyId}`, newData, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+  
+      console.log("Baby edited:", response.data);
+    } catch (error) {
+      console.error("Error editing baby:", error);
+      if (error.response) {
+        console.error("Error response data:", error);
+      }
+    }
+  };
+    
 
   const incrementBabyWeight = () => {
     setBabyWeight((prevBabyWeight) => prevBabyWeight + 1);
@@ -199,9 +269,16 @@ export const Baby = () => {
     }
   };
 
-  const openBabyEditModal = () => {
+  const openBabyEditModal = (baby) => {
+    setEditingBabyInfo({
+      name: baby.name || '',
+      age: baby.age || '',
+      weight: baby.weight || '',
+      blood_type: baby.blood_type || '',
+    });
     setIsEditBabyModalOpen(true);
   };
+  
 
   const closeBabyEditModal = () => {
     setIsEditBabyModalOpen(false);
@@ -403,6 +480,7 @@ export const Baby = () => {
                             <DeleteIcon />
                           </IconButton>
                           <Modal
+                          buttonName="Close"
                             isOpen={isEditBabyModalOpen}
                             closeModal={closeBabyEditModal}
                             content={
@@ -415,10 +493,46 @@ export const Baby = () => {
                                   margin: "10px 0",
                                 }}
                               >
-                                <TextField placeholder="Name"></TextField>
-                                <TextField placeholder="Age"></TextField>
-                                <TextField placeholder="Weight"></TextField>
-                                <TextField placeholder="Blood Type"></TextField>
+                                <TextField
+                                  placeholder="Name"
+                                  value={editingBabyInfo.name}
+                                  onChange={(e) =>
+                                    setEditingBabyInfo((prevInfo) => ({
+                                      ...prevInfo,
+                                      name: e.target.value,
+                                    }))
+                                  }
+                                />
+                                <TextField
+                                  placeholder="Age"
+                                  value={editingBabyInfo.age}
+                                  onChange={(e) =>
+                                    setEditingBabyInfo((prevInfo) => ({
+                                      ...prevInfo,
+                                      age: e.target.value,
+                                    }))
+                                  }
+                                />
+                                <TextField
+                                  placeholder="Weight"
+                                  value={editingBabyInfo.weight}
+                                  onChange={(e) =>
+                                    setEditingBabyInfo((prevInfo) => ({
+                                      ...prevInfo,
+                                      weight: e.target.value,
+                                    }))
+                                  }
+                                />
+                                <TextField
+                                  placeholder="Blood Type"
+                                  value={editingBabyInfo.blood_type}
+                                  onChange={(e) =>
+                                    setEditingBabyInfo((prevInfo) => ({
+                                      ...prevInfo,
+                                      blood_type: e.target.value,
+                                    }))
+                                  }
+                                />
                                 <Button
                                   style={{
                                     display: "flex",
@@ -427,7 +541,7 @@ export const Baby = () => {
                                   }}
                                   variant="contained"
                                   color="primary"
-                                  onClick={addBaby}
+                                  onClick={saveEditedBaby}
                                   sx={{
                                     marginTop: 1,
                                     fontWeight: "500",
