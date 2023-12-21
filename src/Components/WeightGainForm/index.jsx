@@ -7,6 +7,7 @@ import {
   Select,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useBabyContext } from "../../Context/BabyContext";
 
@@ -14,6 +15,8 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const WeightGainForm = () => {
+  const isSmallScreen = useMediaQuery("(max-width:600px)");
+
   const decodeJwtToken = (token) => {
     try {
       const base64Url = token.split(".")[1];
@@ -138,12 +141,15 @@ export const WeightGainForm = () => {
     <Container
       style={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: isSmallScreen ? "column" : "row",
         alignItems: "center",
-        height: "100px",
+        height: isSmallScreen ? "3.125rem" : "6.25rem",
+        backgroundColor: isSmallScreen ? "#f3f3f3" : "transparent",
+
       }}
     >
-      <Typography variant="h6" style={{ margin: "10px 20px" }}>
+      <Typography variant="h6" style={{ margin: ".625rem 1.25rem", marginTop: isSmallScreen ? "4rem" : "0"
+ }}>
         Date:
       </Typography>
       <DatePicker
@@ -151,22 +157,22 @@ export const WeightGainForm = () => {
         onChange={handleDateChange}
         dateFormat="yyyy/MM/dd"
       />
-      <Typography variant="h6" style={{ margin: "10px 20px" }}>
+      <Typography variant="h6" style={{ margin: ".625rem 1.25rem" }}>
         Weight:
       </Typography>
       <TextField
-        style={{ width: "250px", margin: "5px 0px" }}
+        style={{ width: "15.625rem", margin: ".3125rem 0rem" }}
         variant="outlined"
         type="number"
         name="weight"
         value={babyWeight}
         onChange={(e) => setBabyWeight(e.target.value)}
       />
-      <Typography variant="h6" style={{ margin: "10px 20px" }}>
+      <Typography variant="h6" style={{ margin: ".625rem 1.25rem", whiteSpace: "nowrap"  }}>
         Select Baby:
       </Typography>
       <Select
-        style={{ width: "250px", margin: "5px 0px" }}
+        style={{ width: "15.625rem", margin: ".3125rem 0rem" }}
         variant="outlined"
         value={selectedBaby}
         onChange={(e) => {
@@ -188,8 +194,8 @@ export const WeightGainForm = () => {
         variant="contained"
         onClick={addWeightGain}
         style={{
-          margin: "20px 10px",
-          width: "250px",
+          margin: "1.25rem .625rem",
+          width: "15.625rem",
           backgroundColor: "#508b50",
           color: "#fff",
         }}

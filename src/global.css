@@ -1,4 +1,4 @@
-html, body {
+html, body, #root {
   font-family: "Roboto", sans-serif;
   box-sizing: border-box;
   height: 100%;
@@ -10,3 +10,4 @@ html, body {
   background-color: #BEE9CB;
   min-height: 100vh;
 }
+
