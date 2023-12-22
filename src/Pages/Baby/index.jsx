@@ -58,7 +58,7 @@ export const Baby = () => {
 
   const [selectedParent, setSelectedParent] = useState("");
   const [userId, setUserId] = useState("");
-  const [babyId, setBabyId] = useState("")
+  const [babyId, setBabyId] = useState("");
   const [babies, setBabies] = useState([]);
   const [babyList, setBabyList] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
@@ -67,8 +67,9 @@ export const Baby = () => {
   const [editingBabyInfo, setEditingBabyInfo] = useState({
     name: "",
     age: "",
-    weight: 0,
+    weight: "",
     blood_type: "",
+    babyId: "",
   });
 
   useEffect(() => {
@@ -126,8 +127,8 @@ export const Baby = () => {
         }
         const response = await AxiosApi.get("/baby");
         const responseData = response.data;
-        const babyId = responseData.id
-        setBabyId(babyId)
+        const babyId = responseData[0].id;
+        setBabyId(babyId);
 
         if (Array.isArray(responseData)) {
           setBabies(responseData);
@@ -195,69 +196,61 @@ export const Baby = () => {
     } catch (error) {
       console.error("Erro ao adicionar informações do bebê:", error);
     }
-  };
+  }; 
 
-  const saveEditedBaby = async () => {
-    try {
-      const editedFields = {};
-  
-      if (editingBabyInfo.name !== "") {
-        editedFields.name = editingBabyInfo.name;
-      }
-  
-      if (editingBabyInfo.age !== "") {
-        editedFields.age = editingBabyInfo.age;
-      }
-  
-      if (editingBabyInfo.weight !== "") {
-        editedFields.weight = editingBabyInfo.weight;
-      }
-  
-      if (editingBabyInfo.blood_type !== "") {
-        editedFields.blood_type = editingBabyInfo.blood_type;
-      }
-  
-      if (Object.keys(editedFields).length > 0) {
-        await editBaby(editBaby.id, editedFields);
-        closeBabyEditModal();
-        setEditingBabyInfo({
-          name: "",
-          age: "",
-          weight: "",
-          blood_type: "",
-        });
-      } else {
-        console.log("Nenhum campo editado.");
-      }
-    } catch (error) {
-      console.error("Erro ao editar bebê:", error);
-    }
-  };
-  
-  
-  const editBaby = async (newData) => {
+const openBabyEditModal = (baby) => {
+  setEditingBabyInfo({
+    name: baby.name || "",
+    age: baby.age || "",
+    weight: baby.weight || "",
+    blood_type: baby.blood_type || "",
+    babyId: baby.id,
+  });
+  setIsEditBabyModalOpen(true);
+};
+
+const saveEditedBaby = async () => {
+  try {
+    await editBaby(editingBabyInfo.babyId, {
+      name: editingBabyInfo.name,
+      age: editingBabyInfo.age,
+      weight: editingBabyInfo.weight,
+      blood_type: editingBabyInfo.blood_type,
+    });
+    closeBabyEditModal();
+    setEditingBabyInfo({
+      name: "",
+      age: "",
+      weight: "",
+      blood_type: "",
+      babyId: "",
+    });
+  } catch (error) {
+    console.error("Erro ao editar bebê:", error);
+  }
+};
+
+  const editBaby = async (babyId, newData) => {
     try {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
-        console.error("Usuário não autenticado.");
+        console.error("User has to authenticate");
         return;
       }
-      
-      const response = await AxiosApi.patch(`/baby/${babyId}`, newData, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
+  
+      const response = await AxiosApi.patch(`/baby/${babyId}`, newData);
+
+      console.log("Response headers:", response.headers);
   
       console.log("Baby edited:", response.data);
     } catch (error) {
       console.error("Error editing baby:", error);
-      if (error.response) {
-        console.error("Error response data:", error);
-      }
     }
+  }
+
+  const closeBabyEditModal = () => {
+    setIsEditBabyModalOpen(false);
   };
-    
 
   const incrementBabyWeight = () => {
     setBabyWeight((prevBabyWeight) => prevBabyWeight + 1);
@@ -267,21 +260,6 @@ export const Baby = () => {
     if (Number(babyWeight) > 0) {
       setBabyWeight((prevBabyWeight) => prevBabyWeight - 1);
     }
-  };
-
-  const openBabyEditModal = (baby) => {
-    setEditingBabyInfo({
-      name: baby.name || '',
-      age: baby.age || '',
-      weight: baby.weight || '',
-      blood_type: baby.blood_type || '',
-    });
-    setIsEditBabyModalOpen(true);
-  };
-  
-
-  const closeBabyEditModal = () => {
-    setIsEditBabyModalOpen(false);
   };
 
   return (
@@ -468,7 +446,7 @@ export const Baby = () => {
                         />
                         <div>
                           <IconButton
-                            onClick={openBabyEditModal}
+                            onClick={() => openBabyEditModal(babyId)}                            
                             aria-label="edit"
                           >
                             <EditIcon />
@@ -480,7 +458,7 @@ export const Baby = () => {
                             <DeleteIcon />
                           </IconButton>
                           <Modal
-                          buttonName="Close"
+                            buttonName="Close"
                             isOpen={isEditBabyModalOpen}
                             closeModal={closeBabyEditModal}
                             content={

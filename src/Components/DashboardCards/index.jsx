@@ -225,6 +225,7 @@ export const DashboardCards = () => {
         </div>
       </div>
       <Modal
+        buttonName="Close"
         isOpen={isBabyModalOpen}
         closeModal={closeBabyModal}
         content={
