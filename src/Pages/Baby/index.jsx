@@ -22,6 +22,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IconButton } from "@mui/material";
 import { Modal } from "../../Components/Modal/modal";
+import { toast } from "react-toastify";
 
 const decodeJwtToken = (token) => {
   try {
@@ -58,7 +59,7 @@ export const Baby = () => {
 
   const [selectedParent, setSelectedParent] = useState("");
   const [userId, setUserId] = useState("");
-  const [babyId, setBabyId] = useState("");
+  const [babyId, setBabyId] = useState(undefined); 
   const [babies, setBabies] = useState([]);
   const [babyList, setBabyList] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
@@ -92,7 +93,7 @@ export const Baby = () => {
         });
         setAvailableUsers(response.data);
       } catch (error) {
-        console.error("Erro ao obter usuários:", error.message);
+        console.error("Error trying to get users:", error.message);
       }
     };
 
@@ -127,13 +128,13 @@ export const Baby = () => {
         }
         const response = await AxiosApi.get("/baby");
         const responseData = response.data;
-        const babyId = responseData[0].id;
-        setBabyId(babyId);
-
-        if (Array.isArray(responseData)) {
+  
+        if (Array.isArray(responseData) && responseData.length > 0) {
+          const babyId = responseData[0].id;
+          setBabyId(babyId);
           setBabies(responseData);
         } else {
-          console.error("Invalid response format:", responseData);
+          console.error("No babies found or invalid response format:", responseData);
         }
       } catch (error) {
         console.log("Error trying to list babies.", error.message);
@@ -211,12 +212,28 @@ const openBabyEditModal = (baby) => {
 
 const saveEditedBaby = async () => {
   try {
-    await editBaby(editingBabyInfo.babyId, {
-      name: editingBabyInfo.name,
-      age: editingBabyInfo.age,
-      weight: editingBabyInfo.weight,
-      blood_type: editingBabyInfo.blood_type,
-    });
+    const editedFields = {};
+
+    if (editingBabyInfo.name !== "") {
+      editedFields.name = editingBabyInfo.name;
+    }
+
+    if (editingBabyInfo.age !== "") {
+      editedFields.age = editingBabyInfo.age;
+    }
+
+    if (editingBabyInfo.weight !== "") {
+      editedFields.weight = editingBabyInfo.weight;
+    }
+
+    if (editingBabyInfo.blood_type !== "") {
+      editedFields.blood_type = editingBabyInfo.blood_type;
+    }
+
+    if (Object.keys(editedFields).length > 0) {
+      await editBaby(editingBabyInfo.babyId, editedFields);
+    }
+
     closeBabyEditModal();
     setEditingBabyInfo({
       name: "",
@@ -230,23 +247,23 @@ const saveEditedBaby = async () => {
   }
 };
 
-  const editBaby = async (babyId, newData) => {
-    try {
-      const authToken = localStorage.getItem("authToken");
-      if (!authToken) {
-        console.error("User has to authenticate");
-        return;
-      }
-  
-      const response = await AxiosApi.patch(`/baby/${babyId}`, newData);
 
-      console.log("Response headers:", response.headers);
-  
-      console.log("Baby edited:", response.data);
-    } catch (error) {
-      console.error("Error editing baby:", error);
+const editBaby = async (babyId, newData) => {
+  try {
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      console.error("User has to authenticate");
+      return;
     }
+    const response = await AxiosApi.patch(`/baby/${babyId}`, newData);
+    toast.success("Baby edited successfully!")
+
+  } catch (error) {
+    console.error("Error editing baby:", error);
   }
+};
+
+
 
   const closeBabyEditModal = () => {
     setIsEditBabyModalOpen(false);
@@ -446,7 +463,7 @@ const saveEditedBaby = async () => {
                         />
                         <div>
                           <IconButton
-                            onClick={() => openBabyEditModal(babyId)}                            
+                            onClick={() => openBabyEditModal(baby)}                            
                             aria-label="edit"
                           >
                             <EditIcon />

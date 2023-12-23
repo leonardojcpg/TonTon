@@ -55,10 +55,19 @@ export const listBabiesByIdController = async (req, res) => {
 
 
 export const updateBabyController = async (req, res) => {
-  const baby = await updateBabyService(req.params.babyId, req.body);
+  try {
+    const baby = await updateBabyService(req.params.babyId, req.body);
+    if (!baby) {
+      return res.status(404).json({ error: 'Baby not found or update failed.' });
+    }
 
-  return res.status(200).json(baby);
+    return res.status(204).end();
+  } catch (error) {
+    console.error('Error updating baby:', error);
+    return res.status(500).json({ error: 'Internal server error.' });
+  }
 };
+
 
 export const deleteBabyController = async (req, res) => {
   try {
