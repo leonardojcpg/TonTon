@@ -1,6 +1,6 @@
 import React from "react";
 import { Container } from "@mui/material";
-import { FormComponent } from "../../Components/Form";
+import { FormComponent } from "../../Components/RegisterForm";
 
 export const Register = () => {
 
@@ -10,7 +10,6 @@ export const Register = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        backgroundColor: "#BEE9CB",
         justifyContent: "center",
         height: "100vh",
       }}

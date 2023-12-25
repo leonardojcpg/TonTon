@@ -7,7 +7,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { FormButton } from "../Button";
+import { FormButton } from "../Button/index.jsx";
 import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -66,7 +66,7 @@ export const FormComponent = () => {
   return (
     <Paper
       elevation={3}
-      sx={{ alignItems: "center", padding: 3, borderRadius: ".6rem" }}
+      sx={{ alignItems: "center", padding: 4, borderRadius: "1rem" }}
     >
       <Grid container spacing={3} sx={{ alignItems: "center" }}>
         <Grid item xs={12} sm={6}>
@@ -118,7 +118,7 @@ export const FormComponent = () => {
               helperText={formState.errors.password?.message}
               autoComplete="current-password"
             />
-            <InputLabel style={{ color: "#000" }}>
+            <InputLabel style={{ color: "#333", marginTop: ".5rem" }}>
               Relationship with the baby
             </InputLabel>
             <Select

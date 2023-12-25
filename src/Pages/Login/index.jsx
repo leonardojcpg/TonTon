@@ -56,14 +56,13 @@ export const Login = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        backgroundColor: "#BEE9CB",
         justifyContent: "center",
         height: "100vh",
       }}
     >
       <Paper
         elevation={3}
-        sx={{ alignItems: "center", padding: 3, borderRadius: ".6rem" }}
+        sx={{ alignItems: "center", padding: 4, borderRadius: "1rem" }}
       >
         <Grid container spacing={3} sx={{ alignItems: "center" }}>
           <Grid item xs={12} sm={6} sx={{ alignItems: "center" }}>
