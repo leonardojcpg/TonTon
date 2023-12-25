@@ -326,7 +326,6 @@ export const Baby = () => {
   const confirmDeleteBaby = async () => {
     try {
       await deleteBaby(deletingBabyId);
-      toast.success("Baby deleted successfully!");
     } catch (error) {
       console.error("Error deleting baby:", error);
     } finally {
@@ -369,7 +368,9 @@ export const Baby = () => {
             spacing={3}
             style={{
               margin: isSmallScreen ? "" : "0 auto",
-              textAlign: isSmallScreen ? "center" : "",
+              display: "flex",
+              flexDirection: isSmallScreen ? "column" : "row",
+              alignItems: isSmallScreen ? "center" : "",
             }}
           >
             <Grid item xs={12} sm={6}>
@@ -399,7 +400,6 @@ export const Baby = () => {
                   display: "flex",
                   alignItems: "center",
                   marginTop: ".5rem",
-                  marginLeft: isSmallScreen ? "75px" : "",
                 }}
               >
                 <Button
@@ -485,7 +485,6 @@ export const Baby = () => {
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",
-                  marginLeft: isSmallScreen ? "75px" : "",
                   "&:hover": {
                     backgroundColor: "#a4dfa4",
                     borderColor: "#a4dfa4",
