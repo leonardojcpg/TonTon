@@ -17,7 +17,7 @@ export const DashboardChart = ({ chartData }) => {
       title: {
         text: "Weight Gain (kg)",
       },
-      tickAmount: isSmallScreen ? 5 : 10, // Ajuste o número de linhas conforme necessário
+      tickAmount: isSmallScreen ? 5 : 10,
     },
     colors: ["#5D915D"],
     dataLabels: {

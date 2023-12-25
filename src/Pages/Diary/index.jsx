@@ -10,6 +10,7 @@ import {
   Select,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useBabyContext } from "../../Context/BabyContext";
@@ -23,6 +24,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 
 export const Diary = () => {
+  const isSmallScreen = useMediaQuery("(max-width:813px)");
+
   const navigate = useNavigate();
   const { setDataInfo } = useBabyContext();
 
@@ -149,7 +152,14 @@ export const Diary = () => {
             padding: "1rem",
           }}
         >
-          <Grid container spacing={3} style={{ margin: "0 auto" }}>
+          <Grid
+            container
+            spacing={3}
+            style={{
+              margin: isSmallScreen ? "" : "0 auto",
+              textAlign: isSmallScreen ? "center" : "",
+            }}
+          >
             <Grid item xs={12} sm={6}>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Select Baby
@@ -200,6 +210,7 @@ export const Diary = () => {
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",
+                  marginLeft: isSmallScreen ? "75px" : "",
                   "&:hover": {
                     backgroundColor: "#a4dfa4",
                     borderColor: "#a4dfa4",

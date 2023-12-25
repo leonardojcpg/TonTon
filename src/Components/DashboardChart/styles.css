@@ -5,6 +5,8 @@
 
 @media (max-width: 768px) {
   .chart-container {
+    border-radius: 0.625rem;
+    margin: 15px auto;
     background-color: #f3f3f3;
   }
 }

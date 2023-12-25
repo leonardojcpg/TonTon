@@ -151,7 +151,8 @@ export const Sleep = () => {
               margin: isSmallScreen ? "" : "0 auto",
               textAlign: isSmallScreen ? "center" : "",
             }}
-          >            <Grid item xs={12} sm={6}>
+          >
+            <Grid item xs={12} sm={6}>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Select Baby
               </Typography>

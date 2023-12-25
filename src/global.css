@@ -12,3 +12,11 @@ body,
   min-height: 100vh;
   background-color: #bee9cb;
 }
+
+
+@media (max-width: 768px) {
+  #root {
+    border-radius: 0.625rem;
+    background-color: #f3f3f3;
+  }
+}
