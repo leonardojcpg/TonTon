@@ -180,7 +180,9 @@ export const BreastFeeding = () => {
             spacing={3}
             style={{
               margin: isSmallScreen ? "" : "0 auto",
-              textAlign: isSmallScreen ? "center" : "",
+              display: "flex",
+              flexDirection: isSmallScreen ? "column" : "row",
+              alignItems: isSmallScreen ? "center" : "",
             }}
           >
             <Grid item xs={12} sm={6}>
@@ -190,7 +192,6 @@ export const BreastFeeding = () => {
                   display: "flex",
                   alignItems: "center",
                   marginTop: ".5rem",
-                  marginLeft: isSmallScreen ? "75px" : "",
                 }}
               >
                 <Button
@@ -274,7 +275,7 @@ export const BreastFeeding = () => {
               </Select>
               <Typography
                 variant="h5"
-                style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
+                style={{ marginTop: ".5rem", marginBottom: ".5rem"}}
               >
                 Select Date
               </Typography>
@@ -291,7 +292,6 @@ export const BreastFeeding = () => {
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",
-                  marginLeft: isSmallScreen ? "75px" : "",
                   "&:hover": {
                     backgroundColor: "#a4dfa4",
                     borderColor: "#a4dfa4",
@@ -308,6 +308,7 @@ export const BreastFeeding = () => {
                 style={{
                   maxHeight: "50vh",
                   overflowY: "auto",
+                  textAlign: "center"
                 }}
               >
                 <List>
