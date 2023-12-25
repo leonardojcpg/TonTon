@@ -46,7 +46,7 @@ const decodeJwtToken = (token) => {
 export const Baby = () => {
   const isSmallScreen = useMediaQuery("(max-width:813px)");
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     if (!authToken) {
@@ -67,6 +67,9 @@ export const Baby = () => {
   const [babyList, setBabyList] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
 
+  const [deletingBabyId, setDeletingBabyId] = useState(null);
+  const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] =
+    useState(false);
   const [isEditBabyModalOpen, setIsEditBabyModalOpen] = useState(false);
   const [editingBabyInfo, setEditingBabyInfo] = useState({
     name: "",
@@ -267,8 +270,69 @@ export const Baby = () => {
     }
   };
 
+  const disassociateBaby = async(babyId) => {
+    try{
+      const authToken = localStorage.getItem("authToken")
+      if(!authToken){
+        console.error("User has to authenticate")
+        return
+      }
+
+      await AxiosApi.delete(
+        `/user_baby/${userId}/baby/${babyId}/disassociate`
+      ); 
+
+    } catch(error){
+      console.error("Error trying to disassociate baby", error)
+    }
+  }
+
+  const deleteBaby = async (babyId) => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        console.error("User has to authenticate");
+        return;
+      }
+
+      disassociateBaby(babyId)
+      await AxiosApi.delete(`/baby/${babyId}`, {
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      });
+
+      toast.success("Baby deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting baby:", error);
+      toast.error("Error deleting baby. Please try again later.");
+    }
+  };
+  
   const closeBabyEditModal = () => {
     setIsEditBabyModalOpen(false);
+  };
+
+  const setDeleteBaby = (babyId) => {
+    setDeletingBabyId(babyId);
+    setIsDeleteConfirmationOpen(true);
+  };
+
+  const cancelDeleteBaby = () => {
+    setDeletingBabyId(null);
+    setIsDeleteConfirmationOpen(false);
+  };
+
+  const confirmDeleteBaby = async () => {
+    try {
+      await deleteBaby(deletingBabyId);
+      toast.success("Baby deleted successfully!");
+    } catch (error) {
+      console.error("Error deleting baby:", error);
+    } finally {
+      setDeletingBabyId(null);
+      setIsDeleteConfirmationOpen(false);
+    }
   };
 
   const incrementBabyWeight = () => {
@@ -300,11 +364,13 @@ export const Baby = () => {
             padding: "1rem",
           }}
         >
-          <Grid container spacing={3} 
-          style={{ 
-            margin: isSmallScreen ? "" : "0 auto",
-            textAlign: isSmallScreen ? "center" : ""
-          }}
+          <Grid
+            container
+            spacing={3}
+            style={{
+              margin: isSmallScreen ? "" : "0 auto",
+              textAlign: isSmallScreen ? "center" : "",
+            }}
           >
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Name</Typography>
@@ -446,8 +512,8 @@ export const Baby = () => {
                         key={index}
                         sx={{
                           border: "1px solid #ccc",
-                          width: "500px",
-                          borderRadius: "7px",
+                          width: isSmallScreen ? "400px" : "500px",
+                          borderRadius: "8px",
                           marginBottom: "0.5rem",
                           margin: "5px 0",
                           backgroundColor: "#c5e2c1",
@@ -476,11 +542,55 @@ export const Baby = () => {
                             <EditIcon />
                           </IconButton>
                           <IconButton
-                            onClick={openBabyEditModal}
+                            onClick={() => setDeleteBaby(baby.id)}
                             aria-label="delete"
                           >
                             <DeleteIcon />
                           </IconButton>
+                          <Modal
+                            buttonName="Close Window"
+                            isOpen={isDeleteConfirmationOpen}
+                            closeModal={cancelDeleteBaby}
+                            content={
+                              <div>
+                                <p>
+                                  Are you sure you want to delete this baby?
+                                </p>
+                                <Button
+                                  variant="contained"
+                                  color="primary"
+                                  onClick={confirmDeleteBaby}
+                                  sx={{
+                                    marginTop: 1,
+                                    margin: "10px 0",
+                                    fontWeight: "500",
+                                    backgroundColor: "#508b50",
+                                    "&:hover": {
+                                      backgroundColor: "#a4dfa4",
+                                      borderColor: "#a4dfa4",
+                                      color: "#508b50",
+                                    },
+                                  }}
+                                >
+                                  Yes
+                                </Button>
+                                <Button
+                                  variant="contained"
+                                  color="secondary"
+                                  onClick={cancelDeleteBaby}
+                                  sx={{
+                                    marginTop: 1,
+                                    marginLeft: 1,
+                                    margin: "10px 10px",
+                                    backgroundColor: "#333"
+                                  }}
+                                >
+                                  No
+                                </Button>
+                              </div>
+                            }
+                          />
+
                           <Modal
                             buttonName="Close"
                             isOpen={isEditBabyModalOpen}
