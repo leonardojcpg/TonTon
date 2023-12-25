@@ -23,7 +23,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 
 export const Diary = () => {
-
   const navigate = useNavigate();
   const { setDataInfo } = useBabyContext();
 
@@ -90,8 +89,7 @@ export const Diary = () => {
       }
 
       if (note && selectedBaby) {
-
-        const currentDate = new Date().toISOString().split('T')[0];
+        const currentDate = new Date().toISOString().split("T")[0];
         const newDiaryEntry = {
           date: currentDate,
           note: note,
@@ -102,21 +100,20 @@ export const Diary = () => {
 
         const createdDiaryInfo = await response.json();
         setFeed([...diary, createdDiaryInfo]);
-        setDataInfo({ date: currentDate, note: note});
+        setDataInfo({ date: currentDate, note: note });
         setNote("");
 
-        if(response.status === 200 || 201){
-          toast.success("Feed added successfully")
-          return
+        if (response.status === 200 || 201) {
+          toast.success("Feed added successfully");
+          return;
         }
-
       } else {
         console.log("Erro, invalid data.");
       }
     } catch (error) {
       //console.log("Error creating diary");
     }
-  };      
+  };
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -153,7 +150,6 @@ export const Diary = () => {
           }}
         >
           <Grid container spacing={3} style={{ margin: "0 auto" }}>
-            {/* Left Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Select Baby
@@ -214,7 +210,6 @@ export const Diary = () => {
                 Add Note
               </Button>
             </Grid>
-            {/* Right Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Note:</Typography>
               <div
@@ -225,35 +220,35 @@ export const Diary = () => {
               >
                 <List>
                   {diary
-                  .filter((entry) => entry.baby_id === selectedBaby.id)
-                  .map((entry, index) => (
-                    <ListItem
-                      key={index}
-                      sx={{
-                        border: "1px solid #ccc",
-                        width: "500px",
-                        borderRadius: "7px",
-                        marginBottom: "0.5rem",
-                        margin: "5px 0",
-                        backgroundColor: "#c5e2c1",
-                      }}
-                    >
-                      <ListItemText
-                        primary={`Date: ${formatDate(entry.date)}`}
-                        secondary={`Note: ${entry.note}`}
-                        primaryTypographyProps={{ variant: "subtitle1" }}
-                        secondaryTypographyProps={{
-                          component: "div",
-                          variant: "body2",
-                        }}
+                    .filter((entry) => entry.baby_id === selectedBaby.id)
+                    .map((entry, index) => (
+                      <ListItem
+                        key={index}
                         sx={{
-                          overflow: "auto",
-                          textOverflow: "ellipsis",
-                          whiteSpace: "normal",
+                          border: "1px solid #ccc",
+                          width: "500px",
+                          borderRadius: "7px",
+                          marginBottom: "0.5rem",
+                          margin: "5px 0",
+                          backgroundColor: "#c5e2c1",
                         }}
-                      />
-                    </ListItem>
-                  ))}
+                      >
+                        <ListItemText
+                          primary={`Date: ${formatDate(entry.date)}`}
+                          secondary={`Note: ${entry.note}`}
+                          primaryTypographyProps={{ variant: "subtitle1" }}
+                          secondaryTypographyProps={{
+                            component: "div",
+                            variant: "body2",
+                          }}
+                          sx={{
+                            overflow: "auto",
+                            textOverflow: "ellipsis",
+                            whiteSpace: "normal",
+                          }}
+                        />
+                      </ListItem>
+                    ))}
                 </List>
               </div>
             </Grid>

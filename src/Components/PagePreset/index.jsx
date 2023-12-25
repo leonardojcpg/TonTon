@@ -1,13 +1,13 @@
-import { Container, Grid, Paper } from "@mui/material"
-import { PageTitle } from "../PageTitle"
-import { ResponsiveHeader } from "../ResponsiveHeader"
+import { Container, Grid, Paper } from "@mui/material";
+import { PageTitle } from "../PageTitle";
+import { ResponsiveHeader } from "../ResponsiveHeader";
 
-export const PagePreset = ({pageTitle}) => {
-    return (
-        <>
-        <ResponsiveHeader />
-        <PageTitle pageTitle={pageTitle} />
-        <Paper
+export const PagePreset = ({ pageTitle }) => {
+  return (
+    <>
+      <ResponsiveHeader />
+      <PageTitle pageTitle={pageTitle} />
+      <Paper
         elevation={3}
         style={{
           width: "100%",
@@ -27,8 +27,8 @@ export const PagePreset = ({pageTitle}) => {
             spacing={3}
             style={{ margin: "1rem", marginLeft: "3rem" }}
           ></Grid>
-          </Container>
-        </Paper>
-        </>
-    )
-}
+        </Container>
+      </Paper>
+    </>
+  );
+};

@@ -3,7 +3,6 @@ import { Container } from "@mui/material";
 import { FormComponent } from "../../Components/RegisterForm";
 
 export const Register = () => {
-
   return (
     <Container
       style={{
@@ -14,7 +13,7 @@ export const Register = () => {
         height: "100vh",
       }}
     >
-      <FormComponent  />
+      <FormComponent />
     </Container>
   );
 };

@@ -40,16 +40,16 @@ export const Login = () => {
       const response = await AxiosApi.post("/login", data);
       const { token } = response.data;
 
-      localStorage.setItem('authToken', token);
-      
+      localStorage.setItem("authToken", token);
+
       toast.success("You are logged in!");
       navigate("/dashboard");
     } catch (error) {
       toast.error("Error trying to login");
-      console.error("Error trying to login", error)
+      console.error("Error trying to login", error);
     }
   };
-  
+
   return (
     <Container
       style={{

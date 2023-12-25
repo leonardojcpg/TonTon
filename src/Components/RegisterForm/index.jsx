@@ -12,7 +12,7 @@ import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {AxiosApi} from "../../Axios/axios.create.js";
+import { AxiosApi } from "../../Axios/axios.create.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -20,17 +20,21 @@ export const FormComponent = () => {
   const navigate = useNavigate();
   const schema = z.object({
     name: z
-      .string().min(3).max(50)
+      .string()
+      .min(3)
+      .max(50)
       .refine((data) => data.trim() !== "", {
         message: "Type your name",
       }),
     email: z
-      .string().email("Type a valid email")
+      .string()
+      .email("Type a valid email")
       .refine((data) => data.trim() !== "", {
         message: "Email is required",
       }),
     password: z
-      .string().min(4)
+      .string()
+      .min(4)
       .refine((data) => data.trim() !== "", {
         message: "Password is required",
       }),
@@ -54,14 +58,12 @@ export const FormComponent = () => {
   const handleSignup = async (data) => {
     try {
       await AxiosApi.post("/users", data);
-      toast.success("You are successfully registered!")
-      navigate("/login")
+      toast.success("You are successfully registered!");
+      navigate("/login");
     } catch (error) {
       toast.error("Erro no registro:", error);
     }
   };
-  
-  
 
   return (
     <Paper
@@ -140,9 +142,9 @@ export const FormComponent = () => {
                 {formState.errors.relationship.message}
               </Typography>
             )}
-            <FormButton 
-            onClick={handleSubmit(handleSignup)}
-            buttonName="Sign Up" 
+            <FormButton
+              onClick={handleSubmit(handleSignup)}
+              buttonName="Sign Up"
             />
             <Typography
               variant="body2"

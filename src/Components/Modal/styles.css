@@ -36,7 +36,7 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  gap: .5rem;
+  gap: 0.5rem;
 }
 
 .modal-content p {
@@ -48,18 +48,17 @@
   font-weight: bold;
 }
 
-button{
+button {
   height: 2.1875rem;
   border: none;
   background-color: #5d915d;
-  border-radius: .3125rem;
+  border-radius: 0.3125rem;
   cursor: pointer;
   text-align: center;
   color: #fff;
   font-weight: 700;
   font-size: 16px;
 }
-
 
 @media (max-width: 768px) {
   .modal {

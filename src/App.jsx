@@ -20,7 +20,7 @@ function App() {
           draggable
           pauseOnHover
           theme="light"
-          />
+        />
       </BabyProvider>
     </>
   );

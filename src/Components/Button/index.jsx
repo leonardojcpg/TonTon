@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 
-export const FormButton = ({buttonName}) => {
+export const FormButton = ({ buttonName }) => {
   return (
     <>
       <Button

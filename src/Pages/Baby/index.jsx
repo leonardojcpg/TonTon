@@ -11,6 +11,7 @@ import {
   Select,
   TextField,
   Typography,
+  useMediaQuery,
 } from "@mui/material";
 import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
@@ -43,7 +44,9 @@ const decodeJwtToken = (token) => {
 };
 
 export const Baby = () => {
+  const isSmallScreen = useMediaQuery("(max-width:813px)");
   const navigate = useNavigate();
+  
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     if (!authToken) {
@@ -59,7 +62,7 @@ export const Baby = () => {
 
   const [selectedParent, setSelectedParent] = useState("");
   const [userId, setUserId] = useState("");
-  const [babyId, setBabyId] = useState(undefined); 
+  const [babyId, setBabyId] = useState(undefined);
   const [babies, setBabies] = useState([]);
   const [babyList, setBabyList] = useState([]);
   const [availableUsers, setAvailableUsers] = useState([]);
@@ -128,13 +131,16 @@ export const Baby = () => {
         }
         const response = await AxiosApi.get("/baby");
         const responseData = response.data;
-  
+
         if (Array.isArray(responseData) && responseData.length > 0) {
           const babyId = responseData[0].id;
           setBabyId(babyId);
           setBabies(responseData);
         } else {
-          console.error("No babies found or invalid response format:", responseData);
+          console.error(
+            "No babies found or invalid response format:",
+            responseData
+          );
         }
       } catch (error) {
         console.log("Error trying to list babies.", error.message);
@@ -197,73 +203,69 @@ export const Baby = () => {
     } catch (error) {
       console.error("Erro ao adicionar informações do bebê:", error);
     }
-  }; 
+  };
 
-const openBabyEditModal = (baby) => {
-  setEditingBabyInfo({
-    name: baby.name || "",
-    age: baby.age || "",
-    weight: baby.weight || "",
-    blood_type: baby.blood_type || "",
-    babyId: baby.id,
-  });
-  setIsEditBabyModalOpen(true);
-};
-
-const saveEditedBaby = async () => {
-  try {
-    const editedFields = {};
-
-    if (editingBabyInfo.name !== "") {
-      editedFields.name = editingBabyInfo.name;
-    }
-
-    if (editingBabyInfo.age !== "") {
-      editedFields.age = editingBabyInfo.age;
-    }
-
-    if (editingBabyInfo.weight !== "") {
-      editedFields.weight = editingBabyInfo.weight;
-    }
-
-    if (editingBabyInfo.blood_type !== "") {
-      editedFields.blood_type = editingBabyInfo.blood_type;
-    }
-
-    if (Object.keys(editedFields).length > 0) {
-      await editBaby(editingBabyInfo.babyId, editedFields);
-    }
-
-    closeBabyEditModal();
+  const openBabyEditModal = (baby) => {
     setEditingBabyInfo({
-      name: "",
-      age: "",
-      weight: "",
-      blood_type: "",
-      babyId: "",
+      name: baby.name || "",
+      age: baby.age || "",
+      weight: baby.weight || "",
+      blood_type: baby.blood_type || "",
+      babyId: baby.id,
     });
-  } catch (error) {
-    console.error("Erro ao editar bebê:", error);
-  }
-};
+    setIsEditBabyModalOpen(true);
+  };
 
+  const saveEditedBaby = async () => {
+    try {
+      const editedFields = {};
 
-const editBaby = async (babyId, newData) => {
-  try {
-    const authToken = localStorage.getItem("authToken");
-    if (!authToken) {
-      console.error("User has to authenticate");
-      return;
+      if (editingBabyInfo.name !== "") {
+        editedFields.name = editingBabyInfo.name;
+      }
+
+      if (editingBabyInfo.age !== "") {
+        editedFields.age = editingBabyInfo.age;
+      }
+
+      if (editingBabyInfo.weight !== "") {
+        editedFields.weight = editingBabyInfo.weight;
+      }
+
+      if (editingBabyInfo.blood_type !== "") {
+        editedFields.blood_type = editingBabyInfo.blood_type;
+      }
+
+      if (Object.keys(editedFields).length > 0) {
+        await editBaby(editingBabyInfo.babyId, editedFields);
+      }
+
+      closeBabyEditModal();
+      setEditingBabyInfo({
+        name: "",
+        age: "",
+        weight: "",
+        blood_type: "",
+        babyId: "",
+      });
+    } catch (error) {
+      console.error("Erro ao editar bebê:", error);
     }
-    const response = await AxiosApi.patch(`/baby/${babyId}`, newData);
-    toast.success("Baby edited successfully!")
+  };
 
-  } catch (error) {
-    console.error("Error editing baby:", error);
-  }
-};
-
-
+  const editBaby = async (babyId, newData) => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        console.error("User has to authenticate");
+        return;
+      }
+      const response = await AxiosApi.patch(`/baby/${babyId}`, newData);
+      toast.success("Baby edited successfully!");
+    } catch (error) {
+      console.error("Error editing baby:", error);
+    }
+  };
 
   const closeBabyEditModal = () => {
     setIsEditBabyModalOpen(false);
@@ -298,8 +300,12 @@ const editBaby = async (babyId, newData) => {
             padding: "1rem",
           }}
         >
-          <Grid container spacing={3} style={{ margin: "0 auto" }}>
-            {/* Left Column */}
+          <Grid container spacing={3} 
+          style={{ 
+            margin: isSmallScreen ? "" : "0 auto",
+            textAlign: isSmallScreen ? "center" : ""
+          }}
+          >
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Name</Typography>
               <TextField
@@ -327,6 +333,7 @@ const editBaby = async (babyId, newData) => {
                   display: "flex",
                   alignItems: "center",
                   marginTop: ".5rem",
+                  marginLeft: isSmallScreen ? "75px" : "",
                 }}
               >
                 <Button
@@ -412,6 +419,7 @@ const editBaby = async (babyId, newData) => {
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",
+                  marginLeft: isSmallScreen ? "75px" : "",
                   "&:hover": {
                     backgroundColor: "#a4dfa4",
                     borderColor: "#a4dfa4",
@@ -422,7 +430,6 @@ const editBaby = async (babyId, newData) => {
                 Add Baby
               </Button>
             </Grid>
-            {/* Right Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Babies:</Typography>
               <div
@@ -463,7 +470,7 @@ const editBaby = async (babyId, newData) => {
                         />
                         <div>
                           <IconButton
-                            onClick={() => openBabyEditModal(baby)}                            
+                            onClick={() => openBabyEditModal(baby)}
                             aria-label="edit"
                           >
                             <EditIcon />

@@ -16,8 +16,8 @@ import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
 import { toast } from "react-toastify";
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { AxiosApi } from "../../Axios/axios.create";
 
 export const Sleep = () => {
@@ -25,11 +25,10 @@ export const Sleep = () => {
   const [sleepStartTime, setSleepStartTime] = useState("");
   const [sleepDuration, setSleepDuration] = useState(0);
   const [sleep, setSleep] = useState([]);
-  const [babyList, setBabyList] = useState([])
+  const [babyList, setBabyList] = useState([]);
   const [selectedBaby, setSelectedBaby] = useState("");
   const [currentSleepDate, setCurrentSleepDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
-  
 
   useEffect(() => {
     const fetchSleepData = async () => {
@@ -66,7 +65,7 @@ export const Sleep = () => {
   const addSleep = async () => {
     try {
       if (sleepStartTime && sleepDuration && currentSleepDate) {
-        const currentSleepDate = new Date().toISOString().split('T')[0];
+        const currentSleepDate = new Date().toISOString().split("T")[0];
         const newSleepEntry = {
           date: currentSleepDate,
           start_time: sleepStartTime,
@@ -76,7 +75,7 @@ export const Sleep = () => {
 
         const response = await AxiosApi.post("/sleep", newSleepEntry);
         const createdSleep = await response.json();
-        setSleep([...sleep, createdSleep])
+        setSleep([...sleep, createdSleep]);
         setDataInfo({
           date: currentSleepDate,
           startTime: sleepStartTime,
@@ -87,7 +86,6 @@ export const Sleep = () => {
         setCurrentSleepDate("");
         setSleepStartTime("");
         setSleepDuration("");
-
       } else {
         console.log(
           `Dados de sono inválidos: date = ${currentSleepDate}, startTime = ${sleepStartTime}, duration = ${sleepDuration}`
@@ -112,7 +110,7 @@ export const Sleep = () => {
     setSelectedDate(date);
   };
 
-   const formatDate = (inputDate) => {
+  const formatDate = (inputDate) => {
     const date = new Date(inputDate);
     const day = date.getDate();
     const month = date.getMonth() + 1;
@@ -120,10 +118,10 @@ export const Sleep = () => {
 
     const formattedDay = day.toString().padStart(2, "0");
     const formattedMonth = month.toString().padStart(2, "0");
-  
+
     return `${formattedDay}/${formattedMonth}/${year}`;
   };
- 
+
   return (
     <>
       <ResponsiveHeader />
@@ -143,14 +141,9 @@ export const Sleep = () => {
             padding: "1rem",
           }}
         >
-          <Grid
-            container
-            spacing={3}
-            style={{ margin: "0 auto" }}
-          >
-            {/* Left Column */}
+          <Grid container spacing={3} style={{ margin: "0 auto" }}>
             <Grid item xs={12} sm={6}>
-            <Typography variant="h5" style={{ marginTop: ".5rem" }}>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Select Baby
               </Typography>
               <Select
@@ -167,7 +160,10 @@ export const Sleep = () => {
                 ))}
               </Select>
 
-              <Typography variant="h5" style={{ marginTop: ".5rem", marginBottom: ".5rem" }}>
+              <Typography
+                variant="h5"
+                style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
+              >
                 Select Date
               </Typography>
               <DatePicker
@@ -253,7 +249,6 @@ export const Sleep = () => {
                 Add Sleep
               </Button>
             </Grid>
-            {/* Right Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Sleep Info:</Typography>
               <div
@@ -264,31 +259,31 @@ export const Sleep = () => {
               >
                 <List>
                   {sleep
-                  .filter((entry) => entry.baby_id === selectedBaby.id)
-                  .map((entry, index) => (
-                    <ListItem
-                      key={index}
-                      sx={{
-                        border: "1px solid #ccc",
-                        width: "500px",
-                        borderRadius: "7px",
-                        marginBottom: "0.5rem",
-                        margin: "5px 0",
-                        backgroundColor: "#c5e2c1",
-                      }}
-                    >
-                      <ListItemText
-                        primary={`Date: ${formatDate(entry.date)}`  }
-                        secondary={
-                          <>
-                            Start-Time: {entry.start_time}
-                            <br />
-                            Duration: {entry.duration} h
-                          </>
-                        }
-                      />
-                    </ListItem>
-                  ))}
+                    .filter((entry) => entry.baby_id === selectedBaby.id)
+                    .map((entry, index) => (
+                      <ListItem
+                        key={index}
+                        sx={{
+                          border: "1px solid #ccc",
+                          width: "500px",
+                          borderRadius: "7px",
+                          marginBottom: "0.5rem",
+                          margin: "5px 0",
+                          backgroundColor: "#c5e2c1",
+                        }}
+                      >
+                        <ListItemText
+                          primary={`Date: ${formatDate(entry.date)}`}
+                          secondary={
+                            <>
+                              Start-Time: {entry.start_time}
+                              <br />
+                              Duration: {entry.duration} h
+                            </>
+                          }
+                        />
+                      </ListItem>
+                    ))}
                 </List>
               </div>
             </Grid>

@@ -56,23 +56,23 @@ export const Diapers = () => {
       }
     };
 
-    const fetchDiapers = async() => {
-      try{
-        const authToken = localStorage.getItem("authToken")
-        if(!authToken){
-          toast.error("User has to authenticate")
-          return
+    const fetchDiapers = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          toast.error("User has to authenticate");
+          return;
         }
         const response = await AxiosApi.get("/diapers", {
           headers: {
             Authorization: `Bearer ${authToken}`,
           },
-        })
-        setDiapers(response.data)
-      } catch(error){
-        console.log("Error trying to list diapers")
+        });
+        setDiapers(response.data);
+      } catch (error) {
+        console.log("Error trying to list diapers");
       }
-    }
+    };
 
     fetchDiapers();
     fetchBabyList();
@@ -101,8 +101,7 @@ export const Diapers = () => {
         setDiapersSize("");
         setDiapersQuantity("");
       } else {
-        console.error
-        ("Error creating diaper record:");
+        console.error("Error creating diaper record:");
       }
     }
   };
@@ -136,12 +135,7 @@ export const Diapers = () => {
             padding: "1rem",
           }}
         >
-          <Grid
-            container
-            spacing={3}
-            style={{ margin: "0 auto" }}
-          >
-            {/* Left Column */}
+          <Grid container spacing={3} style={{ margin: "0 auto" }}>
             <Grid item xs={12} sm={6}>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Select Baby
@@ -159,7 +153,9 @@ export const Diapers = () => {
                   </MenuItem>
                 ))}
               </Select>
-              <Typography variant="h5" style={{ marginTop: ".5rem" }}>Label</Typography>
+              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
+                Label
+              </Typography>
               <TextField
                 style={{ width: "250px", marginTop: ".5rem" }}
                 variant="outlined"
@@ -253,7 +249,6 @@ export const Diapers = () => {
                 Add Diapers
               </Button>
             </Grid>
-            {/* Right Column */}
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Diapers Info:</Typography>
               <div
