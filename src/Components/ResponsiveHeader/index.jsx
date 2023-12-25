@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";  // Importe o Link do React Router
+import { Link } from "react-router-dom"; // Importe o Link do React Router
 import {
   AppBar,
   Toolbar,
@@ -73,13 +73,13 @@ export const ResponsiveHeader = () => {
               </IconButton>
               <Typography
                 variant="h6"
-                component={Link}  // Use o componente Link do React Router
-                to="/register"    // Defina a rota para a qual você deseja navegar
+                component={Link}
+                to="/register"
                 sx={{
                   flexGrow: 1,
                   fontFamily: "Roboto",
                   color: "#D6FFD6",
-                  textDecoration: "none", // Remova a decoração de texto padrão do link
+                  textDecoration: "none",
                 }}
               >
                 TonTon
@@ -90,8 +90,13 @@ export const ResponsiveHeader = () => {
               <Typography
                 variant="h6"
                 component={Link}
-                to="/" 
-                sx={{ flexGrow: 1, fontFamily: "Roboto", color: "#D6FFD6", textDecoration: "none" }}
+                to="/"
+                sx={{
+                  flexGrow: 1,
+                  fontFamily: "Roboto",
+                  color: "#D6FFD6",
+                  textDecoration: "none",
+                }}
               >
                 TonTon
               </Typography>
