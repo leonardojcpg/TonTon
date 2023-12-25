@@ -11,6 +11,7 @@ import {
   ListItemText,
   ListItem,
   List,
+  useMediaQuery,
 } from "@mui/material";
 import { PageTitle } from "../../Components/PageTitle";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
@@ -23,6 +24,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 export const BreastFeeding = () => {
+  const isSmallScreen = useMediaQuery("(max-width:813px)");
   const { setDataInfo } = useBabyContext();
   const navigate = useNavigate();
 
@@ -173,7 +175,14 @@ export const BreastFeeding = () => {
             padding: "1rem",
           }}
         >
-          <Grid container spacing={3} style={{ margin: "0 auto" }}>
+          <Grid
+            container
+            spacing={3}
+            style={{
+              margin: isSmallScreen ? "" : "0 auto",
+              textAlign: isSmallScreen ? "center" : "",
+            }}
+          >
             <Grid item xs={12} sm={6}>
               <Typography variant="h5">Feeding-Duration</Typography>
               <div
@@ -181,6 +190,7 @@ export const BreastFeeding = () => {
                   display: "flex",
                   alignItems: "center",
                   marginTop: ".5rem",
+                  marginLeft: isSmallScreen ? "75px" : "",
                 }}
               >
                 <Button
@@ -281,6 +291,7 @@ export const BreastFeeding = () => {
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",
+                  marginLeft: isSmallScreen ? "75px" : "",
                   "&:hover": {
                     backgroundColor: "#a4dfa4",
                     borderColor: "#a4dfa4",
