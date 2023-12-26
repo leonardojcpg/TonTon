@@ -158,18 +158,30 @@ export const DashboardCards = () => {
   }, []);
 
   const openBabyModal = () => {
+    if (babies.length === 0) {
+      setIsBabyModalOpen(false);
+    }
     setIsBabyModalOpen(true);
   };
 
   const openFeedModal = () => {
+    if (feedList.length === 0) {
+      setIsFeedModalOpen(false);
+    }
     setIsFeedModalOpen(true);
   };
 
   const openSleepModal = () => {
+    if (sleepList.length === 0) {
+      setIsSleepModalOpen(false);
+    }
     setIsSleepModalOpen(true);
   };
 
   const openDiapersModal = () => {
+    if (diapersList.length === 0) {
+      setIsDiapersModalOpen(false);
+    }
     setIsDiapersModalOpen(true);
   };
 
@@ -192,37 +204,53 @@ export const DashboardCards = () => {
   return (
     <div className="card-container">
       <div className="cards">
-        {babies
-          .filter((baby) => baby.user_id == userId)
-          .slice(0, 1)
-          .map((baby) => (
-            <div key={baby.id} onClick={openBabyModal}>
-              <h1>{baby.name}</h1>
-              <span>{baby.blood_type.toUpperCase()}</span>
-            </div>
-          ))}
+        {babies.length === 0 ? (
+          <h1>Baby Name</h1>
+        ) : (
+          babies
+            .filter((baby) => baby.user_id == userId)
+            .slice(0, 1)
+            .map((baby) => (
+              <div key={baby.id} onClick={openBabyModal}>
+                <h1>{baby.name}</h1>
+                <span>{baby.blood_type.toUpperCase()}</span>
+              </div>
+            ))
+        )}
       </div>
       <div className="cards" onClick={openFeedModal}>
-        <h1>Last Breast Side</h1>
-        {feedList.slice(-1).map((feed) => (
-          <div key={feed.id}>
-            <span>{feed.side.toUpperCase()}</span>
-          </div>
-        ))}
+        {feedList.lenght === 0 ? (
+          <h1>Last Breast Side</h1>
+        ) : (
+          feedList.slice(-1).map((feed) => (
+            <div key={feed.id}>
+              <h1>Last Breast Side</h1>
+              <span>{feed.side.toUpperCase()}</span>
+            </div>
+          ))
+        )}
       </div>
       <div className="cards" onClick={openSleepModal}>
-        <h1>Last Nap</h1>
-        {sleepList.slice(-1).map((feed) => (
-          <div key={feed.id}>
-            <span>{feed.duration + "h"}</span>
-          </div>
-        ))}
+        {sleepList.length === 0 ? (
+          <h1>Last Nap</h1>
+        ) : (
+          sleepList.slice(-1).map((feed) => (
+            <div key={feed.id}>
+              <h1>Last Nap</h1>
+              <span>{feed.duration + "h"}</span>
+            </div>
+          ))
+        )}
       </div>
       <div className="cards" onClick={openDiapersModal}>
-        <h1>Diapers</h1>
-        <div>
-          <span>{totalDiapersQuantity}</span>
-        </div>
+        {diapersList.length === 0 ? (
+          <h1>Diapers</h1>
+        ) : (
+          <div>
+            <h1>Diapers</h1>
+            <span>{totalDiapersQuantity}</span>
+          </div>
+        )}
       </div>
       <Modal
         buttonName="Close"
