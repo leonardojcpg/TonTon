@@ -149,7 +149,9 @@ export const Sleep = () => {
             spacing={3}
             style={{
               margin: isSmallScreen ? "" : "0 auto",
-              textAlign: isSmallScreen ? "center" : "",
+              display: "flex",
+              flexDirection: isSmallScreen ? "column" : "row",
+              alignItems: isSmallScreen ? "center" : "",
             }}
           >
             <Grid item xs={12} sm={6}>
@@ -208,7 +210,6 @@ export const Sleep = () => {
                   sx={{
                     marginTop: 1,
                     backgroundColor: "#508b50",
-                    marginLeft: isSmallScreen ? "75px" : "",
                     "&:hover": {
                       backgroundColor: "#a4dfa4",
                       borderColor: "#a4dfa4",
@@ -250,7 +251,6 @@ export const Sleep = () => {
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",
-                  marginLeft: isSmallScreen ? "75px" : "",
                   "&:hover": {
                     backgroundColor: "#a4dfa4",
                     borderColor: "#a4dfa4",
