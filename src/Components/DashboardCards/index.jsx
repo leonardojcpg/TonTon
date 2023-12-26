@@ -28,6 +28,7 @@ export const DashboardCards = () => {
   const [diapersList, setDiapers] = useState([]);
   const [babies, setBabies] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [babyId, setBabyId] = useState("")
 
   const [diaperGroups, setDiaperGroups] = useState([]);
   const [totalDiapersQuantity, setTotalDiapersQuantity] = useState([]);
@@ -70,8 +71,10 @@ export const DashboardCards = () => {
         const response = await AxiosApi.get("/baby");
         const listedBabies = response.data;
         setBabies(listedBabies);
+        const babyId = listedBabies[0].id
+        setBabyId(babyId)
       } catch (error) {
-        console.error("Error trying to get babyId");
+        console.error("Error trying to get babyId", error);
       }
     };
 
@@ -204,52 +207,52 @@ export const DashboardCards = () => {
   return (
     <div className="card-container">
       <div className="cards">
-        {babies.length === 0 ? (
-          <h1>Baby Name</h1>
-        ) : (
+        {babies.includes((baby) => baby.user_id == userId) ? (
           babies
             .filter((baby) => baby.user_id == userId)
             .slice(0, 1)
             .map((baby) => (
               <div key={baby.id} onClick={openBabyModal}>
-                <h1>{baby.name}</h1>
+                <h2>{baby.name}</h2>
                 <span>{baby.blood_type.toUpperCase()}</span>
               </div>
             ))
+        ) : (
+          <h2>Baby Name</h2>
         )}
       </div>
       <div className="cards" onClick={openFeedModal}>
-        {feedList.lenght === 0 ? (
-          <h1>Last Breast Side</h1>
-        ) : (
+        {feedList.includes((feed) => feed.baby_id == babyId) ? (
           feedList.slice(-1).map((feed) => (
             <div key={feed.id}>
-              <h1>Last Breast Side</h1>
+              <h2>Last Breast Side</h2>
               <span>{feed.side.toUpperCase()}</span>
             </div>
           ))
+        ) : (
+          <h2>Last Breast Side</h2>
         )}
       </div>
       <div className="cards" onClick={openSleepModal}>
-        {sleepList.length === 0 ? (
-          <h1>Last Nap</h1>
-        ) : (
-          sleepList.slice(-1).map((feed) => (
-            <div key={feed.id}>
-              <h1>Last Nap</h1>
-              <span>{feed.duration + "h"}</span>
+        {sleepList.includes((sleep) => sleep.baby_id == babyId) ? (
+          sleepList.slice(-1).map((item) => (
+            <div key={item.id}>
+              <h2>Last Nap</h2>
+              <span>{item.duration}</span>
             </div>
           ))
+        ) : (
+          <h2>Last Nap</h2>
         )}
       </div>
       <div className="cards" onClick={openDiapersModal}>
-        {diapersList.length === 0 ? (
-          <h1>Diapers</h1>
-        ) : (
+        {diapersList.includes((diaper) => diaper.baby_id == babyId) ? (
           <div>
-            <h1>Diapers</h1>
+            <h2>Diapers</h2>
             <span>{totalDiapersQuantity}</span>
           </div>
+        ) : (
+          <h2>Diapers</h2>
         )}
       </div>
       <Modal
@@ -263,7 +266,7 @@ export const DashboardCards = () => {
               .slice(0, 1)
               .map((baby) => (
                 <div key={baby.id}>
-                  <h1>{baby.name}</h1>
+                  <h2>{baby.name}</h2>
                   <span>
                     Age: <p>{baby.age + " months"}</p>
                   </span>
@@ -286,7 +289,7 @@ export const DashboardCards = () => {
           <div className="modal-content">
             {feedList.slice(-1).map((feed) => (
               <div key={feed.id}>
-                <h1>Last Breast</h1>
+                <h2>Last Breast</h2>
                 <span>
                   Side: <p>{feed.side}</p>
                 </span>
@@ -309,7 +312,7 @@ export const DashboardCards = () => {
           <div className="modal-content">
             {sleepList.slice(-1).map((sleep) => (
               <div key={sleep.id}>
-                <h1>Last Nap</h1>
+                <h2>Last Nap</h2>
                 <span>
                   Date: <p>{format(new Date(sleep.date), "dd/MM/yyyy")}</p>
                 </span>
@@ -330,7 +333,7 @@ export const DashboardCards = () => {
         closeModal={closeDiapersModal}
         content={
           <div className="modal-content">
-            <h1>Diapers</h1>
+            <h2>Diapers</h2>
             {diaperGroups.map((diapersGroup) => (
               <div key={diapersGroup.label}>
                 <span>

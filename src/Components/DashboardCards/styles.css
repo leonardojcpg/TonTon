@@ -30,15 +30,18 @@
   }
 }
 
+.card-container h2{
+  text-align: center;
+}
+
 .cards:hover {
   background-color: #d6ffd6;
   transition: ease-in 0.2s;
 }
 
-.cards h1 {
+.cards h2 {
   font-size: 1.375rem;
   color: #333;
-  text-align: center;
 }
 
 .cards span {
