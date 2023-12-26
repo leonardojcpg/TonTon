@@ -32,13 +32,18 @@ export const FormComponent = () => {
       .refine((data) => data.trim() !== "", {
         message: "Email is required",
       }),
-    password: z
+      password: z
       .string()
       .min(4)
       .refine((data) => data.trim() !== "", {
         message: "Password is required",
-      }),
-    relationship: z
+      })
+      .refine((data) => /[A-Z]/.test(data), {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .refine((data) => /\d/.test(data), {
+        message: "Password must contain at least one number",
+      }),    relationship: z
       .string()
       .refine(
         (data) => ["parent", "grandparent", "other"].includes(data.trim()),
@@ -61,7 +66,11 @@ export const FormComponent = () => {
       toast.success("You are successfully registered!");
       navigate("/login");
     } catch (error) {
-      toast.error("Erro no registro:", error);
+      if (error.response && error.response.status === 409) {
+        toast.error("Email already exists. Please use a different email.");
+      } else {
+        toast.error("Error during registration:", error);
+      }
     }
   };
 
