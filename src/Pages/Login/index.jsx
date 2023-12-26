@@ -12,17 +12,23 @@ export const Login = () => {
   const schema = z.object({
     email: z
       .string()
-      .email()
       .min(1)
+      .email("Type a valid email")
       .refine((data) => data.trim() !== "", {
-        message: "email is required",
+        message: "Email is required",
       }),
-    password: z
+      password: z
       .string()
-      .min(1)
+      .min(4)
       .refine((data) => data.trim() !== "", {
         message: "Password is required",
-      }),
+      })
+      .refine((data) => /[A-Z]/.test(data), {
+        message: "Password must contain at least one uppercase letter",
+      })
+      .refine((data) => /\d/.test(data), {
+        message: "Password must contain at least one number",
+      }), 
   });
 
   const navigate = useNavigate();

@@ -43,7 +43,8 @@ export const FormComponent = () => {
       })
       .refine((data) => /\d/.test(data), {
         message: "Password must contain at least one number",
-      }),    relationship: z
+      }),    
+      relationship: z
       .string()
       .refine(
         (data) => ["parent", "grandparent", "other"].includes(data.trim()),
