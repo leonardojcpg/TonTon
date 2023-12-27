@@ -26,7 +26,7 @@ export const ResponsiveHeader = () => {
 
   const logout = () => {
     localStorage.removeItem("authToken");
-    toast.success("Logging out application");
+    toast.success("Logout successfully!");
     navigate("/login");
   };
 
