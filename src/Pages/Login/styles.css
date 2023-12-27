@@ -1,0 +1,66 @@
+.container-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px auto;
+}
+
+:root{
+    --colorBackground: #040305
+    --colorGrey: rgb(87, 87, 87)
+}
+
+.container-title span{
+    color: #fff;
+    font-size: 4em;
+    font-family: "Poppins";
+
+    animation: bright 2s ease-in-out infinite;
+}
+
+.container-title span:nth-of-type(1){
+    animation-delay: .25s;
+}
+
+.container-title span:nth-of-type(2){
+    animation-delay: .25s;
+}
+
+.container-title span:nth-of-type(3){
+    animation-delay: .25s;
+}
+
+.container-title span:nth-of-type(4){
+    animation-delay: .55s;
+}
+
+.container-title span:nth-of-type(5){
+    animation-delay: .55s;
+}
+
+.container-title span:nth-of-type(6){
+    animation-delay: .55s;
+}
+
+.container-title span:nth-of-type(7){
+    animation-delay: 1.05s
+}
+
+.container-title span:nth-of-type(8){
+    animation-delay: 1.05s;
+}
+
+.container-title span:nth-of-type(9){
+    animation-delay: 1.05s;
+}
+
+@keyframes bright{
+    0%{
+        color: #508b50;
+        text-shadow: 0 0 12px var(--colorGreen), 0 0 50px var(--colorGreen), 0 0 100px var(--colorGreen);
+    }
+    10%, 90%{
+        color: var(--colorGrey);
+        text-shadow: none;
+    }
+}

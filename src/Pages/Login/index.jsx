@@ -1,4 +1,4 @@
-import { Container, Grid, Paper, TextField, Typography } from "@mui/material";
+import { Container, Grid, Paper, TextField, Typography, useMediaQuery } from "@mui/material";
 import { FormButton } from "../../Components/Button";
 import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
@@ -7,8 +7,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosApi } from "../../Axios/axios.create.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import "./styles.css"
 
 export const Login = () => {
+  const isSmallScreen = useMediaQuery("(max-width:813px)");
+
   const schema = z.object({
     email: z
       .string()
@@ -64,8 +67,20 @@ export const Login = () => {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
+        backgroundColor: isSmallScreen ? "#bee9cb" : "#bee9cb",
       }}
-    >
+>
+  <div className="container-title">
+    <span>T</span>
+    <span>o</span>
+    <span>n</span>
+    <span>T</span>
+    <span>o</span>
+    <span>n</span>
+    <span>A</span>
+    <span>p</span>
+    <span>p</span>
+  </div>
       <Paper
         elevation={3}
         sx={{ alignItems: "center", padding: 4, borderRadius: "1rem" }}
