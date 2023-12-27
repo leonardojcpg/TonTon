@@ -1,7 +1,9 @@
 import {
   Button,
   Container,
+  FormHelperText,
   Grid,
+  InputAdornment,
   List,
   ListItem,
   ListItemText,
@@ -20,8 +22,10 @@ import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { AxiosApi } from "../../Axios/axios.create";
+import { useNavigate } from "react-router-dom";
 
 export const Sleep = () => {
+  const navigate = useNavigate()
   const isSmallScreen = useMediaQuery("(max-width:813px)");
 
   const { setDataInfo } = useBabyContext();
@@ -34,6 +38,11 @@ export const Sleep = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      navigate("/login");
+    }
+
     const fetchSleepData = async () => {
       try {
         const response = await AxiosApi.get("/sleep");
@@ -66,6 +75,22 @@ export const Sleep = () => {
   }, []);
 
   const addSleep = async () => {
+
+    if (!selectedBaby) {
+      toast.warning("Please select your baby")
+      return;
+    }
+
+    if (!sleepStartTime) {
+      toast.warning("Please enter a sleep hour")
+      return;
+    }
+
+    if (!sleepDuration) {
+      toast.warning("Please enter a sleep duration")
+      return;
+    }
+
     try {
       if (sleepStartTime && sleepDuration && currentSleepDate) {
         const currentSleepDate = new Date().toISOString().split("T")[0];
@@ -171,7 +196,7 @@ export const Sleep = () => {
                   </MenuItem>
                 ))}
               </Select>
-
+              <FormHelperText>Select your baby</FormHelperText>
               <Typography
                 variant="h5"
                 style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
@@ -183,16 +208,17 @@ export const Sleep = () => {
                 onChange={handleDateChange}
                 dateFormat="yyyy/MM/dd"
               />
+              <FormHelperText>Select a date here</FormHelperText>
               <Typography variant="h5" style={{ marginTop: "1rem" }}>
                 Start-Time
               </Typography>
               <TextField
                 style={{ width: "250px", marginTop: ".5rem" }}
-                label="Start-Time"
                 variant="outlined"
                 value={sleepStartTime}
                 onChange={(e) => setSleepStartTime(e.target.value)}
               />
+              <FormHelperText>24h format</FormHelperText>
               <Typography variant="h5" style={{ marginTop: "1rem" }}>
                 Sleep Duration
               </Typography>
@@ -220,11 +246,14 @@ export const Sleep = () => {
                   -
                 </Button>
                 <TextField
-                  style={{ width: "6.25rem", margin: "0 0.625rem" }}
+                  style={{ width: "6.25rem", margin: "0 0.625rem", textAlignLast: "center" }}
                   variant="outlined"
                   type="number"
                   value={sleepDuration}
                   onChange={(e) => setSleepDuration(e.target.value)}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">hours</InputAdornment>
+                  }}
                 />
                 <Button
                   variant="contained"

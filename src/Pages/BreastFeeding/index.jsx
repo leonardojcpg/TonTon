@@ -12,6 +12,8 @@ import {
   ListItem,
   List,
   useMediaQuery,
+  InputAdornment,
+  FormHelperText,
 } from "@mui/material";
 import { PageTitle } from "../../Components/PageTitle";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
@@ -87,6 +89,27 @@ export const BreastFeeding = () => {
   }, []);
 
   const addFeed = async () => {
+
+    if (!feedTime) {
+      toast.warning("Please enter feed duration")
+      return;
+    }
+
+    if (!breastSide) {
+      toast.warning("Please select a breast side")
+      return;
+    }
+
+    if (!feedHour) {
+      toast.warning("Please enter a feed hour")
+      return;
+    }
+
+    if (!selectedBaby) {
+      toast.warning("Please select your baby")
+      return;
+    }
+
     try {
       const authToken = localStorage.getItem("authToken");
       if (!authToken) {
@@ -211,11 +234,14 @@ export const BreastFeeding = () => {
                   -
                 </Button>
                 <TextField
-                  style={{ width: "6.25rem", margin: "0 0.625rem" }}
+                  style={{ width: "6.25rem", margin: "0 0.625rem", textAlignLast: "center" }}
                   variant="outlined"
                   type="number"
                   value={feedTime}
                   onChange={(e) => setFeedTime(e.target.value)}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">min</InputAdornment>
+                  }}
                 />
                 <Button
                   variant="contained"
@@ -247,16 +273,17 @@ export const BreastFeeding = () => {
                 <MenuItem value="left">Left</MenuItem>
                 <MenuItem value="right">Right</MenuItem>
               </Select>
+              <FormHelperText>Select your last breast side used</FormHelperText>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Feeding Hour
               </Typography>
               <TextField
                 style={{ width: "250px", marginTop: ".5rem" }}
-                label="Hour"
                 variant="outlined"
                 value={feedHour}
                 onChange={(e) => setFeedHour(e.target.value)}
               />
+              <FormHelperText>24h hour format</FormHelperText>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Select Baby
               </Typography>
@@ -273,6 +300,7 @@ export const BreastFeeding = () => {
                   </MenuItem>
                 ))}
               </Select>
+              <FormHelperText>Select your baby</FormHelperText>
               <Typography
                 variant="h5"
                 style={{ marginTop: ".5rem", marginBottom: ".5rem"}}
@@ -284,6 +312,7 @@ export const BreastFeeding = () => {
                 onChange={handleDateChange}
                 dateFormat="yyyy/MM/dd"
               />
+              <FormHelperText>Select a date here</FormHelperText>
               <Button
                 style={{ display: "flex", width: "250px", marginTop: ".5rem" }}
                 variant="contained"

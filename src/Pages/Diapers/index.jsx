@@ -1,7 +1,9 @@
 import {
   Button,
   Container,
+  FormHelperText,
   Grid,
+  InputAdornment,
   List,
   ListItem,
   ListItemText,
@@ -25,14 +27,32 @@ export const Diapers = () => {
 
   const { setDataInfo } = useBabyContext();
   const navigate = useNavigate();
-
   const [diapersLabel, setDiapersLabel] = useState("");
   const [diapersSize, setDiapersSize] = useState("");
   const [diapersQuantity, setDiapersQuantity] = useState(0);
   const [diapers, setDiapers] = useState([]);
-
   const [babyList, setBabyList] = useState([]);
   const [selectedBaby, setSelectedBaby] = useState("");
+  const [userId, setUserId] = useState("");
+
+
+  const decodeJwtToken = (token) => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+          .join("")
+      );
+
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error("Erro ao decodificar token JWT:", error.message);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -42,6 +62,29 @@ export const Diapers = () => {
   }, [navigate]);
 
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          console.error("User has to authenticate.");
+          return;
+        }
+        const decodedToken = decodeJwtToken(authToken);
+        if (decodedToken) {
+          const userId = decodedToken.sub;
+          setUserId(userId);
+          const response = await AxiosApi.get(`/user/${userId}`);
+          const userData = response.data;
+
+          console.log("Informações do usuário:", userData);
+        } else {
+          console.error("Invalid JWT Token.");
+        }
+      } catch (error) {
+        //console.error("Error trying to get user info", error);
+      }
+    };
+
     const fetchBabyList = async () => {
       try {
         const authToken = localStorage.getItem("authToken");
@@ -54,7 +97,10 @@ export const Diapers = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        setBabyList(response.data);
+        const babiesByUser = response.data;
+
+        setBabyList(babiesByUser);
+        ("");
       } catch (error) {
         //console.error("Erro ao obter lista de bebês:", error.message);
       }
@@ -77,19 +123,38 @@ export const Diapers = () => {
         console.log("Error trying to list diapers");
       }
     };
-
+    fetchUserData();
     fetchDiapers();
     fetchBabyList();
   }, []);
 
   const addDiapers = async () => {
-    if (diapersLabel && diapersSize && diapersQuantity) {
-      const newDiapersEntry = {
-        label: diapersLabel,
-        size: diapersSize,
-        quantity: diapersQuantity,
-        baby_id: selectedBaby.id,
-      };
+
+    if (!diapersLabel) {
+      toast.warning("Please enter a valid brand name")
+      return;
+    }
+
+    if (!diapersSize) {
+      toast.warning("Please enter a diaper size")
+      return;
+    }
+
+    if (diapersQuantity <= 0) {
+      toast.warning("Please enter a value higher then zero")
+      return;
+    }
+
+    const newDiapersEntry = {
+      label: diapersLabel,
+      size: diapersSize,
+      quantity: diapersQuantity,
+      baby_id: selectedBaby.id,
+    };
+
+    console.log("Dados da nova fralda:", newDiapersEntry);
+
+    try {
       const response = await AxiosApi.post("/diapers", newDiapersEntry);
 
       if (response.status === 200) {
@@ -104,20 +169,26 @@ export const Diapers = () => {
         setDiapersLabel("");
         setDiapersSize("");
         setDiapersQuantity("");
+
+        console.log("Dados da nova fralda:", newDiapersEntry);
+        console.log("Resposta do servidor:", response.data);
       } else {
         console.error("Error creating diaper record:");
       }
+    } catch (error) {
+      console.error("Erro ao adicionar fraldas:", error);
     }
   };
 
   const incrementDiapersQuantity = () => {
-    setDiapersQuantity((prevDiapersQuantity) => prevDiapersQuantity + 10);
+    setDiapersQuantity((prevDiapersQuantity) => prevDiapersQuantity + 1);
   };
 
   const decrementDiapersQuantity = () => {
-    if (diapersQuantity > 0) {
-      setDiapersQuantity((prevDiapersQuantity) => prevDiapersQuantity - 10);
+    if (diapersQuantity <= 0) {
+      return null;
     }
+    setDiapersQuantity((prevDiapersQuantity) => prevDiapersQuantity - 1);
   };
 
   return (
@@ -160,21 +231,25 @@ export const Diapers = () => {
                 value={selectedBaby}
                 onChange={(e) => setSelectedBaby(e.target.value)}
               >
-                {babyList.map((baby) => (
-                  <MenuItem key={baby.id} value={baby}>
-                    {baby.name}
-                  </MenuItem>
-                ))}
+                {babyList
+                  .filter((item) => item.user_id == userId)
+                  .map((baby) => (
+                    <MenuItem key={baby.id} value={baby}>
+                      {baby.name}
+                    </MenuItem>
+                  ))}
               </Select>
+              <FormHelperText>Select your baby</FormHelperText>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
-                Label
+                Brand
               </Typography>
               <TextField
                 style={{ width: "250px", marginTop: ".5rem" }}
                 variant="outlined"
                 value={diapersLabel}
                 onChange={(e) => setDiapersLabel(e.target.value)}
-              />
+                />
+              <FormHelperText>Select your diaper brand</FormHelperText>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Size
               </Typography>
@@ -190,10 +265,11 @@ export const Diapers = () => {
                 <MenuItem value="m">M</MenuItem>
                 <MenuItem value="l">L</MenuItem>
                 <MenuItem value="xl">XL</MenuItem>
-                <MenuItem value="xxl">XXL</MenuItem>
+                <MenuItem value="xxl">XXL</MenuItem>                
               </Select>
+              <FormHelperText>Select your diaper size</FormHelperText>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
-                Quantity
+                Diapers Quantity
               </Typography>
               <div
                 style={{
@@ -219,7 +295,7 @@ export const Diapers = () => {
                   -
                 </Button>
                 <TextField
-                  style={{ width: "6.25rem", margin: "0 0.625rem" }}
+                  style={{ width: "6.25rem", margin: "0 0.625rem", textAlignLast: "center"}}
                   variant="outlined"
                   type="number"
                   value={diapersQuantity}
@@ -246,9 +322,7 @@ export const Diapers = () => {
                 style={{ display: "flex", width: "250px", marginTop: "1rem" }}
                 variant="contained"
                 color="primary"
-                onClick={() => {
-                  addDiapers();
-                }}
+                onClick={addDiapers}
                 sx={{
                   marginTop: 1,
                   backgroundColor: "#508b50",

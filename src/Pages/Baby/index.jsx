@@ -3,6 +3,7 @@ import {
   Button,
   Container,
   Grid,
+  InputAdornment,
   List,
   ListItem,
   ListItemText,
@@ -12,6 +13,7 @@ import {
   TextField,
   Typography,
   useMediaQuery,
+  FormHelperText,
 } from "@mui/material";
 import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
@@ -349,7 +351,7 @@ export const Baby = () => {
       <ResponsiveHeader />
       <PageTitle pageTitle="Baby" />
       <Paper
-        elevation={3}
+        elevation={0}
         style={{
           width: "100%",
           height: "100vh",
@@ -377,21 +379,21 @@ export const Baby = () => {
               <Typography variant="h5">Name</Typography>
               <TextField
                 style={{ width: "250px", marginTop: ".5rem" }}
-                label="Name"
                 variant="outlined"
                 value={babyName}
                 onChange={(e) => setBabyName(e.target.value)}
               />
+              <FormHelperText>Type your baby name</FormHelperText>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Age
               </Typography>
               <TextField
                 style={{ width: "250px", marginTop: ".5rem" }}
-                label="Age (months)"
                 variant="outlined"
                 value={babyAge}
                 onChange={(e) => setBabyAge(e.target.value)}
               />
+              <FormHelperText>Type your baby age in months</FormHelperText>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Weight
               </Typography>
@@ -419,11 +421,14 @@ export const Baby = () => {
                   -
                 </Button>
                 <TextField
-                  style={{ width: "6.25rem", margin: "0 0.625rem" }}
+                  sx={{ width: "6.25rem", margin: "0 0.625rem", textAlignLast: "center"}}
                   variant="outlined"
                   type="number"
                   value={babyWeight}
                   onChange={(e) => setBabyWeight(e.target.value)}
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">kg</InputAdornment>
+                  }}
                 />
                 <Button
                   variant="contained"

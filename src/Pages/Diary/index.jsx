@@ -1,6 +1,7 @@
 import {
   Button,
   Container,
+  FormHelperText,
   Grid,
   List,
   ListItem,
@@ -179,7 +180,7 @@ export const Diary = () => {
                   </MenuItem>
                 ))}
               </Select>
-
+              <FormHelperText>Select your baby</FormHelperText>
               <Typography
                 variant="h5"
                 style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
@@ -191,6 +192,7 @@ export const Diary = () => {
                 onChange={handleDateChange}
                 dateFormat="yyyy/MM/dd"
               />
+              <FormHelperText>Select a date here</FormHelperText>
               <Typography variant="h5" style={{ marginTop: ".5rem" }}>
                 Note
               </Typography>
@@ -198,7 +200,7 @@ export const Diary = () => {
                 multiline
                 rows={5}
                 style={{ width: "100%", marginTop: ".5rem" }}
-                label="Put your note here!"
+                placeholder="Type your note here!"
                 variant="outlined"
                 onChange={(e) => setNote(e.target.value)}
               />

@@ -26,9 +26,9 @@ export const DashboardCards = () => {
   const [feedList, setFeed] = useState([]);
   const [sleepList, setSleep] = useState([]);
   const [diapersList, setDiapers] = useState([]);
-  const [babies, setBabies] = useState([]);
   const [userId, setUserId] = useState(null);
-  const [babyId, setBabyId] = useState("")
+  const [babies, setBabies] = useState([]);
+  const [babyId, setBabyId] = useState("");
 
   const [diaperGroups, setDiaperGroups] = useState([]);
   const [totalDiapersQuantity, setTotalDiapersQuantity] = useState([]);
@@ -57,7 +57,7 @@ export const DashboardCards = () => {
           console.error("Invalid JWT Token.");
         }
       } catch (error) {
-        //console.error("Error trying to get user info:", error.message);
+        //console.error("Error trying to get user info", error);
       }
     };
 
@@ -71,10 +71,13 @@ export const DashboardCards = () => {
         const response = await AxiosApi.get("/baby");
         const listedBabies = response.data;
         setBabies(listedBabies);
-        const babyId = listedBabies[0].id
-        setBabyId(babyId)
+        const babySelected = listedBabies.find(
+          (baby) => baby.user_id == userId
+        );
+        const babyId = babySelected.id;
+        setBabyId(babyId);
       } catch (error) {
-        console.error("Error trying to get babyId", error);
+        //console.error("Error trying to get babyId", error);
       }
     };
 
@@ -113,6 +116,7 @@ export const DashboardCards = () => {
         console.error("Erro ao obter lista de bebês:", error.message);
       }
     };
+
     const fetchDiapersList = async () => {
       try {
         const authToken = localStorage.getItem("authToken");
@@ -126,7 +130,6 @@ export const DashboardCards = () => {
           },
         });
         setDiapers(response.data);
-
         const totalQuantity = response.data.reduce(
           (total, diaper) => total + diaper.quantity,
           0
@@ -206,13 +209,13 @@ export const DashboardCards = () => {
 
   return (
     <div className="card-container">
-      <div className="cards">
-        {babies.includes((baby) => baby.user_id == userId) ? (
+      <div className="cards" onClick={openBabyModal}>
+        {babies.length > 0 ? (
           babies
             .filter((baby) => baby.user_id == userId)
             .slice(0, 1)
             .map((baby) => (
-              <div key={baby.id} onClick={openBabyModal}>
+              <div key={baby.id}>
                 <h2>{baby.name}</h2>
                 <span>{baby.blood_type.toUpperCase()}</span>
               </div>
@@ -222,7 +225,7 @@ export const DashboardCards = () => {
         )}
       </div>
       <div className="cards" onClick={openFeedModal}>
-        {feedList.includes((feed) => feed.baby_id == babyId) ? (
+        {feedList.length > 0 ? (
           feedList.slice(-1).map((feed) => (
             <div key={feed.id}>
               <h2>Last Breast Side</h2>
@@ -234,7 +237,7 @@ export const DashboardCards = () => {
         )}
       </div>
       <div className="cards" onClick={openSleepModal}>
-        {sleepList.includes((sleep) => sleep.baby_id == babyId) ? (
+        {sleepList.length > 0 ? (
           sleepList.slice(-1).map((item) => (
             <div key={item.id}>
               <h2>Last Nap</h2>
@@ -246,7 +249,7 @@ export const DashboardCards = () => {
         )}
       </div>
       <div className="cards" onClick={openDiapersModal}>
-        {diapersList.includes((diaper) => diaper.baby_id == babyId) ? (
+        {diapersList.filter((item) => item.baby_id == babyId).lenght > 0 ? (
           <div>
             <h2>Diapers</h2>
             <span>{totalDiapersQuantity}</span>
