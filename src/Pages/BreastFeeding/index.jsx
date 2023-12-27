@@ -184,7 +184,7 @@ export const BreastFeeding = () => {
       <ResponsiveHeader />
       <PageTitle pageTitle="Breast-Feeding" />
       <Paper
-        elevation={3}
+        elevation={0}
         style={{
           width: "100%",
           height: "100vh",

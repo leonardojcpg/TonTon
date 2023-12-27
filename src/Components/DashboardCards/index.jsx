@@ -26,8 +26,8 @@ export const DashboardCards = () => {
   const [feedList, setFeed] = useState([]);
   const [sleepList, setSleep] = useState([]);
   const [diapersList, setDiapers] = useState([]);
-  const [userId, setUserId] = useState(null);
   const [babies, setBabies] = useState([]);
+  const [userId, setUserId] = useState(null);
   const [babyId, setBabyId] = useState("");
 
   const [diaperGroups, setDiaperGroups] = useState([]);
@@ -57,7 +57,7 @@ export const DashboardCards = () => {
           console.error("Invalid JWT Token.");
         }
       } catch (error) {
-        //console.error("Error trying to get user info", error);
+        //console.error("Error trying to get user info:", error.message);
       }
     };
 
@@ -71,13 +71,13 @@ export const DashboardCards = () => {
         const response = await AxiosApi.get("/baby");
         const listedBabies = response.data;
         setBabies(listedBabies);
-        const babySelected = listedBabies.find(
-          (baby) => baby.user_id == userId
+        const filteredBabies = listedBabies.filter(
+          (item) => item.user_id == userId
         );
-        const babyId = babySelected.id;
+        const babyId = filteredBabies[0].id;
         setBabyId(babyId);
       } catch (error) {
-        //console.error("Error trying to get babyId", error);
+        console.error("Error trying to get babyId");
       }
     };
 
@@ -116,7 +116,6 @@ export const DashboardCards = () => {
         console.error("Erro ao obter lista de bebês:", error.message);
       }
     };
-
     const fetchDiapersList = async () => {
       try {
         const authToken = localStorage.getItem("authToken");
@@ -130,11 +129,12 @@ export const DashboardCards = () => {
           },
         });
         setDiapers(response.data);
-        const totalQuantity = response.data.reduce(
-          (total, diaper) => total + diaper.quantity,
-          0
-        );
-        setTotalDiapersQuantity(totalQuantity);
+
+        const totalDiapersQuantity = response.data
+          .filter((item) => item.baby_id == babyId)
+          .reduce((total, diaper) => total + diaper.quantity, 0);
+
+        setTotalDiapersQuantity(totalDiapersQuantity);
 
         const groups = response.data.reduce((groups, diaper) => {
           const { label, quantity, size } = diaper;
@@ -209,13 +209,13 @@ export const DashboardCards = () => {
 
   return (
     <div className="card-container">
-      <div className="cards" onClick={openBabyModal}>
+      <div className="cards">
         {babies.length > 0 ? (
           babies
             .filter((baby) => baby.user_id == userId)
             .slice(0, 1)
             .map((baby) => (
-              <div key={baby.id}>
+              <div key={baby.id} onClick={openBabyModal}>
                 <h2>{baby.name}</h2>
                 <span>{baby.blood_type.toUpperCase()}</span>
               </div>
@@ -225,37 +225,43 @@ export const DashboardCards = () => {
         )}
       </div>
       <div className="cards" onClick={openFeedModal}>
-        {feedList.length > 0 ? (
-          feedList.slice(-1).map((feed) => (
-            <div key={feed.id}>
-              <h2>Last Breast Side</h2>
-              <span>{feed.side.toUpperCase()}</span>
-            </div>
-          ))
+        {feedList.lenght > 0 ? (
+          feedList
+            .filter((item) => item.baby_id == babyId)
+            .slice(-1)
+            .map((feed) => (
+              <div key={feed.id}>
+                <h2>Last Breast Side</h2>
+                <span>{feed.side.toUpperCase()}</span>
+              </div>
+            ))
         ) : (
           <h2>Last Breast Side</h2>
         )}
       </div>
       <div className="cards" onClick={openSleepModal}>
         {sleepList.length > 0 ? (
-          sleepList.slice(-1).map((item) => (
-            <div key={item.id}>
-              <h2>Last Nap</h2>
-              <span>{item.duration}</span>
-            </div>
-          ))
+          sleepList
+            .filter((sleep) => sleep.baby_id == babyId)
+            .slice(-1)
+            .map((item) => (
+              <div key={item.id}>
+                <h2>Last Nap</h2>
+                <span>{item.duration + "h"}</span>
+              </div>
+            ))
         ) : (
           <h2>Last Nap</h2>
         )}
       </div>
       <div className="cards" onClick={openDiapersModal}>
-        {diapersList.filter((item) => item.baby_id == babyId).lenght > 0 ? (
+        {diapersList.length > 0 ? (
           <div>
             <h2>Diapers</h2>
             <span>{totalDiapersQuantity}</span>
           </div>
         ) : (
-          <h2>Diapers</h2>
+          <h2>No Diapers Recorded</h2>
         )}
       </div>
       <Modal
@@ -352,13 +358,7 @@ export const DashboardCards = () => {
                   ))}
                 </span>
                 <span>
-                  Total Quantity:
-                  <p>
-                    {diapersGroup.diapers.reduce(
-                      (total, diaper) => total + diaper.quantity,
-                      0
-                    )}
-                  </p>
+                  Total Quantity: <p>{totalDiapersQuantity}</p>
                 </span>
               </div>
             ))}

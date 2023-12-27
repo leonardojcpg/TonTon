@@ -148,8 +148,8 @@ export const Diapers = () => {
     const newDiapersEntry = {
       label: diapersLabel,
       size: diapersSize,
-      quantity: diapersQuantity,
-      baby_id: selectedBaby.id,
+      quantity: parseInt(diapersQuantity, 10),
+      baby_id: parseInt(selectedBaby.id, 10),
     };
 
     console.log("Dados da nova fralda:", newDiapersEntry);
@@ -177,6 +177,7 @@ export const Diapers = () => {
       }
     } catch (error) {
       console.error("Erro ao adicionar fraldas:", error);
+      console.log("Erro detalhado:", error);    
     }
   };
 
@@ -196,7 +197,7 @@ export const Diapers = () => {
       <ResponsiveHeader />
       <PageTitle pageTitle="Diapers" />
       <Paper
-        elevation={3}
+        elevation={0}
         style={{
           width: "100%",
           height: "100vh",
@@ -261,7 +262,7 @@ export const Diapers = () => {
                 onChange={(e) => setDiapersSize(e.target.value)}
               >
                 <MenuItem value="n">RN</MenuItem>
-                <MenuItem value="p">P</MenuItem>
+                <MenuItem value="s">P</MenuItem>
                 <MenuItem value="m">M</MenuItem>
                 <MenuItem value="l">L</MenuItem>
                 <MenuItem value="xl">XL</MenuItem>

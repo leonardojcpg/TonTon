@@ -12,7 +12,7 @@ export const createDiaperService = async (data) => {
     const result = await client.query(query, [baby_id, label, size, quantity]);
     return result.rows[0];
   } catch (error) {
-    throw new AppError("Error creating diaper record", error);
+    throw new AppError("Error creating diaper record", error);  
   }
 };
 

@@ -139,7 +139,7 @@ export const Diary = () => {
       <ResponsiveHeader />
       <PageTitle pageTitle="Diary" />
       <Paper
-        elevation={3}
+        elevation={0}
         style={{
           width: "100%",
           height: "100vh",

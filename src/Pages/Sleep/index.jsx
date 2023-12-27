@@ -155,7 +155,7 @@ export const Sleep = () => {
       <ResponsiveHeader />
       <PageTitle pageTitle="Sleep" />
       <Paper
-        elevation={3}
+        elevation={0}
         style={{
           width: "100%",
           height: "100vh",
