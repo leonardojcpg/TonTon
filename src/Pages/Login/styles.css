@@ -42,17 +42,6 @@
     animation-delay: .55s;
 }
 
-.container-title span:nth-of-type(7){
-    animation-delay: 1.05s
-}
-
-.container-title span:nth-of-type(8){
-    animation-delay: 1.05s;
-}
-
-.container-title span:nth-of-type(9){
-    animation-delay: 1.05s;
-}
 
 @keyframes bright{
     0%{

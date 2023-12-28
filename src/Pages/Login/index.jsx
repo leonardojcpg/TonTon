@@ -77,9 +77,6 @@ export const Login = () => {
     <span>T</span>
     <span>o</span>
     <span>n</span>
-    <span>A</span>
-    <span>p</span>
-    <span>p</span>
   </div>
       <Paper
         elevation={3}

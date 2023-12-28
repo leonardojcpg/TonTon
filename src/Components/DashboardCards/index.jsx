@@ -209,13 +209,13 @@ export const DashboardCards = () => {
 
   return (
     <div className="card-container">
-      <div className="cards">
+      <div className="cards" onClick={openBabyModal}>
         {babies.length > 0 ? (
           babies
             .filter((baby) => baby.user_id == userId)
             .slice(0, 1)
             .map((baby) => (
-              <div key={baby.id} onClick={openBabyModal}>
+              <div key={baby.id}>
                 <h2>{baby.name}</h2>
                 <span>{baby.blood_type.toUpperCase()}</span>
               </div>
