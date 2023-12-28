@@ -19,7 +19,7 @@ import { useBabyContext } from "../../Context/BabyContext";
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
 import { PageTitle } from "../../Components/PageTitle";
 import { useNavigate } from "react-router-dom";
-import { AxiosApi } from "../../Axios/axios.create";
+import { AxiosApi } from "../../Services/axios.create";
 import { toast } from "react-toastify";
 
 export const Diapers = () => {

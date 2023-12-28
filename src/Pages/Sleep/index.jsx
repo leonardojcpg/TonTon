@@ -21,7 +21,7 @@ import { PageTitle } from "../../Components/PageTitle";
 import { toast } from "react-toastify";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { AxiosApi } from "../../Axios/axios.create";
+import { AxiosApi } from "../../Services/axios.create";
 import { useNavigate } from "react-router-dom";
 
 export const Sleep = () => {

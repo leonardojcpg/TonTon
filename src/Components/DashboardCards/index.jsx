@@ -1,6 +1,6 @@
 import "./styles.css";
 import { useEffect, useState } from "react";
-import { AxiosApi } from "../../Axios/axios.create";
+import { AxiosApi } from "../../Services/axios.create";
 import { Modal } from "../Modal/modal";
 import { format } from "date-fns";
 

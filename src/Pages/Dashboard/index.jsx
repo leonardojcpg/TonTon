@@ -5,7 +5,7 @@ import { DashboardCards } from "../../Components/DashboardCards";
 import { DashboardChart } from "../../Components/DashboardChart";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AxiosApi } from "../../Axios/axios.create";
+import { AxiosApi } from "../../Services/axios.create";
 import { format } from "date-fns";
 import { WeightGainForm } from "../../Components/WeightGainForm";
 
