@@ -152,12 +152,9 @@ export const Diapers = () => {
       baby_id: parseInt(selectedBaby.id, 10),
     };
 
-    console.log("Dados da nova fralda:", newDiapersEntry);
-
     try {
       const response = await AxiosApi.post("/diapers", newDiapersEntry);
 
-      if (response.status === 200) {
         const createdDiapersInfo = await response.data;
         setDiapers([...diapers, createdDiapersInfo]);
         setDataInfo({
@@ -170,11 +167,8 @@ export const Diapers = () => {
         setDiapersSize("");
         setDiapersQuantity("");
 
-        console.log("Dados da nova fralda:", newDiapersEntry);
-        console.log("Resposta do servidor:", response.data);
-      } else {
-        console.error("Error creating diaper record:");
-      }
+        navigate("/diapers")
+
     } catch (error) {
       console.error("Erro ao adicionar fraldas:", error);
       console.log("Erro detalhado:", error);    
@@ -374,6 +368,40 @@ export const Diapers = () => {
                     ))}
                 </List>
               </div>
+              <Typography variant="h5">Last Diaper Info:</Typography>
+              <div
+                style={{
+                  maxHeight: "50vh",
+                  overflowY: "auto",
+                }}
+              >
+                <List>
+                  {diapers.slice(-1).map((diaper, index) => (
+                    <ListItem
+                      key={index}
+                      sx={{
+                        border: "1px solid #ccc",
+                        borderRadius: "5px",
+                        marginBottom: "0.5rem",
+                        padding: "0.5rem",
+                        backgroundColor: "#e9e9e9",
+                      }}
+                    >
+                      <ListItemText
+                        primary={`Brand: ${diaper.label}`}
+                        secondary={
+                          <>
+                            Size: {diaper.size.toUpperCase()}
+                            <br />
+                            Quantity: {diaper.quantity}
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </div>
+
             </Grid>
           </Grid>
         </Container>
