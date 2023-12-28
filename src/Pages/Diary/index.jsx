@@ -292,7 +292,11 @@ export const Diary = () => {
                       >
                         <ListItemText
                           primary={`Date: ${formatDate(entry.date)}`}
-                          secondary={`Note: ${entry.note}`}
+                          secondary={
+                            <>
+                            <strong>Note: </strong>{entry.note}
+                            </>
+                          }
                           primaryTypographyProps={{ variant: "subtitle1" }}
                           secondaryTypographyProps={{
                             component: "div",
@@ -331,7 +335,7 @@ export const Diary = () => {
                         primary={`Date: ${formatDate(diaryInfo.date)}`}
                         secondary={
                           <>
-                            Note: {diaryInfo.note}
+                          <strong>Note: </strong>{diaryInfo.note}
                           </>
                         }
                       />

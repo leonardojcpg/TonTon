@@ -357,9 +357,9 @@ export const Diapers = () => {
                           primary={`Label: ${entry.label}`}
                           secondary={
                             <>
-                              Size: {entry.size.toUpperCase()}
-                              <br />
-                              Quantity: {entry.quantity}
+                            <strong>Size: </strong>{entry.size.toUpperCase()}
+                            <br />
+                            <strong>Quantity: </strong>{entry.quantity}
                             </>
                           }
                         />
@@ -390,9 +390,9 @@ export const Diapers = () => {
                         primary={`Brand: ${diaper.label}`}
                         secondary={
                           <>
-                            Size: {diaper.size.toUpperCase()}
+                            <strong>Size: </strong>{diaper.size.toUpperCase()}
                             <br />
-                            Quantity: {diaper.quantity}
+                            <strong>Quantity: </strong>{diaper.quantity}
                           </>
                         }
                       />

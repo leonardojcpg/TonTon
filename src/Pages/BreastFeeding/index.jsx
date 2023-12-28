@@ -354,16 +354,16 @@ export const BreastFeeding = () => {
                         }}
                       >
                         <ListItemText
-                          primary={`Duration: ${entry.duration} minutes`}
+                          primary={`Date: ${formatDate(entry.date)}`}
                           secondary={
                             <>
-                              Breast-Side:{" "}
+                              <strong>Breast-Side:</strong>{" "}
                               {entry.side.charAt(0).toUpperCase() +
                                 entry.side.slice(1).toLowerCase()}
                               <br />
-                              Dia: {entry.hour + " h"}
+                              <strong>Duration: </strong>{entry.duration + " min"}
                               <br />
-                              Date: {formatDate(entry.date)}
+                              <strong>Hour: </strong>{entry.hour + " h"}
                             </>
                           }
                         />
@@ -394,11 +394,13 @@ export const BreastFeeding = () => {
                         primary={`Date: ${formatDate(feeding.date)}`}
                         secondary={
                           <>
-                            Breast Side: {feeding.side}
+                            <strong>Breast-Side:</strong>{" "}
+                            {feeding.side.charAt(0).toUpperCase() +
+                              feeding.side.slice(1).toLowerCase()}
                             <br />
-                            Duration: {feeding.duration + " minutes"}
+                            <strong>Duration: </strong>{feeding.duration + " min"}
                             <br />
-                            Hour: {feeding.hour}
+                            <strong>Hour: </strong>{feeding.hour + " h"}
                           </>
                         }
                       />

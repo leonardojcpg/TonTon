@@ -319,9 +319,9 @@ export const Sleep = () => {
                           primary={`Date: ${formatDate(entry.date)}`}
                           secondary={
                             <>
-                              Start-Time: {entry.start_time}
-                              <br />
-                              Duration: {entry.duration} h
+                            <strong>Hora: </strong>{entry.start_time + " h"}
+                            <br />
+                            <strong>Duration: </strong>{entry.duration + " h"}
                             </>
                           }
                         />
@@ -352,9 +352,9 @@ export const Sleep = () => {
                         primary={`Date: ${formatDate(sleeping.date)}`}
                         secondary={
                           <>
-                            Hora: {sleeping.start_time + " h"}
+                            <strong>Hora: </strong>{sleeping.start_time + " h"}
                             <br />
-                            Duration: {sleeping.duration + " minutes"}
+                            <strong>Duration: </strong>{sleeping.duration + " h"}
                           </>
                         }
                       />

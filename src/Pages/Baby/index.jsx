@@ -476,7 +476,7 @@ export const Baby = () => {
                 value={selectedParent}
                 onChange={(e) => setSelectedParent(e.target.value)}
               >
-                {availableUsers.map((user) => (
+                {availableUsers.filter((user) => user.id == userId).map((user) => (
                   <MenuItem key={user.id} value={user.id}>
                     {user.name}
                   </MenuItem>
