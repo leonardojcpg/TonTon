@@ -116,41 +116,39 @@ export const BreastFeeding = () => {
         navigate("/login");
         return;
       }
-
-      if (feedTime && breastSide && feedHour && selectedBaby) {
-        const currentDate = new Date().toISOString().split("T")[0];
-        const newFeedEntry = {
-          duration: feedTime,
-          side: breastSide,
-          hour: feedHour,
-          date: currentDate,
-          baby_id: selectedBaby.id,
-        };
-
-        const response = await AxiosApi.post("/breast_feeding", newFeedEntry);
-
-        const createdBreastFeeding = await response.json();
-        setFeed([...feed, createdBreastFeeding]);
-        setDataInfo({
-          duration: feedTime,
-          side: breastSide,
-          hour: feedHour,
-          date: currentDate,
-        });
-        setFeedTime("");
-        setBreastSide("");
-        setFeedHour("");
-
-        if (response.status === 200) {
-          toast.success("Feed added successfully");
-          return;
-        }
-      } else {
-        console.log("Erro, invalid data.");
+  
+      const currentDate = new Date().toISOString().split("T")[0];
+      const newFeedEntry = {
+        duration: feedTime,
+        side: breastSide,
+        hour: feedHour,
+        date: currentDate,
+        baby_id: selectedBaby.id,
+      };
+  
+      const response = await AxiosApi.post("/breast_feeding", newFeedEntry);
+      const createdBreastFeeding = await response.data;
+  
+      setFeed([...feed, createdBreastFeeding]);
+      setDataInfo({
+        duration: feedTime,
+        side: breastSide,
+        hour: feedHour,
+        date: currentDate,
+      });
+  
+      setFeedTime("");
+      setBreastSide("");
+      setFeedHour("");
+  
+      if (response.status === 200) {
+        toast.success("Feed added successfully");
       }
+      
+      navigate("/breastFeeding")
     } catch (error) {
-      //console.log("Error creating breast feeding");
-    }
+      console.error("Error creating breast feeding", error);
+    }  
   };
 
   const incrementFeedTime = () => {
@@ -373,6 +371,42 @@ export const BreastFeeding = () => {
                     ))}
                 </List>
               </div>
+              <Typography variant="h5">Last Feed Info Baby:</Typography>
+              <div
+                style={{
+                  maxHeight: "50vh",
+                  overflowY: "auto",
+                }}
+              >
+                <List>
+                  {feed.slice(-1).map((feeding, index) => (
+                    <ListItem
+                      key={index}
+                      sx={{
+                        border: "1px solid #ccc",
+                        borderRadius: "5px",
+                        marginBottom: "0.5rem",
+                        padding: "0.5rem",
+                        backgroundColor: "#e9e9e9",
+                      }}
+                    >
+                      <ListItemText
+                        primary={`Date: ${formatDate(feeding.date)}`}
+                        secondary={
+                          <>
+                            Breast Side: {feeding.side}
+                            <br />
+                            Duration: {feeding.duration + " minutes"}
+                            <br />
+                            Hour: {feeding.hour}
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </div>
+
             </Grid>
           </Grid>
         </Container>
