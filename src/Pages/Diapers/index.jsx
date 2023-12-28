@@ -154,8 +154,7 @@ export const Diapers = () => {
 
     try {
       const response = await AxiosApi.post("/diapers", newDiapersEntry);
-
-        const createdDiapersInfo = await response.data;
+      const createdDiapersInfo = await response.data;
         setDiapers([...diapers, createdDiapersInfo]);
         setDataInfo({
           label: diapersLabel,
@@ -401,7 +400,6 @@ export const Diapers = () => {
                   ))}
                 </List>
               </div>
-
             </Grid>
           </Grid>
         </Container>

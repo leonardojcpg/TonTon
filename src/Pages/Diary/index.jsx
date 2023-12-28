@@ -11,6 +11,7 @@ import {
   Select,
   TextField,
   Typography,
+  selectClasses,
   useMediaQuery,
 } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -33,8 +34,28 @@ export const Diary = () => {
   const [note, setNote] = useState("");
   const [diary, setDiary] = useState([]);
   const [babyList, setBabyList] = useState([]);
+  const [userId, setUserId] = useState(undefined);
   const [selectedBaby, setSelectedBaby] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
+
+  const decodeJwtToken = (token) => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+          .join("")
+      );
+  
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error("Erro ao decodificar token JWT:", error.message);
+      return null;
+    }
+  };
+  
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -80,6 +101,29 @@ export const Diary = () => {
       }
     };
 
+    const fetchAvailableUsers = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          console.error("User has to authenticate");
+          return;
+        }
+        const decodedToken = decodeJwtToken(authToken);
+        if (decodedToken) {
+          const userId = decodedToken.sub;
+          setUserId(userId);
+        }
+        await AxiosApi.get("/users", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+      } catch (error) {
+        //console.error("Error trying to get users:", error.message);
+      }
+    };
+
+    fetchAvailableUsers()
     fetchDiary();
     fetchBabyList();
   }, []);
@@ -101,16 +145,14 @@ export const Diary = () => {
         };
 
         const response = await AxiosApi.post("/diary", newDiaryEntry);
-
-        const createdDiaryInfo = await response.json();
-        setFeed([...diary, createdDiaryInfo]);
+        const createdDiaryInfo = await response.data;
+        setDiary([...diary, createdDiaryInfo]);
         setDataInfo({ date: currentDate, note: note });
         setNote("");
 
-        if (response.status === 200 || 201) {
-          toast.success("Feed added successfully");
-          return;
-        }
+        navigate("/diary")
+
+
       } else {
         console.log("Erro, invalid data.");
       }
@@ -118,6 +160,7 @@ export const Diary = () => {
       //console.log("Error creating diary");
     }
   };
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -174,7 +217,7 @@ export const Diary = () => {
                 value={selectedBaby}
                 onChange={(e) => setSelectedBaby(e.target.value)}
               >
-                {babyList.map((baby) => (
+                {babyList.filter((item) => item.user_id == userId).map((baby) => (
                   <MenuItem key={baby.id} value={baby}>
                     {baby.name}
                   </MenuItem>
@@ -234,7 +277,7 @@ export const Diary = () => {
               >
                 <List>
                   {diary
-                    .filter((entry) => entry.baby_id === selectedBaby.id)
+                    .filter((entry) => entry.baby_id == selectedBaby.id)
                     .map((entry, index) => (
                       <ListItem
                         key={index}
@@ -263,6 +306,37 @@ export const Diary = () => {
                         />
                       </ListItem>
                     ))}
+                </List>
+              </div>
+              <Typography variant="h5">Last Diaper Info:</Typography>
+              <div
+                style={{
+                  maxHeight: "50vh",
+                  overflowY: "auto",
+                }}
+              >
+                <List>
+                  {diary.slice(-1).map((diaryInfo, index) => (
+                    <ListItem
+                      key={index}
+                      sx={{
+                        border: "1px solid #ccc",
+                        borderRadius: "5px",
+                        marginBottom: "0.5rem",
+                        padding: "0.5rem",
+                        backgroundColor: "#e9e9e9",
+                      }}
+                    >
+                      <ListItemText
+                        primary={`Date: ${formatDate(diaryInfo.date)}`}
+                        secondary={
+                          <>
+                            Note: {diaryInfo.note}
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  ))}
                 </List>
               </div>
             </Grid>
