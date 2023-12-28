@@ -1,8 +1,9 @@
 import React from "react";
-import { Container } from "@mui/material";
+import { Container, useMediaQuery } from "@mui/material";
 import { FormComponent } from "../../Components/RegisterForm";
 
 export const Register = () => {
+  const isSmallScreen = useMediaQuery("(max-width:813px)");
   return (
     <Container
       style={{
@@ -11,6 +12,7 @@ export const Register = () => {
         alignItems: "center",
         justifyContent: "center",
         height: "100vh",
+        backgroundColor: isSmallScreen ? "#bee9cb" : "#bee9cb",
       }}
     >
       <FormComponent />
