@@ -102,7 +102,7 @@ export const Sleep = () => {
         };
 
         const response = await AxiosApi.post("/sleep", newSleepEntry);
-        const createdSleep = await response.json();
+        const createdSleep = await response.data;
         setSleep([...sleep, createdSleep]);
         setDataInfo({
           date: currentSleepDate,
@@ -114,10 +114,12 @@ export const Sleep = () => {
         setCurrentSleepDate("");
         setSleepStartTime("");
         setSleepDuration("");
+
+        navigate("/sleep")
       } else {
-        console.log(
+/*         console.log(
           `Dados de sono inválidos: date = ${currentSleepDate}, startTime = ${sleepStartTime}, duration = ${sleepDuration}`
-        );
+        ); */
       }
     } catch (error) {
       //console.error("Error creating sleep record:", error.message);
@@ -327,6 +329,40 @@ export const Sleep = () => {
                     ))}
                 </List>
               </div>
+              <Typography variant="h5">Last Sleep Info Baby:</Typography>
+              <div
+                style={{
+                  maxHeight: "50vh",
+                  overflowY: "auto",
+                }}
+              >
+                <List>
+                  {sleep.slice(-1).map((sleeping, index) => (
+                    <ListItem
+                      key={index}
+                      sx={{
+                        border: "1px solid #ccc",
+                        borderRadius: "5px",
+                        marginBottom: "0.5rem",
+                        padding: "0.5rem",
+                        backgroundColor: "#e9e9e9",
+                      }}
+                    >
+                      <ListItemText
+                        primary={`Date: ${formatDate(sleeping.date)}`}
+                        secondary={
+                          <>
+                            Hora: {sleeping.start_time + " h"}
+                            <br />
+                            Duration: {sleeping.duration + " minutes"}
+                          </>
+                        }
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+              </div>
+
             </Grid>
           </Grid>
         </Container>

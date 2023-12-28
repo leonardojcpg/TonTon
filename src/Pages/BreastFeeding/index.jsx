@@ -406,7 +406,6 @@ export const BreastFeeding = () => {
                   ))}
                 </List>
               </div>
-
             </Grid>
           </Grid>
         </Container>
