@@ -6,14 +6,14 @@
 }
 
 :root{
-    --colorBackground: #040305
     --colorGrey: rgb(87, 87, 87)
 }
 
 .container-title span{
     color: #fff;
-    font-size: 4em;
+    font-size: 40px;
     font-family: "Poppins";
+    font-weight: 600;
 
     animation: bright 2s ease-in-out infinite;
 }
@@ -57,7 +57,7 @@
 @keyframes bright{
     0%{
         color: #508b50;
-        text-shadow: 0 0 12px var(--colorGreen), 0 0 50px var(--colorGreen), 0 0 100px var(--colorGreen);
+        text-shadow: 0 0 12px #508b50, 0 0 50px #508b50, 0 0 100px #508b50;
     }
     10%, 90%{
         color: var(--colorGrey);
