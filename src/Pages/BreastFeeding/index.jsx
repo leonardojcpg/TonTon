@@ -346,8 +346,8 @@ export const BreastFeeding = () => {
                         key={index}
                         sx={{
                           border: "1px solid #ccc",
-                          width: "500px",
-                          borderRadius: "7px",
+                          width: isSmallScreen ? "400px" : "500px",
+                          borderRadius: "8px",
                           marginBottom: "0.5rem",
                           margin: "5px 0",
                           backgroundColor: "#c5e2c1",
@@ -384,9 +384,10 @@ export const BreastFeeding = () => {
                       key={index}
                       sx={{
                         border: "1px solid #ccc",
-                        borderRadius: "5px",
+                        width: isSmallScreen ? "400px" : "500px",
+                        borderRadius: "8px",
                         marginBottom: "0.5rem",
-                        padding: "0.5rem",
+                        margin: "5px 0",
                         backgroundColor: "#e9e9e9",
                       }}
                     >
