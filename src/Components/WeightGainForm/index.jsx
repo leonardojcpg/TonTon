@@ -13,9 +13,20 @@ import { useBabyContext } from "../../Context/BabyContext";
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
-export const WeightGainForm = () => {
+export const WeightGainForm = ({ onAddWeight  }) => {
   const isSmallScreen = useMediaQuery("(max-width:813px)");
+  
+  const navigate = useNavigate()
+  const { setDataInfo } = useBabyContext();
+  const [userId, setUserId] = useState(null);
+  const [babies, setBabies] = useState([]);
+  const [selectedBaby, setSelectedBaby] = useState("");
+  const [babyWeight, setBabyWeight] = useState(0);
+  const [weightGain, setWeightGain] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(new Date());
 
   const decodeJwtToken = (token) => {
     try {
@@ -34,14 +45,6 @@ export const WeightGainForm = () => {
       return null;
     }
   };
-
-  const { setDataInfo } = useBabyContext();
-  const [userId, setUserId] = useState(null);
-  const [babies, setBabies] = useState([]);
-  const [selectedBaby, setSelectedBaby] = useState("");
-  const [babyWeight, setBabyWeight] = useState(0);
-  const [weightGain, setWeightGain] = useState(0);
-  const [selectedDate, setSelectedDate] = useState(new Date());
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -65,7 +68,7 @@ export const WeightGainForm = () => {
         if (userData && Array.isArray(userData.babies)) {
           setBabies(userData.babies);
         } else {
-          console.error("Invalid user data format:", userData);
+          console.error("Invalid user data format:");
         }
       } catch (error) {
         //console.error("Error trying to fetch user data:", error);
@@ -97,41 +100,46 @@ export const WeightGainForm = () => {
   }, []);
 
   const addWeightGain = async () => {
-    try {
-      const authToken = localStorage.getItem("authToken");
-      if (!authToken) {
-        navigate("/login");
-        return;
-      }
+    const authToken = localStorage.getItem("authToken");
+    if (!authToken) {
+      navigate("/login");
+      return;
+    }
 
-      if (babyWeight && selectedBaby) {
+    if(!babyWeight){
+      toast.warning("Please, set a weight value before!")
+    }
+    
+    if(!selectedBaby){
+      toast.warning("Please, select your baby!")
+    }
+
+    try {
         const currentDate = selectedDate.toISOString().split("T")[0];
         const newWeightGainEntry = {
           weight: babyWeight,
           date: currentDate,
           baby_id: selectedBaby,
         };
+  
+        const response = await AxiosApi.post("/weight_gain", newWeightGainEntry);
+        const createdWeightGain = response.data;
+        onAddWeight(createdWeightGain);
 
-        const response = await AxiosApi.post(
-          "/weight_gain",
-          newWeightGainEntry
-        );
-        const createdWeightGain = await response.json();
-        setWeightGain([...weightGain, createdWeightGain]);
         setDataInfo({
           weight: babyWeight,
           date: currentDate,
           baby_id: selectedBaby,
         });
         setBabyWeight("");
-      } else {
-        console.log("Erro, invalid data.");
-      }
+
+        navigate("/");
+
     } catch (error) {
-      //console.log("Error creating weight gain");
+      console.error("Erro ao criar ganho de peso:", error);
     }
   };
-
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
@@ -184,12 +192,11 @@ export const WeightGainForm = () => {
         variant="outlined"
         value={selectedBaby}
         onChange={(e) => {
-          console.log("Selected Baby ID:", e.target.value);
           setSelectedBaby(e.target.value);
         }}
       >
         {babies.length > 0 ? (
-          babies.map((baby) => (
+          babies.filter((item) => item.user_id == userId).map((baby) => (
             <MenuItem key={baby.id} value={baby.id}>
               {baby.name}
             </MenuItem>

@@ -2,8 +2,16 @@ import ReactApexChart from "react-apexcharts";
 import "./styles.css";
 import { useMediaQuery } from "@mui/material";
 
-export const DashboardChart = ({ chartData }) => {
+export const DashboardChart = ({ chartData, selectedBabyId }) => {
   const isSmallScreen = useMediaQuery("(max-width:600px)");
+
+  const filteredChartData = {
+    labels: chartData.labels,
+    datasets: chartData.datasets.filter(
+      (dataset) => dataset.baby_id === selectedBabyId
+    ),
+  };
+
   const options = {
     chart: {
       type: "line",
@@ -38,7 +46,7 @@ export const DashboardChart = ({ chartData }) => {
     <div className="chart-container">
       <ReactApexChart
         options={options}
-        series={chartData.datasets}
+        series={filteredChartData.datasets}
         type={options.chart.type}
         height={isSmallScreen ? 300 : 350}
       />

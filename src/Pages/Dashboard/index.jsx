@@ -40,6 +40,11 @@ export const Dashboard = () => {
       return null;
     }
   };
+
+  useEffect(() => {
+    navigate("/dashboard");
+  }, [chartData]);
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -106,7 +111,7 @@ export const Dashboard = () => {
 
     fetchUserData();
     fetchData();
-  }, [babyId]);
+  }, [babyId, userId]);
 
   const handleAddWeight = (newWeight) => {
     setChartData((prevChartData) => {
@@ -129,6 +134,7 @@ export const Dashboard = () => {
       return updatedData;
     });
   };
+  
 
   return (
     <>
