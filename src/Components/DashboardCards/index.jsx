@@ -4,24 +4,6 @@ import { AxiosApi } from "../../Services/axios.create";
 import { Modal } from "../Modal/modal";
 import { format } from "date-fns";
 
-const decodeJwtToken = (token) => {
-  try {
-    const base64Url = token.split(".")[1];
-    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
-    const jsonPayload = decodeURIComponent(
-      atob(base64)
-        .split("")
-        .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
-        .join("")
-    );
-
-    return JSON.parse(jsonPayload);
-  } catch (error) {
-    console.error("Erro ao decodificar token JWT:", error.message);
-    return null;
-  }
-};
-
 export const DashboardCards = () => {
   const [feedList, setFeed] = useState([]);
   const [sleepList, setSleep] = useState([]);
@@ -36,6 +18,24 @@ export const DashboardCards = () => {
   const [isFeedModalOpen, setIsFeedModalOpen] = useState(false);
   const [isSleepModalOpen, setIsSleepModalOpen] = useState(false);
   const [isDiapersModalOpen, setIsDiapersModalOpen] = useState(false);
+
+  const decodeJwtToken = (token) => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+          .join("")
+      );
+
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error("Erro ao decodificar token JWT:", error.message);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -94,7 +94,8 @@ export const DashboardCards = () => {
           },
         });
 
-        setFeed(response.data);
+        const feedList = response.data.filter((feed) => feed.baby_id == babyId)
+        setFeed(feedList);
       } catch (error) {
         console.error("Erro ao obter lista de bebês:", error.message);
       }
@@ -161,7 +162,7 @@ export const DashboardCards = () => {
     fetchFeedList();
     fetchSleepList();
     fetchDiapersList();
-  }, []);
+  }, [babyId, userId]);
 
   const openBabyModal = () => {
     if (babies.length === 0) {
@@ -209,13 +210,13 @@ export const DashboardCards = () => {
 
   return (
     <div className="card-container">
-      <div className="cards" onClick={openBabyModal}>
+      <div className="cards">
         {babies.length > 0 ? (
           babies
             .filter((baby) => baby.user_id == userId)
             .slice(0, 1)
             .map((baby) => (
-              <div key={baby.id}>
+              <div key={baby.id} onClick={openBabyModal}>
                 <h2>{baby.name}</h2>
                 <span>{baby.blood_type.toUpperCase()}</span>
               </div>
@@ -225,9 +226,8 @@ export const DashboardCards = () => {
         )}
       </div>
       <div className="cards" onClick={openFeedModal}>
-        {feedList.lenght > 0 ? (
+        {feedList.length > 0 ? (
           feedList
-            .filter((item) => item.baby_id == babyId)
             .slice(-1)
             .map((feed) => (
               <div key={feed.id}>

@@ -108,7 +108,7 @@ export const Diary = () => {
           console.error("User has to authenticate");
           return;
         }
-        const decodedToken = decodeJwtToken(authToken);
+        const decodedToken = decodeJwtToken(authToken)
         if (decodedToken) {
           const userId = decodedToken.sub;
           setUserId(userId);
