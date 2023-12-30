@@ -25,7 +25,6 @@ export const WeightGainForm = ({ onAddWeight  }) => {
   const [babies, setBabies] = useState([]);
   const [selectedBaby, setSelectedBaby] = useState("");
   const [babyWeight, setBabyWeight] = useState(0);
-  const [weightGain, setWeightGain] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
 
   const decodeJwtToken = (token) => {

@@ -94,7 +94,7 @@ export const DashboardCards = () => {
           },
         });
 
-        const feedList = response.data.filter((feed) => feed.baby_id == babyId)
+        const feedList = response.data.filter((feed) => feed.baby_id == babyId);
         setFeed(feedList);
       } catch (error) {
         console.error("Erro ao obter lista de bebês:", error.message);
@@ -165,31 +165,34 @@ export const DashboardCards = () => {
   }, [babyId, userId]);
 
   const openBabyModal = () => {
-    if (babies.length === 0) {
+    if (babies.filter((item) => item.user_id == userId).length === 0) {
       setIsBabyModalOpen(false);
     }
     setIsBabyModalOpen(true);
   };
 
   const openFeedModal = () => {
-    if (feedList.length === 0) {
+    if (feedList.filter((item) => item.baby_id == babyId).length === 0) {
       setIsFeedModalOpen(false);
+    } else {
+      setIsFeedModalOpen(true);
     }
-    setIsFeedModalOpen(true);
   };
 
   const openSleepModal = () => {
-    if (sleepList.length === 0) {
+    if (sleepList.filter((item) => item.baby_id == babyId).length === 0) {
       setIsSleepModalOpen(false);
+    } else {
+      setIsSleepModalOpen(true);
     }
-    setIsSleepModalOpen(true);
   };
 
   const openDiapersModal = () => {
-    if (diapersList.length === 0) {
+    if (diapersList.filter((item) => item.baby_id == babyId).length === 0) {
       setIsDiapersModalOpen(false);
+    } else {
+      setIsDiapersModalOpen(true);
     }
-    setIsDiapersModalOpen(true);
   };
 
   const closeBabyModal = () => {
@@ -211,7 +214,7 @@ export const DashboardCards = () => {
   return (
     <div className="card-container">
       <div className="cards">
-        {babies.length > 0 ? (
+        {babies.filter((item) => item.user_id == userId).length > 0 ? (
           babies
             .filter((baby) => baby.user_id == userId)
             .slice(0, 1)
@@ -222,25 +225,23 @@ export const DashboardCards = () => {
               </div>
             ))
         ) : (
-          <h2>Baby Name</h2>
+          <h2>No Babies Recorded</h2>
         )}
       </div>
       <div className="cards" onClick={openFeedModal}>
-        {feedList.length > 0 ? (
-          feedList
-            .slice(-1)
-            .map((feed) => (
-              <div key={feed.id}>
-                <h2>Last Breast Side</h2>
-                <span>{feed.side.toUpperCase()}</span>
-              </div>
-            ))
+        {feedList.filter((item) => item.baby_id == babyId).length > 0 ? (
+          feedList.slice(-1).map((feed) => (
+            <div key={feed.id}>
+              <h2>Last Breast Side</h2>
+              <span>{feed.side.toUpperCase()}</span>
+            </div>
+          ))
         ) : (
-          <h2>Last Breast Side</h2>
+          <h2>No Feed Recorded</h2>
         )}
       </div>
       <div className="cards" onClick={openSleepModal}>
-        {sleepList.length > 0 ? (
+        {sleepList.filter((item) => item.baby_id == babyId).length > 0 ? (
           sleepList
             .filter((sleep) => sleep.baby_id == babyId)
             .slice(-1)
@@ -251,11 +252,11 @@ export const DashboardCards = () => {
               </div>
             ))
         ) : (
-          <h2>Last Nap</h2>
+          <h2>No Nap Recorded</h2>
         )}
       </div>
       <div className="cards" onClick={openDiapersModal}>
-        {diapersList.length > 0 ? (
+        {diapersList.filter((item) => item.baby_id == babyId).length > 0 ? (
           <div>
             <h2>Diapers</h2>
             <span>{totalDiapersQuantity}</span>
@@ -296,20 +297,23 @@ export const DashboardCards = () => {
         closeModal={closeFeedModal}
         content={
           <div className="modal-content">
-            {feedList.slice(-1).map((feed) => (
-              <div key={feed.id}>
-                <h2>Last Breast</h2>
-                <span>
-                  Side: <p>{feed.side}</p>
-                </span>
-                <span>
-                  Hour: <p>{feed.hour}</p>
-                </span>
-                <span>
-                  Date: <p>{format(new Date(feed.date), "dd/MM/yyyy")}</p>
-                </span>
-              </div>
-            ))}
+            {feedList
+              .filter((item) => item.baby_id == babyId)
+              .slice(-1)
+              .map((feed) => (
+                <div key={feed.id}>
+                  <h2>Last Breast</h2>
+                  <span>
+                    Side: <p>{feed.side}</p>
+                  </span>
+                  <span>
+                    Hour: <p>{feed.hour}</p>
+                  </span>
+                  <span>
+                    Date: <p>{format(new Date(feed.date), "dd/MM/yyyy")}</p>
+                  </span>
+                </div>
+              ))}
           </div>
         }
       />
