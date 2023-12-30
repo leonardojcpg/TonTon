@@ -158,6 +158,39 @@ export const Baby = () => {
   }, []);
 
   const addBaby = async () => {
+    if(!babyName){
+      toast.warning("Please, type your baby name")
+      return
+    }
+
+    if(!babyAge){
+      toast.warning("Please, type your baby age")
+      return    
+    }
+
+    if(!babyAge){
+      toast.warning("Please, type your baby age")
+      return    
+    }
+
+
+    if(!babyWeight){
+      toast.warning("Select a value higher then zero for your baby weight")
+      return    
+    }
+
+
+    if(!babyBloodType){
+      toast.warning("Please, select at least one blood type")
+      return    
+    }
+    
+    if(!selectedParent){
+      toast.warning("Please, select a parent for the baby")
+      return    
+    }
+
+
     try {
       const authToken = localStorage.getItem("authToken");
 
@@ -272,22 +305,19 @@ export const Baby = () => {
     }
   };
 
-  const disassociateBaby = async(babyId) => {
-    try{
-      const authToken = localStorage.getItem("authToken")
-      if(!authToken){
-        console.error("User has to authenticate")
-        return
+  const disassociateBaby = async (babyId) => {
+    try {
+      const authToken = localStorage.getItem("authToken");
+      if (!authToken) {
+        console.error("User has to authenticate");
+        return;
       }
 
-      await AxiosApi.delete(
-        `/user_baby/${userId}/baby/${babyId}/disassociate`
-      ); 
-
-    } catch(error){
-      console.error("Error trying to disassociate baby", error)
+      await AxiosApi.delete(`/user_baby/${userId}/baby/${babyId}/disassociate`);
+    } catch (error) {
+      console.error("Error trying to disassociate baby", error);
     }
-  }
+  };
 
   const deleteBaby = async (babyId) => {
     try {
@@ -297,7 +327,7 @@ export const Baby = () => {
         return;
       }
 
-      disassociateBaby(babyId)
+      disassociateBaby(babyId);
       await AxiosApi.delete(`/baby/${babyId}`, {
         headers: {
           Authorization: `Bearer ${authToken}`,
@@ -310,7 +340,7 @@ export const Baby = () => {
       toast.error("Error deleting baby. Please try again later.");
     }
   };
-  
+
   const closeBabyEditModal = () => {
     setIsEditBabyModalOpen(false);
   };
@@ -421,13 +451,19 @@ export const Baby = () => {
                   -
                 </Button>
                 <TextField
-                  sx={{ width: "6.25rem", margin: "0 0.625rem", textAlignLast: "center"}}
+                  sx={{
+                    width: "6.25rem",
+                    margin: "0 0.625rem",
+                    textAlignLast: "center",
+                  }}
                   variant="outlined"
                   type="number"
                   value={babyWeight}
                   onChange={(e) => setBabyWeight(e.target.value)}
                   InputProps={{
-                    endAdornment: <InputAdornment position="end">kg</InputAdornment>
+                    endAdornment: (
+                      <InputAdornment position="end">kg</InputAdornment>
+                    ),
                   }}
                 />
                 <Button
@@ -476,11 +512,19 @@ export const Baby = () => {
                 value={selectedParent}
                 onChange={(e) => setSelectedParent(e.target.value)}
               >
-                {availableUsers.filter((user) => user.id == userId).map((user) => (
-                  <MenuItem key={user.id} value={user.id}>
-                    {user.name}
+                {availableUsers.length > 0 ? (
+                  availableUsers
+                    .filter((user) => user.id == userId)
+                    .map((user) => (
+                      <MenuItem key={user.id} value={user.id}>
+                        {user.name}
+                      </MenuItem>
+                    ))
+                ) : (
+                  <MenuItem value="" disabled>
+                    No users registered!
                   </MenuItem>
-                ))}
+                )}
               </Select>
               <Button
                 style={{ display: "flex", width: "250px", marginTop: ".5rem" }}
@@ -586,7 +630,7 @@ export const Baby = () => {
                                     marginTop: 1,
                                     marginLeft: 1,
                                     margin: "10px 10px",
-                                    backgroundColor: "#333"
+                                    backgroundColor: "#333",
                                   }}
                                 >
                                   No
