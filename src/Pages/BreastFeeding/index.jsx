@@ -37,6 +37,7 @@ export const BreastFeeding = () => {
   const [babyList, setBabyList] = useState([]);
   const [selectedBaby, setSelectedBaby] = useState("");
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [userId, setUserId] = useState("");
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
@@ -45,7 +46,47 @@ export const BreastFeeding = () => {
     }
   }, [navigate]);
 
+  const decodeJwtToken = (token) => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+          .join("")
+      );
+
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error("Erro ao decodificar token JWT:", error.message);
+      return null;
+    }
+  };
+
   useEffect(() => {
+    const fetchAvailableUsers = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          console.error("User has to authenticate");
+          return;
+        }
+        const decodedToken = decodeJwtToken(authToken);
+        if (decodedToken) {
+          const userId = decodedToken.sub;
+          setUserId(userId);
+        }
+        const response = await AxiosApi.get("/users", {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        });
+      } catch (error) {
+        console.error("Error trying to get users:", error.message);
+      }
+    };
+
     const fetchBabyList = async () => {
       try {
         const authToken = localStorage.getItem("authToken");
@@ -58,7 +99,9 @@ export const BreastFeeding = () => {
             Authorization: `Bearer ${authToken}`,
           },
         });
-        setBabyList(response.data);
+        const babyList = response.data
+     
+        setBabyList(babyList);
       } catch (error) {
         console.error("Erro ao obter lista de bebês:", error.message);
       }
@@ -83,30 +126,29 @@ export const BreastFeeding = () => {
         console.log("Error trying to list feed.", error.message);
       }
     };
-
+    fetchAvailableUsers();
     fetchFeedList();
     fetchBabyList();
   }, []);
 
   const addFeed = async () => {
-
     if (!feedTime) {
-      toast.warning("Please enter feed duration")
+      toast.warning("Please enter feed duration");
       return;
     }
 
     if (!breastSide) {
-      toast.warning("Please select a breast side")
+      toast.warning("Please select a breast side");
       return;
     }
 
     if (!feedHour) {
-      toast.warning("Please enter a feed hour")
+      toast.warning("Please enter a feed hour");
       return;
     }
 
     if (!selectedBaby) {
-      toast.warning("Please select your baby")
+      toast.warning("Please select your baby");
       return;
     }
 
@@ -116,7 +158,7 @@ export const BreastFeeding = () => {
         navigate("/login");
         return;
       }
-  
+
       const currentDate = new Date().toISOString().split("T")[0];
       const newFeedEntry = {
         duration: feedTime,
@@ -125,10 +167,10 @@ export const BreastFeeding = () => {
         date: currentDate,
         baby_id: selectedBaby.id,
       };
-  
+
       const response = await AxiosApi.post("/breast_feeding", newFeedEntry);
       const createdBreastFeeding = await response.data;
-  
+
       setFeed([...feed, createdBreastFeeding]);
       setDataInfo({
         duration: feedTime,
@@ -136,19 +178,19 @@ export const BreastFeeding = () => {
         hour: feedHour,
         date: currentDate,
       });
-  
+
       setFeedTime("");
       setBreastSide("");
       setFeedHour("");
-  
+
       if (response.status === 200) {
         toast.success("Feed added successfully");
       }
-      
-      navigate("/breastFeeding")
+
+      navigate("/breastFeeding");
     } catch (error) {
       console.error("Error creating breast feeding", error);
-    }  
+    }
   };
 
   const incrementFeedTime = () => {
@@ -232,13 +274,19 @@ export const BreastFeeding = () => {
                   -
                 </Button>
                 <TextField
-                  style={{ width: "6.25rem", margin: "0 0.625rem", textAlignLast: "center" }}
+                  style={{
+                    width: "6.25rem",
+                    margin: "0 0.625rem",
+                    textAlignLast: "center",
+                  }}
                   variant="outlined"
                   type="number"
                   value={feedTime}
                   onChange={(e) => setFeedTime(e.target.value)}
                   InputProps={{
-                    endAdornment: <InputAdornment position="end">min</InputAdornment>
+                    endAdornment: (
+                      <InputAdornment position="end">min</InputAdornment>
+                    ),
                   }}
                 />
                 <Button
@@ -292,16 +340,24 @@ export const BreastFeeding = () => {
                 value={selectedBaby}
                 onChange={(e) => setSelectedBaby(e.target.value)}
               >
-                {babyList.map((baby) => (
-                  <MenuItem key={baby.id} value={baby}>
-                    {baby.name}
+                {babyList.length > 0 ? (
+                  babyList
+                    .filter((item) => item.user_id == userId)
+                    .map((baby) => (
+                      <MenuItem key={baby.id} value={baby}>
+                        {baby.name}
+                      </MenuItem>
+                    ))
+                ) : (
+                  <MenuItem value="" disabled>
+                    No babies registered to this user!
                   </MenuItem>
-                ))}
+                )}
               </Select>
               <FormHelperText>Select your baby</FormHelperText>
               <Typography
                 variant="h5"
-                style={{ marginTop: ".5rem", marginBottom: ".5rem"}}
+                style={{ marginTop: ".5rem", marginBottom: ".5rem" }}
               >
                 Select Date
               </Typography>
@@ -335,7 +391,7 @@ export const BreastFeeding = () => {
                 style={{
                   maxHeight: "50vh",
                   overflowY: "auto",
-                  textAlign: "center"
+                  textAlign: "center",
                 }}
               >
                 <List>
@@ -361,9 +417,11 @@ export const BreastFeeding = () => {
                               {entry.side.charAt(0).toUpperCase() +
                                 entry.side.slice(1).toLowerCase()}
                               <br />
-                              <strong>Duration: </strong>{entry.duration + " min"}
+                              <strong>Duration: </strong>
+                              {entry.duration + " min"}
                               <br />
-                              <strong>Hour: </strong>{entry.hour + " h"}
+                              <strong>Hour: </strong>
+                              {entry.hour + " h"}
                             </>
                           }
                         />
@@ -399,9 +457,11 @@ export const BreastFeeding = () => {
                             {feeding.side.charAt(0).toUpperCase() +
                               feeding.side.slice(1).toLowerCase()}
                             <br />
-                            <strong>Duration: </strong>{feeding.duration + " min"}
+                            <strong>Duration: </strong>
+                            {feeding.duration + " min"}
                             <br />
-                            <strong>Hour: </strong>{feeding.hour + " h"}
+                            <strong>Hour: </strong>
+                            {feeding.hour + " h"}
                           </>
                         }
                       />
