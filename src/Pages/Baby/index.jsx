@@ -562,7 +562,7 @@ export const Baby = () => {
                         key={index}
                         sx={{
                           border: "1px solid #ccc",
-                          width: isSmallScreen ? "400px" : "500px",
+                          width: isSmallScreen ? "355px" : "500px",
                           borderRadius: "8px",
                           marginBottom: "0.5rem",
                           margin: "5px 0",
