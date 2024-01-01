@@ -1,30 +1,41 @@
-# Getting Started with Create React App
+# TontonApp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**Descrição curta e envolvente do seu aplicativo.**
 
-## Available Scripts
+## Índice
 
-In the project directory, you can run:
+- [Introdução](#introdução)
+- [Recursos](#recursos)
+- [Pré-requisitos](#pré-requisitos)
+- [Instalação](#instalação)
+- [Uso](#uso)
+- [Contribuição](#contribuição)
+- [Licença](#licença)
+- [Contato](#contato)
 
-### `npm start`
+## Introdução
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+O TontonApp é uma aplicação destinada a simplificar a gestão e o cuidado dos bebês, proporcionando uma experiência intuitiva e eficiente para os usuários. [Adicione uma breve descrição sobre os objetivos principais e a proposta de valor do seu aplicativo.]
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Recursos
 
-### `npm run build`
+- **Acompanhamento de Peso:** Registre e acompanhe o ganho de peso dos bebês.
+- **Amamentação:** Registre as sessões de amamentação, incluindo duração e lado.
+- **Troca de Fraldas:** Registre as trocas de fraldas, mantendo o controle de tamanhos e quantidades.
+- **Sono:** Acompanhe os padrões de sono do bebê.
+- **Diário:** Mantenha um diário com notas sobre eventos significativos.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Pré-requisitos
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Antes de começar, certifique-se de ter os seguintes pré-requisitos:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Node.js instalado
+- PostgreSQL instalado
+- Banco de dados PostgreSQL criado com o nome "tontonapp"
 
+## Instalação
 
-### Deployment
+1. **Clone o repositório:**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+   ```bash
+   git clone https://github.com/seu-username/tontonapp.git
