@@ -233,6 +233,7 @@ export const Baby = () => {
         setBabyWeight("");
         setBabyBloodType("");
         setSelectedParent("");
+
       } else {
         console.log(
           "Dados de alimentação inválidos ou nenhum usuário disponível."
@@ -335,6 +336,7 @@ export const Baby = () => {
       });
 
       toast.success("Baby deleted successfully!");
+      location.reload()      
     } catch (error) {
       console.error("Error deleting baby:", error);
       toast.error("Error deleting baby. Please try again later.");
