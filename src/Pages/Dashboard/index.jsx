@@ -84,7 +84,6 @@ export const Dashboard = () => {
         }
 
         if (!babyId) {
-          // Não há bebê selecionado, pode decidir o que fazer nesse caso
           return;
         }
 
@@ -150,7 +149,8 @@ export const Dashboard = () => {
       ) : (
         <FormHelperText 
         style={{
-          textAlign: "center"
+          textAlign: "center",
+          fontSize: "1rem",
         }}
         >
           No babies found. Add a baby to see weight gain chart.

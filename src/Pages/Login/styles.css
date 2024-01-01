@@ -42,6 +42,9 @@
     animation-delay: .55s;
 }
 
+#root{
+    background-color: #bee9cb;
+}
 
 @keyframes bright{
     0%{
