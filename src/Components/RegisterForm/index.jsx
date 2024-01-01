@@ -1,10 +1,6 @@
 // FormComponent.jsx
 import React from "react";
-import {
-  Grid,
-  Paper,
-  Typography,
-} from "@mui/material";
+import { Grid, Paper, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,11 +9,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FormButton } from "../Button/index.jsx";
 import newBornBaby from "./assets/newBornBaby.svg";
-import { NameField } from "../InputsForm/NameField/index.jsx"
-import { EmailField } from "../InputsForm/EmailField/index.jsx"
+import { NameField } from "../InputsForm/NameField/index.jsx";
+import { EmailField } from "../InputsForm/EmailField/index.jsx";
 import { RelationshipField } from "../InputsForm/RelationshipField/index.jsx";
-import { PasswordField } from "../InputsForm/PasswordField/index.jsx"
-import {ErrorMessage} from "../ErrorMessage/index.jsx"
+import { PasswordField } from "../InputsForm/PasswordField/index.jsx";
+import { ErrorMessage } from "../ErrorMessage/index.jsx";
 
 export const FormComponent = () => {
   const navigate = useNavigate();
@@ -79,7 +75,10 @@ export const FormComponent = () => {
   };
 
   return (
-    <Paper elevation={3} sx={{ alignItems: "center", padding: 4, borderRadius: "1rem" }}>
+    <Paper
+      elevation={3}
+      sx={{ alignItems: "center", padding: 4, borderRadius: "1rem" }}
+    >
       <Grid container spacing={3} sx={{ alignItems: "center" }}>
         <Grid item xs={12} sm={6}>
           <img
@@ -98,18 +97,19 @@ export const FormComponent = () => {
             <Typography variant="h4" sx={{ textAlign: "center" }}>
               Register
             </Typography>
-            
+
             <NameField register={register} formState={formState} />
             <EmailField register={register} formState={formState} />
             <PasswordField register={register} formState={formState} />
             <RelationshipField register={register} formState={formState} />
-
             {formState.errors.relationship && (
               <ErrorMessage message={formState.errors.relationship.message} />
             )}
 
-            <FormButton onClick={handleSubmit(handleSignup)} buttonName="Sign Up" />
-
+            <FormButton
+              onClick={handleSubmit(handleSignup)}
+              buttonName="Sign Up"
+            />
             <Typography
               variant="body2"
               sx={{ textAlign: "center", marginTop: 2 }}
