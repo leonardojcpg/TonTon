@@ -1,4 +1,3 @@
-import React from "react";
 import { Container, useMediaQuery } from "@mui/material";
 import { FormComponent } from "../../Components/RegisterForm";
 

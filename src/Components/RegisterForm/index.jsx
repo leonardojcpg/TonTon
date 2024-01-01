@@ -1,20 +1,23 @@
+// FormComponent.jsx
+import React from "react";
 import {
   Grid,
-  InputLabel,
-  MenuItem,
   Paper,
-  Select,
-  TextField,
   Typography,
 } from "@mui/material";
-import { FormButton } from "../Button/index.jsx";
-import newBornBaby from "./assets/newBornBaby.svg";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosApi } from "../../Services/axios.create.js";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { FormButton } from "../Button/index.jsx";
+import newBornBaby from "./assets/newBornBaby.svg";
+import { NameField } from "../InputsForm/NameField/index.jsx"
+import { EmailField } from "../InputsForm/EmailField/index.jsx"
+import { RelationshipField } from "../InputsForm/RelationshipField/index.jsx";
+import { PasswordField } from "../InputsForm/PasswordField/index.jsx"
+import {ErrorMessage} from "../ErrorMessage/index.jsx"
 
 export const FormComponent = () => {
   const navigate = useNavigate();
@@ -32,7 +35,7 @@ export const FormComponent = () => {
       .refine((data) => data.trim() !== "", {
         message: "Email is required",
       }),
-      password: z
+    password: z
       .string()
       .min(4)
       .refine((data) => data.trim() !== "", {
@@ -43,8 +46,8 @@ export const FormComponent = () => {
       })
       .refine((data) => /\d/.test(data), {
         message: "Password must contain at least one number",
-      }),    
-      relationship: z
+      }),
+    relationship: z
       .string()
       .refine(
         (data) => ["parent", "grandparent", "other"].includes(data.trim()),
@@ -76,10 +79,7 @@ export const FormComponent = () => {
   };
 
   return (
-    <Paper
-      elevation={3}
-      sx={{ alignItems: "center", padding: 4, borderRadius: "1rem" }}
-    >
+    <Paper elevation={3} sx={{ alignItems: "center", padding: 4, borderRadius: "1rem" }}>
       <Grid container spacing={3} sx={{ alignItems: "center" }}>
         <Grid item xs={12} sm={6}>
           <img
@@ -98,64 +98,18 @@ export const FormComponent = () => {
             <Typography variant="h4" sx={{ textAlign: "center" }}>
               Register
             </Typography>
-            <TextField
-              label="Name"
-              variant="outlined"
-              fullWidth
-              margin="dense"
-              {...register("name")}
-              error={!!formState.errors.name}
-              helperText={formState.errors.name?.message}
-              autoComplete="name"
-            />
+            
+            <NameField register={register} formState={formState} />
+            <EmailField register={register} formState={formState} />
+            <PasswordField register={register} formState={formState} />
+            <RelationshipField register={register} formState={formState} />
 
-            <TextField
-              label="Email"
-              variant="outlined"
-              fullWidth
-              margin="dense"
-              {...register("email")}
-              error={!!formState.errors.email}
-              helperText={formState.errors.email?.message}
-              autoComplete="email"
-            />
-            <TextField
-              label="Password"
-              variant="outlined"
-              fullWidth
-              margin="dense"
-              type="password"
-              {...register("password")}
-              error={!!formState.errors.password}
-              helperText={formState.errors.password?.message}
-              autoComplete="current-password"
-            />
-            <InputLabel style={{ color: "#333", marginTop: ".5rem" }}>
-              Relationship with the baby
-            </InputLabel>
-            <Select
-              label="Relationship with the baby"
-              variant="outlined"
-              fullWidth
-              defaultValue="parent"
-              margin="dense"
-              {...register("relationship")}
-              error={!!formState.errors.relationship}
-              autoComplete="relationship"
-            >
-              <MenuItem value="parent">Parent</MenuItem>
-              <MenuItem value="grandparent">Grandparent</MenuItem>
-              <MenuItem value="other">Other</MenuItem>
-            </Select>
             {formState.errors.relationship && (
-              <Typography variant="caption" color="error">
-                {formState.errors.relationship.message}
-              </Typography>
+              <ErrorMessage message={formState.errors.relationship.message} />
             )}
-            <FormButton
-              onClick={handleSubmit(handleSignup)}
-              buttonName="Sign Up"
-            />
+
+            <FormButton onClick={handleSubmit(handleSignup)} buttonName="Sign Up" />
+
             <Typography
               variant="body2"
               sx={{ textAlign: "center", marginTop: 2 }}
