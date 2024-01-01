@@ -1,41 +1,41 @@
 # TontonApp
 
-**Descrição curta e envolvente do seu aplicativo.**
+**Short and engaging description of your application.**
 
-## Índice
+## Table of Contents
 
-- [Introdução](#introdução)
-- [Recursos](#recursos)
-- [Pré-requisitos](#pré-requisitos)
-- [Instalação](#instalação)
-- [Uso](#uso)
-- [Contribuição](#contribuição)
-- [Licença](#licença)
-- [Contato](#contato)
+- [Introduction](#introduction)
+- [Features](#features)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contribution](#contribution)
+- [License](#license)
+- [Contact](#contact)
 
-## Introdução
+## Introduction
 
-O TontonApp é uma aplicação destinada a simplificar a gestão e o cuidado dos bebês, proporcionando uma experiência intuitiva e eficiente para os usuários. [Adicione uma breve descrição sobre os objetivos principais e a proposta de valor do seu aplicativo.]
+TontonApp is an application designed to simplify baby care management, providing an intuitive and efficient experience for users. [Add a brief description of the main goals and value proposition of your application.]
 
-## Recursos
+## Features
 
-- **Acompanhamento de Peso:** Registre e acompanhe o ganho de peso dos bebês.
-- **Amamentação:** Registre as sessões de amamentação, incluindo duração e lado.
-- **Troca de Fraldas:** Registre as trocas de fraldas, mantendo o controle de tamanhos e quantidades.
-- **Sono:** Acompanhe os padrões de sono do bebê.
-- **Diário:** Mantenha um diário com notas sobre eventos significativos.
+- **Weight Tracking:** Record and track the baby's weight gain.
+- **Breastfeeding:** Log breastfeeding sessions, including duration and side.
+- **Diaper Changes:** Log diaper changes, keeping track of sizes and quantities.
+- **Sleep:** Track the baby's sleep patterns.
+- **Diary:** Maintain a diary with notes about significant events.
 
-## Pré-requisitos
+## Prerequisites
 
-Antes de começar, certifique-se de ter os seguintes pré-requisitos:
+Before you begin, make sure you have the following prerequisites:
 
-- Node.js instalado
-- PostgreSQL instalado
-- Banco de dados PostgreSQL criado com o nome "tontonapp"
+- Node.js installed
+- PostgreSQL installed
+- PostgreSQL database created with the name "tontonapp"
 
-## Instalação
+## Installation
 
-1. **Clone o repositório:**
+1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/seu-username/tontonapp.git
+   git clone git@github.com:leonardojcpg/TonTon.git
