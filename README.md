@@ -1,6 +1,6 @@
 # TontonApp
 
-**Short and engaging description of your application.**
+**TonTon is the application I developed to help parents better manage the day-to-day activities of their baby. The title is a tribute to my 3-month-old daughter named Antonella. This is my way of assisting other parents like me and immortalizing my baby's name in my career as a developer.**
 
 ## Table of Contents
 
