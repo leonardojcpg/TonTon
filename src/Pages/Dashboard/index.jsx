@@ -1,5 +1,4 @@
 import { ResponsiveHeader } from "../../Components/ResponsiveHeader";
-import { ContainerContent } from "../../Components/ContainerContentPage";
 import { PageTitle } from "../../Components/PageTitle";
 import { DashboardCards } from "../../Components/DashboardCards";
 import { DashboardChart } from "../../Components/DashboardChart";
@@ -8,11 +7,13 @@ import { useNavigate } from "react-router-dom";
 import { AxiosApi } from "../../Services/axios.create";
 import { format } from "date-fns";
 import { WeightGainForm } from "../../Components/WeightGainForm";
+import { FormHelperText } from "@mui/material";
 
 export const Dashboard = () => {
   const navigate = useNavigate();
   const [userId, setUserId] = useState("");
   const [babyId, setBabyId] = useState("");
+  const [babies, setBabies] = useState([]);
   const [chartData, setChartData] = useState({
     labels: [],
     datasets: [
@@ -42,10 +43,6 @@ export const Dashboard = () => {
   };
 
   useEffect(() => {
-    navigate("/dashboard");
-  }, [chartData]);
-
-  useEffect(() => {
     const fetchUserData = async () => {
       try {
         const authToken = localStorage.getItem("authToken");
@@ -69,9 +66,12 @@ export const Dashboard = () => {
         const userBabies = response.data.filter(
           (item) => item.user_id == userId
         );
-        setBabyId(userBabies.length > 0 ? userBabies[0].id : "");
+        setBabies(userBabies);
+
+        const selectedBaby = userBabies.length > 0 ? userBabies[0] : null;
+        setBabyId(selectedBaby ? selectedBaby.id : "");
       } catch (error) {
-        //console.error("Error fetching user data:", error);
+        console.error("Error fetching user data:", error);
       }
     };
 
@@ -80,6 +80,11 @@ export const Dashboard = () => {
         const authToken = localStorage.getItem("authToken");
         if (!authToken) {
           navigate("/login");
+          return;
+        }
+
+        if (!babyId) {
+          // Não há bebê selecionado, pode decidir o que fazer nesse caso
           return;
         }
 
@@ -111,7 +116,7 @@ export const Dashboard = () => {
 
     fetchUserData();
     fetchData();
-  }, [babyId, userId]);
+  }, [babyId, userId, navigate]);
 
   const handleAddWeight = (newWeight) => {
     setChartData((prevChartData) => {
@@ -134,14 +139,23 @@ export const Dashboard = () => {
       return updatedData;
     });
   };
-  
 
   return (
     <>
       <ResponsiveHeader />
       <PageTitle pageTitle="Dashboard" />
       <DashboardCards />
-      <DashboardChart chartData={chartData} />
+      {babies.length > 0 ? (
+        <DashboardChart chartData={chartData} />
+      ) : (
+        <FormHelperText 
+        style={{
+          textAlign: "center"
+        }}
+        >
+          No babies found. Add a baby to see weight gain chart.
+        </FormHelperText>
+      )}
       <WeightGainForm onAddWeight={handleAddWeight} />
     </>
   );
