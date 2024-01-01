@@ -32,16 +32,59 @@ export const Sleep = () => {
   const [sleepStartTime, setSleepStartTime] = useState("");
   const [sleepDuration, setSleepDuration] = useState(0);
   const [sleep, setSleep] = useState([]);
+  const [userId, setUserId] = useState("")
   const [babyList, setBabyList] = useState([]);
   const [selectedBaby, setSelectedBaby] = useState("");
   const [currentSleepDate, setCurrentSleepDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
+
+
+  const decodeJwtToken = (token) => {
+    try {
+      const base64Url = token.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split("")
+          .map((c) => `%${`00${c.charCodeAt(0).toString(16)}`.slice(-2)}`)
+          .join("")
+      );
+
+      return JSON.parse(jsonPayload);
+    } catch (error) {
+      console.error("Erro ao decodificar token JWT:", error.message);
+      return null;
+    }
+  };
 
   useEffect(() => {
     const authToken = localStorage.getItem("authToken");
     if (!authToken) {
       navigate("/login");
     }
+
+    const fetchUserData = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken");
+        if (!authToken) {
+          console.error("User has to authenticate.");
+          return;
+        }
+        const decodedToken = decodeJwtToken(authToken);
+        if (decodedToken) {
+          const userId = decodedToken.sub;
+          setUserId(userId);
+          const response = await AxiosApi.get(`/user/${userId}`);
+          const userData = response.data;
+
+          console.log("Informações do usuário:", userData);
+        } else {
+          console.error("Invalid JWT Token.");
+        }
+      } catch (error) {
+        //console.error("Error trying to get user info:", error.message);
+      }
+    };
 
     const fetchSleepData = async () => {
       try {
@@ -69,7 +112,7 @@ export const Sleep = () => {
         console.error("Erro ao obter lista de bebês:", error.message);
       }
     };
-
+    fetchUserData()
     fetchBabyList();
     fetchSleepData();
   }, []);
@@ -192,7 +235,7 @@ export const Sleep = () => {
                 value={selectedBaby}
                 onChange={(e) => setSelectedBaby(e.target.value)}
               >
-                {babyList.map((baby) => (
+                {babyList.filter((item) => item.user_id == userId).map((baby) => (
                   <MenuItem key={baby.id} value={baby}>
                     {baby.name}
                   </MenuItem>

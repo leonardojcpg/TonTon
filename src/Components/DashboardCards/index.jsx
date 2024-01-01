@@ -77,7 +77,7 @@ export const DashboardCards = () => {
         const babyId = filteredBabies[0].id;
         setBabyId(babyId);
       } catch (error) {
-        console.error("Error trying to get babyId");
+        //console.error("Error trying to get babyId");
       }
     };
 
