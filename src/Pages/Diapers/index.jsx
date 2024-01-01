@@ -219,7 +219,7 @@ export const Diapers = () => {
                 Select Baby
               </Typography>
               <Select
-                style={{ width: "250px", marginTop: ".5rem" }}
+                style={{ width: "15.625rem", marginTop: ".5rem" }}
                 label="Select Baby"
                 variant="outlined"
                 value={selectedBaby}
@@ -238,7 +238,7 @@ export const Diapers = () => {
                 Brand
               </Typography>
               <TextField
-                style={{ width: "250px", marginTop: ".5rem" }}
+                style={{ width: "15.625rem", marginTop: ".5rem" }}
                 variant="outlined"
                 value={diapersLabel}
                 onChange={(e) => setDiapersLabel(e.target.value)}
@@ -248,7 +248,7 @@ export const Diapers = () => {
                 Size
               </Typography>
               <Select
-                style={{ width: "250px", marginTop: ".5rem" }}
+                style={{ width: "15.625rem", marginTop: ".5rem" }}
                 label="Size"
                 variant="outlined"
                 value={diapersSize}
@@ -313,7 +313,7 @@ export const Diapers = () => {
                 </Button>
               </div>
               <Button
-                style={{ display: "flex", width: "250px", marginTop: "1rem" }}
+                style={{ display: "flex", width: "15.625rem", marginTop: "1rem" }}
                 variant="contained"
                 color="primary"
                 onClick={addDiapers}
@@ -345,11 +345,11 @@ export const Diapers = () => {
                       <ListItem
                         key={index}
                         sx={{
-                          border: "1px solid #ccc",
-                          width: isSmallScreen ? "355px" : "500px",
-                          borderRadius: "8px",
+                          border: ".0625rem solid #ccc",
+                          width: isSmallScreen ? "22.1875rem" : "31.25rem",
+                          borderRadius: ".5rem",
                           marginBottom: "0.5rem",
-                          margin: "5px 0",
+                          margin: ".3125rem 0",
                           backgroundColor: "#c5e2c1",
                         }}
                       >
@@ -379,11 +379,11 @@ export const Diapers = () => {
                     <ListItem
                       key={index}
                       sx={{
-                        border: "1px solid #ccc",
-                        width: isSmallScreen ? "355px" : "500px",
-                        borderRadius: "8px",
+                        border: ".0625rem solid #ccc",
+                        width: isSmallScreen ? "22.1875rem" : "31.25rem",
+                        borderRadius: ".5rem",
                         marginBottom: "0.5rem",
-                        margin: "5px 0",
+                        margin: ".3125rem 0",
                         backgroundColor: "#e9e9e9",
                       }}
                     >

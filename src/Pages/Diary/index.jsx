@@ -26,7 +26,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { toast } from "react-toastify";
 
 export const Diary = () => {
-  const isSmallScreen = useMediaQuery("(max-width:813px)");
+  const isSmallScreen = useMediaQuery("(max-width:50.8125rem)");
 
   const navigate = useNavigate();
   const { setDataInfo } = useBabyContext();
@@ -207,11 +207,11 @@ export const Diary = () => {
             }}
           >
             <Grid item xs={12} sm={6}>
-              <Typography variant="h5" style={{ marginTop: ".5rem" }}>
+              <Typography variant="h5" style={{ marginTop: "8px" }}>
                 Select Baby
               </Typography>
               <Select
-                style={{ width: "250px", marginTop: ".5rem" }}
+                style={{ width: "15.625rem", marginTop: ".5rem" }}
                 label="Select Baby"
                 variant="outlined"
                 value={selectedBaby}
@@ -248,7 +248,7 @@ export const Diary = () => {
                 onChange={(e) => setNote(e.target.value)}
               />
               <Button
-                style={{ display: "flex", width: "250px", marginTop: ".5rem" }}
+                style={{ display: "flex", width: "15.625rem", marginTop: ".5rem" }}
                 variant="contained"
                 color="primary"
                 onClick={() => {
@@ -282,11 +282,11 @@ export const Diary = () => {
                       <ListItem
                         key={index}
                         sx={{
-                          border: "1px solid #ccc",
-                          width: isSmallScreen ? "355px" : "500px",
-                          borderRadius: "8px",
-                          marginBottom: "0.5rem",
-                          margin: "5px 0",
+                          border: ".0625rem solid #ccc",
+                          width: isSmallScreen ? "22.1875rem" : "31.25rem",
+                          borderRadius: ".5rem",
+                          marginBottom: ".5rem",
+                          margin: ".3125rem 0",
                           backgroundColor: "#c5e2c1",
                         }}
                       >
@@ -324,11 +324,11 @@ export const Diary = () => {
                     <ListItem
                       key={index}
                       sx={{
-                        border: "1px solid #ccc",
-                        width: isSmallScreen ? "355px" : "500px",
-                        borderRadius: "8px",
-                        marginBottom: "0.5rem",
-                        margin: "5px 0",
+                        border: ".0625rem solid #ccc",
+                        width: isSmallScreen ? "22.1875rem" : "31.25rem",
+                        borderRadius: ".5rem",
+                        marginBottom: ".5rem",
+                        margin: ".3125rem 0",
                         backgroundColor: "#e9e9e9",
                       }}
                     >

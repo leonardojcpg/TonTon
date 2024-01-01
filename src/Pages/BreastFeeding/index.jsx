@@ -310,7 +310,7 @@ export const BreastFeeding = () => {
                 Breast-Side
               </Typography>
               <Select
-                style={{ width: "250px", marginTop: ".5rem" }}
+                style={{ width: "15.625rem", marginTop: ".5rem" }}
                 label="Breast Side"
                 variant="outlined"
                 value={breastSide}
@@ -324,7 +324,7 @@ export const BreastFeeding = () => {
                 Feeding Hour
               </Typography>
               <TextField
-                style={{ width: "250px", marginTop: ".5rem" }}
+                style={{ width: "15.625rem", marginTop: ".5rem" }}
                 variant="outlined"
                 value={feedHour}
                 onChange={(e) => setFeedHour(e.target.value)}
@@ -334,7 +334,7 @@ export const BreastFeeding = () => {
                 Select Baby
               </Typography>
               <Select
-                style={{ width: "250px", marginTop: ".5rem" }}
+                style={{ width: "15.625rem", marginTop: ".5rem" }}
                 label="Select Baby"
                 variant="outlined"
                 value={selectedBaby}
@@ -401,11 +401,11 @@ export const BreastFeeding = () => {
                       <ListItem
                         key={index}
                         sx={{
-                          border: "1px solid #ccc",
-                          width: isSmallScreen ? "355px" : "500px",
-                          borderRadius: "8px",
+                          border: ".0625rem solid #ccc",
+                          width: isSmallScreen ? "22.1875rem" : "31.25rem",
+                          borderRadius: ".5rem",
                           marginBottom: "0.5rem",
-                          margin: "5px 0",
+                          margin: ".3125rem 0",
                           backgroundColor: "#c5e2c1",
                         }}
                       >
@@ -441,11 +441,11 @@ export const BreastFeeding = () => {
                     <ListItem
                       key={index}
                       sx={{
-                        border: "1px solid #ccc",
-                        width: isSmallScreen ? "355px" : "500px",
-                        borderRadius: "8px",
+                        border: ".0625rem solid #ccc",
+                        width: isSmallScreen ? "22.1875rem" : "31.25rem",
+                        borderRadius: ".5rem",
                         marginBottom: "0.5rem",
-                        margin: "5px 0",
+                        margin: ".3125rem 0",
                         backgroundColor: "#e9e9e9",
                       }}
                     >

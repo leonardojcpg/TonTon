@@ -258,7 +258,7 @@ export const Sleep = () => {
                 Start-Time
               </Typography>
               <TextField
-                style={{ width: "250px", marginTop: ".5rem" }}
+                style={{ width: "15.625rem", marginTop: ".5rem" }}
                 variant="outlined"
                 value={sleepStartTime}
                 onChange={(e) => setSleepStartTime(e.target.value)}
@@ -318,7 +318,7 @@ export const Sleep = () => {
                 </Button>
               </div>
               <Button
-                style={{ display: "flex", width: "250px" }}
+                style={{ display: "flex", width: "15.625rem" }}
                 variant="contained"
                 color="primary"
                 onClick={addSleep}
@@ -350,11 +350,11 @@ export const Sleep = () => {
                       <ListItem
                         key={index}
                         sx={{
-                          border: "1px solid #ccc",
-                          width: isSmallScreen ? "355px" : "500px",
-                          borderRadius: "8px",
+                          border: ".0625rem solid #ccc",
+                          width: isSmallScreen ? "22.1875rem" : "31.25rem",
+                          borderRadius: ".5rem",
                           marginBottom: "0.5rem",
-                          margin: "5px 0",
+                          margin: ".3125rem 0",
                           backgroundColor: "#c5e2c1",
                         }}
                       >
@@ -384,11 +384,11 @@ export const Sleep = () => {
                     <ListItem
                       key={index}
                       sx={{
-                        border: "1px solid #ccc",
-                        width: isSmallScreen ? "355px" : "500px",
-                        borderRadius: "8px",
+                        border: ".0625rem solid #ccc",
+                        width: isSmallScreen ? "22.1875rem" : "31.25rem",
+                        borderRadius: ".5rem",
                         marginBottom: "0.5rem",
-                        margin: "5px 0",
+                        margin: ".3125rem 0",
                         backgroundColor: "#e9e9e9",
                       }}
                     >
