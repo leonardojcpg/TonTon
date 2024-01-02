@@ -61,4 +61,7 @@ Before you begin, make sure you have the following prerequisites:
 
    ```bash
    git clone git@github.com:leonardojcpg/TonTon.git
+
+  ## Contact
+  https://www.linkedin.com/in/leonardo-gomes-a429a5198/?locale=en_US
    
