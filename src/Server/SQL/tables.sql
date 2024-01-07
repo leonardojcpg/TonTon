@@ -11,8 +11,11 @@ CREATE TABLE IF NOT EXISTS baby (
   name VARCHAR(255) NOT NULL,
   age INT NOT NULL,
   weight DECIMAL(5, 2) NOT NULL,
-  blood_type baby_blood_type NOT NULL
+  blood_type baby_blood_type NOT NULL,
+  user_id INT,
+  CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
 
 CREATE TABLE IF NOT EXISTS user_baby (
   user_id INT NOT NULL,
