@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const AxiosApi = axios.create({
-  baseURL: "https://tonton-livid.vercel.app",
+  baseURL: "http://localhost:3000",
   timeout: 5 * 1000,
 });
