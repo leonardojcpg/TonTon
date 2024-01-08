@@ -15,7 +15,6 @@
 - [Features](#features)
 - [Prerequisites](#prerequisites)
 - [Techs](#techs)
-- [Libs](#libs)
 - [Installation](#installation)
 - [Contact](#contact)
 
@@ -26,7 +25,7 @@ TontonApp is an application designed to simplify baby care management, providing
 ## Features
 
 - ***Weight Tracking:*** Record and track the baby's weight gain.
-- ***Breast Feeding:*** Log breastfeeding sessions, including duration and side.
+- ***Breast Feeding:*** Log breastfeeding sessions, including duration and breast side.
 - ***Diaper Changes:*** Log diaper changes, keeping track of sizes and quantities.
 - ***Sleep:*** Track the baby's sleep patterns.
 - ***Diary:*** Maintain a diary with notes about significant events.
@@ -37,23 +36,11 @@ Before you begin, make sure you have the following prerequisites:
 
 - Node.js installed
 - PostgreSQL installed
-- PostgreSQL database created with the name "tontonapp"
+- PostgreSQL database created
 
 ## Techs
 - Javascript
 - Node Js
-  
-## Libs
-- Material UI
-- Axios
-- Express
-- Jsonwebtoken
-- React Hook Form
-- React Router Dom
-- Bcryptjs
-- Zod
-- React Toastfy
-- Apex Charts
 
 ## Installation
 
@@ -61,6 +48,13 @@ Before you begin, make sure you have the following prerequisites:
 
    ```bash
    git clone git@github.com:leonardojcpg/TonTon.git
+
+2. **Npm Install**
+   ```bash
+   npm install
+
+3. **Create your Postgres database**
+4. **Run SQL queries**
 
   ## Contact
   https://www.linkedin.com/in/leonardo-gomes-a429a5198/?locale=en_US
