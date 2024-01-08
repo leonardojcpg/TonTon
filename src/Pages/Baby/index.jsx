@@ -123,7 +123,6 @@ export const Baby = () => {
           console.error("Invalid response format:", responseData);
         }
       } catch (error) {
-        //console.log("Error trying to list babies.", error);
       }
     };
 

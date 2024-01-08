@@ -81,7 +81,6 @@ export const Diapers = () => {
           console.error("Invalid JWT Token.");
         }
       } catch (error) {
-        //console.error("Error trying to get user info", error);
       }
     };
 
@@ -102,7 +101,6 @@ export const Diapers = () => {
         setBabyList(babiesByUser);
         ("");
       } catch (error) {
-        //console.error("Erro ao obter lista de bebês:", error.message);
       }
     };
 

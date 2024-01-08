@@ -160,12 +160,8 @@ export const Sleep = () => {
 
         navigate("/sleep")
       } else {
-/*         console.log(
-          `Dados de sono inválidos: date = ${currentSleepDate}, startTime = ${sleepStartTime}, duration = ${sleepDuration}`
-        ); */
       }
     } catch (error) {
-      //console.error("Error creating sleep record:", error.message);
     }
   };
 

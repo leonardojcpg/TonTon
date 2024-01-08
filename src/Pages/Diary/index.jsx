@@ -79,7 +79,6 @@ export const Diary = () => {
         });
         setBabyList(response.data);
       } catch (error) {
-        //console.error("Erro ao obter lista de bebês:", error.message);
       }
     };
 
@@ -119,7 +118,6 @@ export const Diary = () => {
           },
         });
       } catch (error) {
-        //console.error("Error trying to get users:", error.message);
       }
     };
 
@@ -157,7 +155,6 @@ export const Diary = () => {
         console.log("Erro, invalid data.");
       }
     } catch (error) {
-      //console.log("Error creating diary");
     }
   };
   

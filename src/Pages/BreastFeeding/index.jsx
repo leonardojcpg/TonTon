@@ -183,10 +183,6 @@ export const BreastFeeding = () => {
       setBreastSide("");
       setFeedHour("");
 
-      if (response.status === 200) {
-        toast.success("Feed added successfully");
-      }
-
       navigate("/breastFeeding");
     } catch (error) {
       console.error("Error creating breast feeding", error);
