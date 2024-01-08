@@ -300,6 +300,7 @@ export const Baby = () => {
         return;
       }
       const response = await AxiosApi.patch(`/baby/${babyId}`, newData);
+      location.reload()      
       toast.success("Baby edited successfully!");
     } catch (error) {
       console.error("Error editing baby:", error);

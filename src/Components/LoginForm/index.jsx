@@ -16,23 +16,13 @@ export const LoginForm = () => {
   const schema = z.object({
     email: z
       .string()
-      .min(1)
-      .email("Type a valid email")
-      .refine((data) => data.trim() !== "", {
-        message: "Email is required",
-      }),
+      .min(1, "Email is required")
+      .email("Type a valid email"),
     password: z
       .string()
-      .min(4)
-      .refine((data) => data.trim() !== "", {
-        message: "Password is required",
-      })
-      .refine((data) => /[A-Z]/.test(data), {
-        message: "Password must contain at least one uppercase letter",
-      })
-      .refine((data) => /\d/.test(data), {
-        message: "Password must contain at least one number",
-      }),
+      .min(4, "Password is required")
+      .refine((data) => /[A-Z]/.test(data), "Password must contain at least one uppercase letter")
+      .refine((data) => /\d/.test(data), "Password must contain at least one number"),
   });
 
   const {

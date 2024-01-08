@@ -1,5 +1,11 @@
-import { Typography } from "@mui/material"
+import { Typography } from "@mui/material";
 
 export const ErrorMessage = ({ message }) => {
-    <Typography variant="caption" color="error">{message}</Typography>
-}
+  return (
+    message ? (
+      <Typography color="error" variant="caption">
+        {message}
+      </Typography>
+    ) : null
+  );
+};
