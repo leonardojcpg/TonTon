@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS baby (
   CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
-
 CREATE TABLE IF NOT EXISTS user_baby (
   user_id INT NOT NULL,
   baby_id INT NOT NULL,
@@ -28,16 +27,17 @@ CREATE TABLE IF NOT EXISTS user_baby (
 
 CREATE TABLE IF NOT EXISTS breast_feeding (
   id SERIAL PRIMARY KEY,
-  baby_id INT NOT NULL,
+  baby_id INT REFERENCES baby(id) ON DELETE CASCADE,
   duration INTEGER NOT NULL,
   side breast_feeding_side NOT NULL,
-  hour DECIMAL(4, 2) NOT NULL,
+  hour TIME NOT NULL,
+  date DATE,
   FOREIGN KEY (baby_id) REFERENCES baby(id)
 );
 
 CREATE TABLE IF NOT EXISTS diapers (
   id SERIAL PRIMARY KEY,
-  baby_id INT NOT NULL,
+  baby_id INT REFERENCES baby(id) ON DELETE CASCADE,
   label VARCHAR(50) NOT NULL,
   size diapers_size NOT NULL,
   quantity INT NOT NULL,
