@@ -1,12 +1,12 @@
 .chart-container {
-  border-radius: 0.625rem;
-  background-color: #f3f3f3;
+  border-radius: .625rem;
+  background-color: #f3f3f3;  
 }
 
 @media (max-width: 48rem) {
   .chart-container {
     border-radius: 0.625rem;
-    margin: .9375rem auto;
+    margin: .3125rem auto;
     background-color: #f3f3f3;
   }
 }
