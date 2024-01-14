@@ -37,8 +37,7 @@
     "build": "vite build",
     "test": "vite test",
     "eject": "vite eject",
-    "serve": "vite preview",
-    "server": "node src/Server/serverApp.js"
+    "serve": "vite preview"
   },
   "eslintConfig": {
     "extends": [
