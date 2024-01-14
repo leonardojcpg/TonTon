@@ -3,10 +3,10 @@
   background-color: #f3f3f3;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 48rem) {
   .chart-container {
     border-radius: 0.625rem;
-    margin: 15px auto;
+    margin: .9375rem auto;
     background-color: #f3f3f3;
   }
 }
