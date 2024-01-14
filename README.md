@@ -53,8 +53,6 @@ Before you begin, make sure you have the following prerequisites:
    ```bash
    npm install
 
-3. **Create your Postgres database**
-4. **Run SQL queries**
 
   ## Contact
   https://www.linkedin.com/in/leonardo-gomes-a429a5198/?locale=en_US
