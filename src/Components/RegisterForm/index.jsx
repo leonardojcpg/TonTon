@@ -114,7 +114,7 @@ export const FormComponent = () => {
               variant="body2"
               sx={{ textAlign: "center", marginTop: 2 }}
             >
-              Already registered? <Link href="/login">Log in here!</Link>
+              Already registered? <Link to="/login">Log in here!</Link>
             </Typography>
           </form>
         </Grid>
