@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AxiosApi } from "../../Services/axios.create.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FormButton } from "../Button/index.jsx";
 import newBornBaby from "./assets/newBornBaby.svg";
@@ -114,7 +114,7 @@ export const FormComponent = () => {
               variant="body2"
               sx={{ textAlign: "center", marginTop: 2 }}
             >
-              Already registered? <a href="/login">Log in here!</a>
+              Already registered? <Link href="/login">Log in here!</Link>
             </Typography>
           </form>
         </Grid>

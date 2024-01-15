@@ -13,15 +13,18 @@ export const LoginForm = () => {
   const navigate = useNavigate();
 
   const schema = z.object({
-    email: z
-      .string()
-      .min(1, "Email is required")
-      .email("Type a valid email"),
+    email: z.string().min(1, "Email is required").email("Type a valid email"),
     password: z
       .string()
       .min(4, "Password is required")
-      .refine((data) => /[A-Z]/.test(data), "Password must contain at least one uppercase letter")
-      .refine((data) => /\d/.test(data), "Password must contain at least one number"),
+      .refine(
+        (data) => /[A-Z]/.test(data),
+        "Password must contain at least one uppercase letter"
+      )
+      .refine(
+        (data) => /\d/.test(data),
+        "Password must contain at least one number"
+      ),
   });
 
   const {
@@ -75,8 +78,8 @@ export const LoginForm = () => {
       />
       <FormButton buttonName="Sign In" />
       <Typography variant="body2" sx={{ textAlign: "center", marginTop: 2 }}>
-  Don't have a registration? <Link to="/register">Sign Up here!</Link>
-</Typography>
+        Don't have a registration? <Link to="/register">Sign Up here!</Link>
+      </Typography>
     </form>
   );
 };
