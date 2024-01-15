@@ -1,4 +1,3 @@
-// LoginForm.jsx
 import React from "react";
 import { TextField, Typography } from "@mui/material";
 import { useForm } from "react-hook-form";
@@ -6,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormButton } from "../../Components/Button";
 import { AxiosApi } from "../../Services/axios.create.js";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { ErrorMessage } from "../../Components/ErrorMessage/index.jsx";
 
@@ -76,8 +75,8 @@ export const LoginForm = () => {
       />
       <FormButton buttonName="Sign In" />
       <Typography variant="body2" sx={{ textAlign: "center", marginTop: 2 }}>
-        Don't have a registration? <a href="/register">Sign Up here!</a>
-      </Typography>
+  Don't have a registration? <Link to="/register">Sign Up here!</Link>
+</Typography>
     </form>
   );
 };
