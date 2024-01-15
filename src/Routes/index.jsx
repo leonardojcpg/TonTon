@@ -14,7 +14,7 @@ export const RouteApp = () => {
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/users" element={<Register />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/breastfeeding" element={<BreastFeeding />} />
         <Route path="/sleep" element={<Sleep />} />

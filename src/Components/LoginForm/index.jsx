@@ -76,7 +76,7 @@ export const LoginForm = () => {
       />
       <FormButton buttonName="Sign In" />
       <Typography variant="body2" sx={{ textAlign: "center", marginTop: 2 }}>
-        Don't have a registration? <a href="/register">Sign Up here!</a>
+        Don't have a registration? <a href="/users">Sign Up here!</a>
       </Typography>
     </form>
   );
