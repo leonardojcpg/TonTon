@@ -35,8 +35,6 @@ TontonApp is an application designed to simplify baby care management, providing
 Before you begin, make sure you have the following prerequisites:
 
 - Node.js installed
-- PostgreSQL installed
-- PostgreSQL database created
 
 ## Techs
 - Javascript
