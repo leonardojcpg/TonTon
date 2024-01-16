@@ -373,7 +373,10 @@ export const Diapers = () => {
                 }}
               >
                 <List>
-                  {diapers.slice(-1).map((diaper, index) => (
+                  {diapers
+                  .filter((item) => item.baby_id === selectedBaby.id)
+                  .slice(-1)
+                  .map((diaper, index) => (
                     <ListItem
                       key={index}
                       sx={{

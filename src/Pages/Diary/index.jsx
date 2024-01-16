@@ -317,7 +317,10 @@ export const Diary = () => {
                 }}
               >
                 <List>
-                  {diary.slice(-1).map((diaryInfo, index) => (
+                  {diary
+                  .filter((item) => item.baby_id == selectedBaby.id)
+                  .slice(-1)
+                  .map((diaryInfo, index) => (
                     <ListItem
                       key={index}
                       sx={{

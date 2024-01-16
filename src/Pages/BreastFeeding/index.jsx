@@ -433,7 +433,9 @@ export const BreastFeeding = () => {
                 }}
               >
                 <List>
-                  {feed.slice(-1).map((feeding, index) => (
+                  {feed
+                  .filter((item) => item.baby_id === selectedBaby.id)
+                  .slice(-1).map((feeding, index) => (
                     <ListItem
                       key={index}
                       sx={{

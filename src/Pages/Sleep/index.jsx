@@ -376,7 +376,10 @@ export const Sleep = () => {
                 }}
               >
                 <List>
-                  {sleep.slice(-1).map((sleeping, index) => (
+                  {sleep
+                  .filter((item) => item.baby_id === selectedBaby.id)
+                  .slice(-1)
+                  .map((sleeping, index) => (
                     <ListItem
                       key={index}
                       sx={{
