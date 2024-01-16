@@ -274,7 +274,7 @@ export const Diary = () => {
               >
                 <List>
                   {diary
-                    .filter((entry) => entry.baby_id == selectedBaby.id)
+                    .filter((entry) => entry.baby_id === selectedBaby.id)
                     .map((entry, index) => (
                       <ListItem
                         key={index}
@@ -309,7 +309,7 @@ export const Diary = () => {
                     ))}
                 </List>
               </div>
-              <Typography variant="h5">Last Diaper Info:</Typography>
+              <Typography variant="h5">Last Diary Info:</Typography>
               <div
                 style={{
                   maxHeight: "50vh",
@@ -318,7 +318,7 @@ export const Diary = () => {
               >
                 <List>
                   {diary
-                  .filter((item) => item.baby_id == selectedBaby.id)
+                  .filter((item) => item.baby_id === selectedBaby.id)
                   .slice(-1)
                   .map((diaryInfo, index) => (
                     <ListItem

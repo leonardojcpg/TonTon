@@ -308,17 +308,14 @@ export const Baby = () => {
 
   const disassociateBaby = async (babyId) => {
     try {
-      const authToken = localStorage.getItem("authToken");
-      if (!authToken) {
-        console.error("User has to authenticate");
-        return;
-      }
-
       await AxiosApi.delete(`/user_baby/${userId}/baby/${babyId}/disassociate`);
+      toast.success("Baby disassociated successfully!");
     } catch (error) {
       console.error("Error trying to disassociate baby", error);
+      toast.error("Error disassociating baby. Please try again later.");
     }
   };
+  
 
   const deleteBaby = async (babyId) => {
     try {
@@ -327,21 +324,16 @@ export const Baby = () => {
         console.error("User has to authenticate");
         return;
       }
-
-      disassociateBaby(babyId);
-      await AxiosApi.delete(`/baby/${babyId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-
+      await disassociateBaby(babyId);  
+      await AxiosApi.delete(`/baby/${babyId}`);
       toast.success("Baby deleted successfully!");
-      location.reload()      
+      location.reload();
     } catch (error) {
       console.error("Error deleting baby:", error);
-      toast.error("Error deleting baby. Please try again later.");
-    }
+    }    
   };
+  
+  
 
   const closeBabyEditModal = () => {
     setIsEditBabyModalOpen(false);
@@ -557,9 +549,9 @@ export const Baby = () => {
                 <List>
                   {babies
                     .filter((baby) => baby.user_id == userId)
-                    .map((baby, index) => (
+                    .map((baby) => (
                       <ListItem
-                        key={index}
+                        key={baby.id}
                         sx={{
                           border: "1px solid #ccc",
                           width: isSmallScreen ? "355px" : "500px",
