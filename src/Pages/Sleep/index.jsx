@@ -368,7 +368,7 @@ export const Sleep = () => {
                     ))}
                 </List>
               </div>
-              <Typography variant="h5">Last Sleep Info Baby:</Typography>
+              <Typography variant="h5">Last Sleep Info:</Typography>
               <div
                 style={{
                   maxHeight: "50vh",

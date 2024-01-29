@@ -425,7 +425,7 @@ export const BreastFeeding = () => {
                     ))}
                 </List>
               </div>
-              <Typography variant="h5">Last Feed Info Baby:</Typography>
+              <Typography variant="h5">Last Feed Info:</Typography>
               <div
                 style={{
                   maxHeight: "50vh",
