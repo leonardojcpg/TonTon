@@ -76,7 +76,7 @@ export const FormComponent = () => {
 
   return (
     <Paper
-      elevation={3}
+      elevation={8}
       sx={{ alignItems: "center", padding: 4, borderRadius: "1rem" }}
     >
       <Grid container spacing={3} sx={{ alignItems: "center" }}>
